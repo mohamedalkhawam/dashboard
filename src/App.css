@@ -1,38 +1,119 @@
-.App {
-  text-align: center;
+.signIn {
+  z-index: 1;
+  transform: perspective(100px) translate3d(100px, 0px, -30px);
+  opacity: 0.5;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.signUp {
+  z-index: 2;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+.active-dx {
+  animation-name: foregrounding-dx;
+  animation-duration: 0.9s;
+  animation-fill-mode: forwards;
+}
+
+.active-sx {
+  animation-name: foregrounding-sx;
+  animation-duration: 0.9s;
+  animation-fill-mode: forwards;
+}
+
+.inactive-dx {
+  animation-name: overshadowing-dx;
+  animation-duration: 0.9s;
+  animation-fill-mode: forwards;
+}
+
+.inactive-sx {
+  animation-name: overshadowing-sx;
+  animation-duration: 0.9s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes overshadowing-dx {
+  0% {
+    z-index: 3;
+    transform: perspective(100px) translate3d(0px, 0px, 0px);
+    opacity: 1;
+    box-shadow: 0 10px 50px 0 rgba(0, 0, 0, 0.25);
+  }
+  100% {
+    z-index: 1;
+    transform: perspective(100px) translate3d(100px, 0px, -30px);
+    opacity: 0.5;
+    box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.25);
+    -webkit-transform: perspective(100px) translate3d(100px, 0px, -30px);
+    -moz-transform: perspective(100px) translate3d(100px, 0px, -30px);
+    -ms-transform: perspective(100px) translate3d(100px, 0px, -30px);
+    -o-transform: perspective(100px) translate3d(100px, 0px, -30px);
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+@keyframes overshadowing-sx {
+  0% {
+    z-index: 3;
+    transform: perspective(100px) translate3d(0px, 0px, 0px);
+    opacity: 1;
+    box-shadow: 0 10px 50px 0 rgba(0, 0, 0, 0.25);
+  }
+  100% {
+    z-index: 1;
+    transform: perspective(100px) translate3d(-100px, 0px, -30px);
+    opacity: 0.5;
+    box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.25);
+  }
 }
 
-.App-link {
-  color: #61dafb;
+@keyframes foregrounding-dx {
+  0% {
+    z-index: 1;
+    transform: perspective(100px) translate3d(100px, 0px, -30px);
+    opacity: 0.5;
+  }
+  50% {
+    z-index: 2;
+    transform: perspective(100px) translate3d(400px, 0px, -30px);
+    -webkit-transform: perspective(100px) translate3d(400px, 0px, -30px);
+    -moz-transform: perspective(100px) translate3d(400px, 0px, -30px);
+    -ms-transform: perspective(100px) translate3d(400px, 0px, -30px);
+    -o-transform: perspective(100px) translate3d(400px, 0px, -30px);
+  }
+  100% {
+    z-index: 3;
+    transform: perspective(100px) translate3d(0px, 0px, 0px);
+    opacity: 1;
+  }
 }
 
-@keyframes App-logo-spin {
-  from {
+@keyframes foregrounding-sx {
+  0% {
+    z-index: 1;
+    transform: perspective(100px) translate3d(-100px, 0px, -30px);
+    opacity: 0.5;
+    -webkit-transform: perspective(100px) translate3d(-100px, 0px, -30px);
+    -moz-transform: perspective(100px) translate3d(-100px, 0px, -30px);
+    -ms-transform: perspective(100px) translate3d(-100px, 0px, -30px);
+    -o-transform: perspective(100px) translate3d(-100px, 0px, -30px);
+  }
+  50% {
+    z-index: 3;
+    transform: perspective(100px) translate3d(-400px, 0px, -30px);
+  }
+  100% {
+    z-index: 3;
+    transform: perspective(100px) translate3d(0px, 0px, 0px);
+    opacity: 1;
+  }
+}
+
+@keyframes spinner {
+  0% {
     transform: rotate(0deg);
   }
-  to {
+
+  100% {
     transform: rotate(360deg);
   }
 }

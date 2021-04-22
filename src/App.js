@@ -1,24 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import { Router, Route } from "react-router-dom";
+import { createBrowserHistory } from "history";
+import Routes from "./routes/Index";
+import store from "./redux/store";
+import { Provider } from "react-redux";
+import "./App.css";
+import "./index.css";
+import { loadUser } from "./redux/actions/auth";
+import { useState, useEffect } from "react";
+
+const history = createBrowserHistory();
 
 function App() {
+  useEffect(() => {
+    store
+      .dispatch(loadUser())
+      .then((res) => {
+        if (res.status === 200) {
+          history.push("/");
+        }
+      })
+      .catch((err) => null);
+    console.log(store.getState());
+  }, []);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Provider store={store}>
+      <Router history={history}>
+        <Route component={Routes} />
+      </Router>
+    </Provider>
   );
 }
 
