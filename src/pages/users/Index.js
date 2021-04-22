@@ -4,12 +4,13 @@ import { Redirect, Route, useHistory, useLocation } from "react-router-dom";
 import { FaEdit } from "react-icons/fa";
 import { AiOutlineDelete } from "react-icons/ai";
 import Layout from "../../components/Layout";
-import { readUsers } from "../../redux/actions/user";
-export default function Users() {
+import { readUsers, deleteUser } from "../../redux/actions/user";
+
+export default function Users({ history }) {
   const dispatch = useDispatch();
   const userReducer = useSelector((state) => state.userReducer);
   useEffect(() => {
-    dispatch(readUsers()).then((res) => null);
+    dispatch(readUsers());
   }, []);
   console.log(userReducer);
   if (userReducer.loading) {
@@ -31,12 +32,12 @@ export default function Users() {
       <Layout>
         <div
           style={{ backgroundColor: "#F8F8F8" }}
-          className="bg-green-700 w-full h-full flex flex-col items-center px-10 py-20 "
+          className=" w-full flex flex-col items-center p-10 transition-all h-screen overflow-y-auto "
         >
-          <div className="flex justify-between items-center  select-none  w-full">
-            <div className=" text-4xl  text-gray-500 text-left font-normal my-10 flex-grow">
+          <div className="flex justify-between items-center  select-none  w-full flex-wrap transition-all">
+            <div className=" text-4xl  text-gray-500 text-left font-normal my-10 flex-grow transition-all">
               Users
-              <div className="flex items-center w-full text-left text-sm mt-4 text-gray-500 ">
+              <div className="flex items-center w-full text-left text-sm mt-4 text-gray-500 transition-all">
                 <div className=" font-medium cursor-pointer hover:text-gray-600 transform transition-all hover:scale-110 duration-100  ">
                   Dashboard
                 </div>
@@ -47,10 +48,11 @@ export default function Users() {
               </div>
             </div>
             <div
+              onClick={() => history.push("/users/new")}
               style={{ backgroundColor: "#212121" }}
-              className=" cursor-pointer    rounded-md shadow-md hover:shadow-lg my-10 py-3 px-4"
+              className=" cursor-pointer transition-all   rounded-md shadow-md hover:shadow-lg my-10 py-3 px-4"
             >
-              <div className="text-center text-white   text-sm   ">
+              <div className="text-center text-white   text-sm   transition-all">
                 Add new user
               </div>
             </div>
@@ -60,10 +62,7 @@ export default function Users() {
             <thead>
               <tr>
                 <th className="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
-                  #
-                </th>
-                <th className="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
-                  User Name
+                  UserName
                 </th>
                 <th className="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
                   Email
@@ -72,152 +71,73 @@ export default function Users() {
                   Role
                 </th>
                 <th className="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
+                  Status
+                </th>
+                <th className="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
                   Actions
                 </th>
               </tr>
             </thead>
             <tbody>
-              <tr className="bg-white lg:hover:bg-gray-100 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0 shadow-md">
-                <td className="w-full lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
-                  <span className="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">
-                    #
-                  </span>
-                  1
-                </td>
-                <td className="w-full lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
-                  <span className="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">
-                    User Name
-                  </span>
-                  Mohamed Al-Khawam
-                </td>
-                <td className="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static">
-                  <span className="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">
-                    Email
-                  </span>
-                  mohamed.kh1994@gmail.com
-                </td>
-                <td className="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static shadow">
-                  <span className="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">
-                    Role
-                  </span>
-                  <span className="rounded bg-green-600 py-2 px-3 text-xs font-semibold text-gray-100">
-                    Super
-                  </span>
-                </td>
-                <td className="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static">
-                  <span className="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">
-                    Actions
-                  </span>
-                  <div className="  flex justify-evenly items-center">
-                    <div
-                      href="#"
-                      className="text-blue-500 hover:text-blue-700  "
+              {userReducer.users.map((user) => (
+                <tr className="bg-white lg:hover:bg-gray-100 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0">
+                  <td className="w-full lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
+                    <span className="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">
+                      UserName
+                    </span>
+                    {user.userName}
+                  </td>
+
+                  <td className="w-full lg:w-auto p-3 text-gray-800  border border-b text-center block lg:table-cell relative lg:static">
+                    <span className="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">
+                      Email
+                    </span>
+                    {user.email}
+                  </td>
+                  <td className="w-full lg:w-auto p-3 text-gray-800  border border-b text-center block lg:table-cell relative lg:static">
+                    <span className="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">
+                      Role
+                    </span>
+                    <span className="rounded text-gray-500 py-1 px-3 text-xs font-bold">
+                      {/* {user.roles} */}
+                      Not Yet
+                    </span>
+                  </td>
+                  <td className="w-full lg:w-auto p-3 text-gray-800  border border-b text-center block lg:table-cell relative lg:static">
+                    <span className="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">
+                      Status
+                    </span>
+                    <span
+                      className={`rounded ${
+                        user.status === "active"
+                          ? `bg-green-600 hover:bg-green-700`
+                          : `bg-red-600 hover:bg-red-700`
+                      } py-1 px-3 text-xs font-semibold text-white`}
                     >
-                      <FaEdit size="1.5rem" className="cursor-pointer" />
+                      {user.status}
+                    </span>
+                  </td>
+                  <td className="w-full lg:w-auto p-3 text-gray-800 border border-b text-center block lg:table-cell relative lg:static">
+                    <span className="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">
+                      Actions
+                    </span>
+                    <div className="flex items-center justify-evenly">
+                      <div
+                        onClick={() => history.push(`/users/${user.id}/edit`)}
+                        className="text-blue-400 hover:text-blue-600 underline cursor-pointer"
+                      >
+                        <FaEdit size="1.8rem" />
+                      </div>
+                      <div
+                        onClick={() => dispatch(deleteUser(user.id))}
+                        className="text-red-500 hover:text-red-500 underline  cursor-pointer"
+                      >
+                        <AiOutlineDelete size="1.8rem" />
+                      </div>
                     </div>
-                    <div href="#" className="text-red-500 hover:text-red-700  ">
-                      <AiOutlineDelete
-                        size="1.5rem"
-                        className="cursor-pointer"
-                      />
-                    </div>
-                  </div>
-                </td>
-              </tr>
-              <tr className="bg-white lg:hover:bg-gray-100 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0 shadow-md">
-                <td className="w-full lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
-                  <span className="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">
-                    #
-                  </span>
-                  2
-                </td>
-                <td className="w-full lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
-                  <span className="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">
-                    User Name
-                  </span>
-                  Rami
-                </td>
-                <td className="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static ">
-                  <span className="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">
-                    Email
-                  </span>
-                  rami@gmail.com
-                </td>
-                <td className="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static">
-                  <span className="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">
-                    Role
-                  </span>
-                  <span className="rounded bg-red-700 py-2 px-3 text-xs font-semibold text-gray-100">
-                    Subscriber
-                  </span>
-                </td>
-                <td className="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static">
-                  <span className="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">
-                    Actions
-                  </span>
-                  <div className="  flex justify-evenly items-center">
-                    <div
-                      href="#"
-                      className="text-blue-500 hover:text-blue-700  "
-                    >
-                      <FaEdit size="1.5rem" className="cursor-pointer" />
-                    </div>
-                    <div href="#" className="text-red-500 hover:text-red-700  ">
-                      <AiOutlineDelete
-                        size="1.5rem"
-                        className="cursor-pointer"
-                      />
-                    </div>
-                  </div>
-                </td>
-              </tr>
-              <tr className="bg-white lg:hover:bg-gray-100 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0 shadow-md">
-                <td className="w-full lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
-                  <span className="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">
-                    #
-                  </span>
-                  3
-                </td>
-                <td className="w-full lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
-                  <span className="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">
-                    User Name
-                  </span>
-                  awis Al-Raaie
-                </td>
-                <td className="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static">
-                  <span className="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">
-                    Email
-                  </span>
-                  mhd@larsa.org
-                </td>
-                <td className="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static">
-                  <span className="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">
-                    Role
-                  </span>
-                  <span className="rounded bg-blue-600 py-2 px-3 text-xs font-semibold text-gray-100">
-                    Adminstrator
-                  </span>
-                </td>
-                <td className="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static">
-                  <span className="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">
-                    Actions
-                  </span>
-                  <div className="  flex justify-evenly items-center">
-                    <div
-                      href="#"
-                      className="text-blue-500 hover:text-blue-700  "
-                    >
-                      <FaEdit size="1.5rem" className="cursor-pointer" />
-                    </div>
-                    <div href="#" className="text-red-500 hover:text-red-700  ">
-                      <AiOutlineDelete
-                        size="1.5rem"
-                        className="cursor-pointer"
-                      />
-                    </div>
-                  </div>
-                </td>
-              </tr>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>

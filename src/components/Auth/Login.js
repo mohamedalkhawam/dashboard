@@ -18,6 +18,7 @@ export default function Login({ toggleEvent, toggle }) {
     email: false,
     password: false,
   });
+  const authReducer = useSelector((state) => state.authReducer);
   useEffect(() => {
     validator(
       schema,
@@ -120,8 +121,12 @@ export default function Login({ toggleEvent, toggle }) {
           className=""
           disabled={touched.password && errorValidation.password}
           className={`  border
-                 px-8 py-2 border-green-700 rounded shadow-md hover:shadow-lg outline-none focus:outline-none  bg-green-600 text-white hover:bg-green-700 `}
+                 px-8 py-2 border-green-700 rounded shadow-md hover:shadow-lg outline-none focus:outline-none  bg-green-600 text-white hover:bg-green-700 relative`}
         >
+          <svg
+            className="animate-spin h-5 w-5 mr-3 absolute border-white left-2"
+            viewBox="0 0 24 24"
+          ></svg>
           LOGIN
         </button>
       </div>

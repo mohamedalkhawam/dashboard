@@ -40,7 +40,7 @@ export const readUsers = () =>
 
 export const readOneUser = (id) =>
   readOneItemAsync({
-    url: "http://localhost:8080/api/users/",
+    url: `http://localhost:8080/api/users/`,
     successType: READ_ONE_USER,
     errorType: USER_ERROR,
     startReload: startUsersReload,
@@ -78,7 +78,7 @@ export const updateUser = (formData) =>
     finishedReload: finishedUsersReload,
     title: "User",
     formData,
-    id: formData._id,
+    id: formData.id,
     headers: {
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*",

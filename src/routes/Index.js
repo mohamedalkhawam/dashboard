@@ -10,7 +10,7 @@ const Routes = () => {
   return (
     <Suspense
       fallback={
-        <p>ss</p>
+        <p></p>
         // <Layout>
         //   <Loader />
         // </Layout>
@@ -19,9 +19,11 @@ const Routes = () => {
       <Switch>
         <ProtectedRoute exact path="/" component={Index} />
         <Route exact path="/auth" component={Auth} />
+        {/* start User mangment */}
         <ProtectedRoute exact path="/users" component={Users} />
         <ProtectedRoute exact path="/users/:id/edit" component={UsersCrud} />
         <ProtectedRoute exact path="/users/new" component={UsersCrud} />
+        {/* end User mangment */}
       </Switch>
     </Suspense>
   );

@@ -30,7 +30,7 @@ export default function (state = initialState, action) {
     case READ_ONE_USER:
       return {
         ...state,
-        user: { ...payload.user },
+        user: payload,
       };
     case CREATE_USER:
       return {

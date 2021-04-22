@@ -9,7 +9,7 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
   console.log(authReducer);
   if (authReducer.loading) {
     return <div>Loading</div>;
-  } else if (authReducer.isAuthenticated && !authReducer.loading) {
+  } else if (authReducer.isAuthenticated) {
     return (
       <Route {...rest} render={(props) => <Component {...props} {...rest} />} />
     );
