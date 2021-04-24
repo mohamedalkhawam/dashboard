@@ -25,7 +25,7 @@ export const finishedAuthReload = () => (dispatch) => {
 
 export const loginUser = (formData) =>
   createItemAsync({
-    url: "http://127.0.0.1:8080/api/auth/login",
+    url: "https://car-wash-uae.herokuapp.com/api/auth/login",
     successType: LOGIN,
     errorType: AUTH_ERROR,
     successMsg: "Login Succsess",
@@ -42,7 +42,7 @@ export const loginUser = (formData) =>
   });
 export const loadUser = () =>
   readItemsAsync({
-    url: "http://127.0.0.1:8080/api/auth/me",
+    url: "https://car-wash-uae.herokuapp.com/api/auth/me",
     successType: USER_LOADED,
     errorType: AUTH_ERROR,
     startReload: startAuthReload,
@@ -56,7 +56,7 @@ export const loadUser = () =>
   });
 export const registerUser = (formData) =>
   createItemAsync({
-    url: "http://127.0.0.1:8080/api/auth/register",
+    url: "https://car-wash-uae.herokuapp.com/api/auth/register",
     successType: REGISTER,
     errorType: AUTH_ERROR,
     successMsg: "Register Succsess",

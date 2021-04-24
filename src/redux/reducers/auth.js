@@ -28,7 +28,7 @@ const authReducer = function (state = initialState, action) {
         ...state,
       };
     case LOGIN:
-      localStorage.setItem("token", payload["x-access-token"]);
+      localStorage.setItem("token", payload.data["x-access-token"]);
       console.log({ payload: payload, state });
       return {
         ...state,

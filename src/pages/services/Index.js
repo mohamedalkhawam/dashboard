@@ -4,17 +4,21 @@ import { Redirect, Route, useHistory, useLocation } from "react-router-dom";
 import { FaEdit } from "react-icons/fa";
 import { AiOutlineDelete } from "react-icons/ai";
 import Layout from "../../components/Layout";
-import { readUsers, deleteUser, clearUser } from "../../redux/actions/user";
-import { readServices } from "../../redux/actions/services";
-export default function Users({ history }) {
+import {
+  readServices,
+  deleteService,
+  clearService,
+} from "../../redux/actions/services";
+// import { readServices } from "../../redux/actions/services";
+export default function Services({ history }) {
   const dispatch = useDispatch();
-
-  const userReducer = useSelector((state) => state.userReducer);
-  console.log({ userReducer });
+  const servicesReducer = useSelector((state) => state.servicesReducer);
+  console.log({ servicesReducer });
   useEffect(() => {
-    dispatch(readUsers());
+    dispatch(readServices());
   }, []);
-  if (userReducer.loading) {
+  console.log({ servicesReducer });
+  if (servicesReducer.loading) {
     return (
       <Layout>
         <div className="flex justify-center items-center h-screen  ">
@@ -37,24 +41,24 @@ export default function Users({ history }) {
         >
           <div className="flex justify-between items-center  select-none  w-full flex-wrap transition-all">
             <div className=" text-4xl  text-gray-500 text-left font-normal my-10 flex-grow transition-all">
-              Users
+              Services
               <div className="flex items-center w-full text-left text-sm mt-4 text-gray-500 transition-all">
                 <div className=" font-medium cursor-pointer hover:text-gray-600 transform transition-all hover:scale-110 duration-100  ">
                   Dashboard
                 </div>
                 <div className="px-3 font-medium">{`->`}</div>
                 <div className=" font-medium cursor-pointer hover:text-gray-600 transform transition-all hover:scale-110 duration-100">
-                  Users
+                  Services
                 </div>
               </div>
             </div>
             <div
-              onClick={() => history.push("/users/new")}
+              onClick={() => history.push("/services/new")}
               style={{ backgroundColor: "#212121" }}
               className=" cursor-pointer transition-all   rounded-md shadow-md hover:shadow-lg my-10 py-3 px-4"
             >
               <div className="text-center text-white   text-sm   transition-all">
-                Add new user
+                Add new Service
               </div>
             </div>
           </div>
@@ -63,13 +67,13 @@ export default function Users({ history }) {
             <thead>
               <tr>
                 <th className="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
-                  Email
+                  Name
                 </th>
                 <th className="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
-                  Role
+                  Label
                 </th>
                 <th className="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
-                  Status
+                  Price
                 </th>
                 <th className="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
                   Actions
@@ -77,35 +81,31 @@ export default function Users({ history }) {
               </tr>
             </thead>
             <tbody>
-              {userReducer.users.map((user) => (
+              {servicesReducer.services.map((service) => (
                 <tr className="bg-white lg:hover:bg-gray-100 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0">
                   <td className="w-full lg:w-auto p-3 text-gray-800  border border-b text-center block lg:table-cell relative lg:static">
                     <span className="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">
-                      Email
+                      Name
                     </span>
-                    {user.email}
+                    {service.name}
                   </td>
                   <td className="w-full lg:w-auto p-3 text-gray-800  border border-b text-center block lg:table-cell relative lg:static">
                     <span className="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">
                       Role
                     </span>
                     <span className="rounded text-gray-500 py-1 px-3 text-xs font-bold">
-                      {/* {user.roles} */}
-                      Not Yet
+                      {service.label}
+                      Label
                     </span>
                   </td>
                   <td className="w-full lg:w-auto p-3 text-gray-800  border border-b text-center block lg:table-cell relative lg:static">
                     <span className="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">
-                      Status
+                      Price
                     </span>
                     <span
-                      className={`rounded ${
-                        user.status === "active"
-                          ? `bg-green-600 hover:bg-green-700`
-                          : `bg-red-600 hover:bg-red-700`
-                      } py-1 px-3 text-xs font-semibold text-white`}
+                      className={`rounded py-1 px-3 text-xs font-semibold text-gray-500`}
                     >
-                      {user.status}
+                      {service.price}
                     </span>
                   </td>
                   <td className="w-full lg:w-auto p-3 text-gray-800 border border-b text-center block lg:table-cell relative lg:static">
@@ -115,8 +115,8 @@ export default function Users({ history }) {
                     <div className="flex items-center justify-evenly">
                       <div
                         onClick={() => {
-                          dispatch(clearUser());
-                          history.push(`/users/${user.id}/edit`);
+                          dispatch(clearService());
+                          history.push(`/services/${service._id}/edit`);
                         }}
                         className="text-blue-400 hover:text-blue-600 underline cursor-pointer"
                       >
@@ -124,9 +124,8 @@ export default function Users({ history }) {
                       </div>
                       <div
                         onClick={() => {
-                          dispatch(clearUser());
-                          dispatch(deleteUser(user.id));
-                          dispatch(readUsers());
+                          dispatch(clearService());
+                          dispatch(deleteService(service._id));
                         }}
                         className="text-red-500 hover:text-red-500 underline  cursor-pointer"
                       >

@@ -9,6 +9,8 @@ import {
 } from "react-icons/ai";
 import { RiDashboardLine, RiLogoutBoxLine } from "react-icons/ri";
 import { FiSettings } from "react-icons/fi";
+import { GrServices } from "react-icons/gr";
+import { Fa500Px } from "react-icons/fa";
 import { mainColor, background } from "../styles/mainColors";
 import { logout } from "../redux/actions/auth";
 
@@ -27,7 +29,7 @@ const Layout = ({ children, parentClassName }) => {
       >
         <AiOutlineMenuUnfold size="1.7rem" className="text-white " />
       </div>
-      <div className="flex md:min-h-screen transition duration-1000 overflow-x-hidden  relative ">
+      <div className="flex h-screen transition duration-1000 overflow-x-hidden  relative ">
         <div
           style={{ backgroundColor: mainColor }}
           className={` bg-green-700 min-h-screen  shadow-md hover:shadow-lg sticky  ${
@@ -65,11 +67,24 @@ const Layout = ({ children, parentClassName }) => {
               <div className="pl-2">Users</div>
             </div>
             <div
+              onClick={() => {
+                history.push("/services");
+              }}
               style={{ color: mainColor, backgroundColor: background }}
               className="flex items-center py-2 bg-white text-green-700 rounded font-semibold cursor-pointer px-2 my-2 shadow-md hover:shadow-lg transform-gpu hover:scale-105 transition"
             >
-              <AiOutlineMenuFold size="1.6rem" color={mainColor} />
-              <div className="pl-2">Images</div>
+              <GrServices size="1.6rem" color={mainColor} />
+              <div className="pl-2">Services</div>
+            </div>
+            <div
+              onClick={() => {
+                history.push("/plans");
+              }}
+              style={{ color: mainColor, backgroundColor: background }}
+              className="flex items-center py-2 bg-white text-green-700 rounded font-semibold cursor-pointer px-2 my-2 shadow-md hover:shadow-lg transform-gpu hover:scale-105 transition"
+            >
+              <Fa500Px size="1.6rem" color={mainColor} />
+              <div className="pl-2">Plans</div>
             </div>
             <div
               style={{ color: mainColor, backgroundColor: background }}
@@ -93,6 +108,13 @@ const Layout = ({ children, parentClassName }) => {
             {/* content end */}
           </div>
         </div>
+        {/* <div className="flex flex-col w-full"> */}
+        {/* <div
+            style={{ color: background, backgroundColor: mainColor }}
+            className="py-6  w-full  px-10"
+          >
+            Header
+          </div> */}
         <div
           // style={{
           //   backgroundColor:
@@ -101,11 +123,12 @@ const Layout = ({ children, parentClassName }) => {
           className={`${
             parentClassName && parentClassName.length > 0
               ? `flex-grow overflow-auto ${parentClassName}`
-              : `flex-grow overflow-auto  items-center flex flex-col justify-center`
+              : `flex-grow overflow-auto  `
           } `}
         >
           {children}
         </div>
+        {/* </div> */}
       </div>
     </>
   );

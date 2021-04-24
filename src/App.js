@@ -12,14 +12,7 @@ const history = createBrowserHistory();
 
 function App() {
   useEffect(() => {
-    store
-      .dispatch(loadUser())
-      .then((res) => {
-        if (res.status === 200) {
-          history.push("/");
-        }
-      })
-      .catch((err) => null);
+    store.dispatch(loadUser());
     console.log(store.getState());
   }, []);
   return (

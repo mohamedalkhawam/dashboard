@@ -26,7 +26,7 @@ export const finishedUsersReload = () => (dispatch) => {
 
 export const readUsers = () =>
   readItemsAsync({
-    url: "http://localhost:8080/api/users/all",
+    url: "https://car-wash-uae.herokuapp.com/api/users/all",
     successType: READ_USERS,
     errorType: USER_ERROR,
     startReload: startUsersReload,
@@ -40,7 +40,7 @@ export const readUsers = () =>
 
 export const readOneUser = (id) =>
   readOneItemAsync({
-    url: `http://localhost:8080/api/users/`,
+    url: `https://car-wash-uae.herokuapp.com/api/users/`,
     successType: READ_ONE_USER,
     errorType: USER_ERROR,
     startReload: startUsersReload,
@@ -55,7 +55,7 @@ export const readOneUser = (id) =>
 
 export const createUser = (formData) =>
   createItemAsync({
-    url: "http://localhost:8080/api/users",
+    url: "https://car-wash-uae.herokuapp.com/api/auth/register",
     successType: CREATE_USER,
     errorType: USER_ERROR,
     startReload: startUsersReload,
@@ -71,7 +71,7 @@ export const createUser = (formData) =>
 
 export const updateUser = (formData) =>
   updateItemAsync({
-    url: "http://localhost:8080/api/users/",
+    url: "https://car-wash-uae.herokuapp.com/api/users/",
     successType: UPDATE_USER,
     errorType: USER_ERROR,
     startReload: startUsersReload,
@@ -88,7 +88,7 @@ export const updateUser = (formData) =>
 
 export const deleteUser = (id) =>
   deleteItemAsync({
-    url: "http://localhost:8080/api/users/",
+    url: "http://localhost:8080/api/users",
     successType: DELETE_USER,
     errorType: USER_ERROR,
     startReload: startUsersReload,

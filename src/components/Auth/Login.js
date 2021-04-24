@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { mainColor, background } from "../../styles/mainColors";
 import { schema, validator } from "../../validation/loginSchema";
 import _objO from "../../utils/_objO";
+import _objI from "../../utils/_objI";
 import { loginUser, loadUser } from "../../redux/actions/auth";
 import { useHistory } from "react-router-dom";
 export default function Login({ toggleEvent, toggle }) {
@@ -14,6 +15,7 @@ export default function Login({ toggleEvent, toggle }) {
   });
   const dispatch = useDispatch();
   const history = useHistory();
+  const [responseMessage, setRespondseMessage] = useState(null);
   const [touched, setTouched] = useState({
     email: false,
     password: false,
@@ -30,6 +32,9 @@ export default function Login({ toggleEvent, toggle }) {
     );
   }, [formData]);
   useEffect(() => {
+    setErrorValidation({});
+  }, []);
+  useEffect(() => {
     setToggleLoggin(toggle);
   }, [toggle]);
   const onChange = (e) => {
@@ -42,31 +47,47 @@ export default function Login({ toggleEvent, toggle }) {
       console.log(formData);
       dispatch(loginUser(formData))
         .then((res) => {
+          console.log({ res });
+          setRespondseMessage(res.message);
+
           if (res.status === 200) {
             dispatch(loadUser()).then((res) => {
               if (res.status === 200) {
                 history.push("/");
               } else {
-                return;
+                return setRespondseMessage(res.status);
               }
             });
+          } else {
+            setRespondseMessage("Email or password are incorrect!!");
           }
         })
-        .catch((err) => console.log({ err }));
+        .catch((err) =>
+          setRespondseMessage("Something went wrong, please try again later!!")
+        );
     }
   };
   return (
     <div
-      className={`signUp absolute  bg-white shadow-md hover:shadow-lg w-11/12 sm:w-96 px-5 rounded   border max-w-screen  hoverflow-hidden  ${
+      className={`signUp absolute  bg-white shadow-md hover:shadow-lg w-11/12 sm:w-96 px-5 rounded py-4  border max-w-screen overflow-hidden transition-all  ${
         toggleLogin ? `` : `inactive-sx`
       } active-sx`}
     >
       <div
         style={{ backgroundColor: mainColor }}
         className={`
-             shadow-lg  mt-4 border rounded p-3 text-white font-semibold text-center text-lg`}
+             shadow-lg ${
+               authReducer.loading ? `animate-pulse` : ``
+             } my-4 border rounded p-5 text-white font-semibold text-center text-lg transform transition-all duration-500 overflow-hidden  z-50`}
       >
         Login
+      </div>
+      <div
+        className={`  ${
+          responseMessage === null ? ` -translate-x-full` : ` translate-x-0`
+        } my-2 text-center text-sm transform transition-all duration-500 text-red-600 z-10`}
+      >
+        {responseMessage}
       </div>
       <div className="my-2">
         <div className="py-1 font-medium text-gray-700">Email:</div>
@@ -83,8 +104,8 @@ export default function Login({ toggleEvent, toggle }) {
           onClick={() => setTouched({ ...touched, email: true })}
           className="w-full py-3 border rounded bg-white px-2 outline-none focus:outline-none focus:border-black shadow-md "
         />
-        {touched.email && errorValidation.email ? (
-          <p className="text-red-500 text-xs  ">{errorValidation.email}</p>
+        {errorValidation && errorValidation.email ? (
+          <p className="text-red-500 text-xs my-1 ">{errorValidation.email}</p>
         ) : (
           ""
         )}
@@ -101,8 +122,10 @@ export default function Login({ toggleEvent, toggle }) {
           onChange={(e) => onChange(e)}
           className="w-full py-3 border rounded bg-white  px-2 outline-none focus:outline-none focus:border-black shadow-md"
         />
-        {touched.password && errorValidation.password ? (
-          <p className="text-red-500 text-xs  ">{errorValidation.password}</p>
+        {errorValidation && errorValidation.password ? (
+          <p className="text-red-500 text-xs  my-1">
+            {errorValidation.password}
+          </p>
         ) : (
           ""
         )}
@@ -117,16 +140,25 @@ export default function Login({ toggleEvent, toggle }) {
       <div className="w-full flex justify-center items-center  px-4 py-6">
         <button
           onClick={submit}
-          style={{ backgroundColor: mainColor, borderColor: mainColor }}
+          style={{
+            backgroundColor: _objI(errorValidation) ? "#666" : mainColor,
+            borderColor: mainColor,
+          }}
           className=""
-          disabled={touched.password && errorValidation.password}
-          className={`  border
-                 px-8 py-2 border-green-700 rounded shadow-md hover:shadow-lg outline-none focus:outline-none  bg-green-600 text-white hover:bg-green-700 relative`}
+          disabled={_objI(errorValidation)}
+          className={`   border
+              w-10/12 ${
+                _objI(errorValidation) ? `cursor-not-allowed` : ``
+              }  px-12 py-3 border-green-700 rounded shadow-md hover:shadow-lg outline-none focus:outline-none  bg-green-600 text-white hover:bg-green-700 relative`}
         >
-          <svg
-            className="animate-spin h-5 w-5 mr-3 absolute border-white left-2"
-            viewBox="0 0 24 24"
-          ></svg>
+          {authReducer.loading ? (
+            <svg
+              className="animate-spin h-5 w-5 mr-3 absolute border-white rounded-full border-r-2 left-3"
+              viewBox="0 0 24 24"
+            ></svg>
+          ) : (
+            ""
+          )}
           LOGIN
         </button>
       </div>

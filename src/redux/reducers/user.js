@@ -22,12 +22,15 @@ export default function (state = initialState, action) {
 
   switch (type) {
     case READ_USERS:
+      console.log({ payload });
+
       return {
         ...state,
         users: payload,
         readable: true,
       };
     case READ_ONE_USER:
+      console.log({ payload });
       return {
         ...state,
         user: payload,
@@ -35,21 +38,23 @@ export default function (state = initialState, action) {
     case CREATE_USER:
       return {
         ...state,
-        users: [payload.user, ...state.users],
+        users: [payload, ...state.users],
       };
     case UPDATE_USER:
+      console.log({ payload });
       return {
         ...state,
         users: [
           ...state.users.map((user) =>
-            user._id === payload.user._id ? payload.user : user
+            user.id === payload.id ? payload : user
           ),
         ],
       };
     case DELETE_USER:
+      console.log({ payload });
       return {
         ...state,
-        users: [...state.users.filter((user) => user._id !== payload.user._id)],
+        users: [...state.users.filter((user) => user.id !== payload)],
       };
     case CLEAR_USER:
       return {
