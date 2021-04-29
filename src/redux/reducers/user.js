@@ -22,39 +22,38 @@ export default function (state = initialState, action) {
 
   switch (type) {
     case READ_USERS:
-      console.log({ payload });
-
+      console.log({ updateUserrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr: payload });
       return {
         ...state,
-        users: payload,
+        users: payload.data,
         readable: true,
       };
     case READ_ONE_USER:
-      console.log({ payload });
       return {
         ...state,
-        user: payload,
+        user: payload.data,
       };
     case CREATE_USER:
       return {
         ...state,
-        users: [payload, ...state.users],
+        users: [payload.date, ...state.users],
       };
     case UPDATE_USER:
-      console.log({ payload });
+      console.log({
+        updateUserrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr: payload.data,
+      });
       return {
         ...state,
         users: [
           ...state.users.map((user) =>
-            user.id === payload.id ? payload : user
+            user.id === payload.data.id ? payload.data : user
           ),
         ],
       };
     case DELETE_USER:
-      console.log({ payload });
       return {
         ...state,
-        users: [...state.users.filter((user) => user.id !== payload)],
+        users: [...state.users.filter((user) => user.id !== payload.data.id)],
       };
     case CLEAR_USER:
       return {

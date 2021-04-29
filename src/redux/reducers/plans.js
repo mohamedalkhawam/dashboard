@@ -24,25 +24,27 @@ export default function (state = initialState, action) {
     case READ_PLANS:
       return {
         ...state,
-        plans: payload,
+        plans: payload.data,
         readable: true,
       };
     case READ_ONE_PLAN:
       return {
         ...state,
-        plan: payload,
+        plan: payload.data,
       };
     case CREATE_PLAN:
       return {
         ...state,
-        plans: [payload, ...state.plans],
+        plans: [payload.data, ...state.plans],
       };
     case UPDATE_PLAN:
       return {
         ...state,
         plans: [
           ...state.plans.map((plan) =>
-            plan._id === payload.plan.data._id ? payload.plan.data : plan
+            plan._id === payload.data.plan.data._id
+              ? payload.data.plan.data
+              : plan
           ),
         ],
       };
@@ -50,7 +52,7 @@ export default function (state = initialState, action) {
       console.log({ payload });
       return {
         ...state,
-        plans: [...state.plans.filter((plan) => plan._id !== payload._id)],
+        plans: [...state.plans.filter((plan) => plan._id !== payload.data._id)],
       };
     case CLEAR_PLAN:
       return {

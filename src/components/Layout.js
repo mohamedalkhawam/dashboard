@@ -10,7 +10,9 @@ import {
 import { RiDashboardLine, RiLogoutBoxLine } from "react-icons/ri";
 import { FiSettings } from "react-icons/fi";
 import { GrServices } from "react-icons/gr";
-import { Fa500Px } from "react-icons/fa";
+import { SiOpenaccess } from "react-icons/si";
+
+import { Fa500Px, FaCriticalRole } from "react-icons/fa";
 import { mainColor, background } from "../styles/mainColors";
 import { logout } from "../redux/actions/auth";
 
@@ -87,11 +89,24 @@ const Layout = ({ children, parentClassName }) => {
               <div className="pl-2">Plans</div>
             </div>
             <div
+              onClick={() => {
+                history.push("/roles");
+              }}
               style={{ color: mainColor, backgroundColor: background }}
               className="flex items-center py-2 bg-white text-green-700 rounded font-semibold cursor-pointer px-2 my-2 shadow-md hover:shadow-lg transform-gpu hover:scale-105 transition"
             >
-              <FiSettings size="1.6rem" color={mainColor} />
-              <div className="pl-2">Settings</div>
+              <FaCriticalRole size="1.6rem" color={mainColor} />
+              <div className="pl-2">Roles</div>
+            </div>
+            <div
+              onClick={() => {
+                history.push("/permissions");
+              }}
+              style={{ color: mainColor, backgroundColor: background }}
+              className="flex items-center py-2 bg-white text-green-700 rounded font-semibold cursor-pointer px-2 my-2 shadow-md hover:shadow-lg transform-gpu hover:scale-105 transition"
+            >
+              <SiOpenaccess size="1.6rem" color={mainColor} />
+              <div className="pl-2">Permissions</div>
             </div>
             <div
               onClick={() => {

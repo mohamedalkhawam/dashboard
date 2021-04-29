@@ -3,26 +3,23 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Redirect, Route, useHistory, useLocation } from "react-router-dom";
 import {
-  updateService,
-  readServices,
-  deleteService,
-  clearService,
-  readOneService,
-  createsService,
-} from "../../redux/actions/services";
+  updateRole,
+  readRoles,
+  deleteRole,
+  clearRole,
+  readOneRole,
+  createRole,
+} from "../../redux/actions/roles";
 
 import _objO from "../../utils/_objO";
 import _objI from "../../utils/_objI";
 export default function UserCrud({ history, match }) {
   const dispatch = useDispatch();
-  const servicesReducer = useSelector((state) => state.servicesReducer);
+  const rolesReducer = useSelector((state) => state.rolesReducer);
   const [errorValidation, setErrorValidation] = useState({});
   const [formData, setFormData] = useState({
     name: "",
     label: "",
-    price: "",
-    note: "",
-    // description: "",
   });
   const onChange = (e) => {
     e.preventDefault();
@@ -31,46 +28,66 @@ export default function UserCrud({ history, match }) {
 
   useEffect(() => {
     if (match.params.id) {
-      dispatch(readOneService(match.params.id))
+      dispatch(readOneRole(match.params.id))
         .then((res) => {
-          setFormData({ ...formData, ...res.data.data });
+          setFormData({ ...formData, ...res.data });
           console.log({ res: res.data });
         })
         .catch((err) => {});
     }
   }, [match.params.id]);
   useEffect(() => {
-    dispatch(readServices());
+    dispatch(readRoles());
   }, []);
+  //   useEffect(() => {
+  //     setErrorValidation({});
+  //   }, []);
+  //   useEffect(() => {
+  //     if (!match.params.id || formData.password.length > 0) {
+  //       validator(
+  //         creteSchema,
+  //         {
+  //           userName: formData.userName,
+  //           email: formData.email,
+  //           password: formData.password,
+  //           passwordConfirmation: formData.passwordConfirmation,
+  //         },
+  //         setErrorValidation
+  //       );
+  //     } else if (match.params.id) {
+  //       validator(
+  //         editSchema,
+  //         {
+  //           // userName: formData.userName,
+  //           email: formData.email,
+  //         },
+  //         setErrorValidation
+  //       );
+  //     }
+  //   }, [formData, match.params.id]);
 
   const onUserSubmit = async (e) => {
     e.preventDefault();
     if (!match.params.id) {
       dispatch(
-        createsService({
+        createRole({
           name: formData.name,
           label: formData.label,
-          price: formData.price,
-          note: formData.note,
-          // description: formData.description,
         })
-      ).then((res) => history.push(`/services`));
+      ).then((res) => history.push(`/roles`));
     } else if (match.params.id) {
       dispatch(
-        updateService({
+        updateRole({
           id: match.params.id,
           name: formData.name,
           label: formData.label,
-          price: formData.price,
-          note: formData.note,
-          // description: formData.description,
         })
-      ).then((res) => history.push(`/services`));
+      ).then((res) => history.push(`/roles`));
     } else {
       console.log("error");
     }
   };
-  if (servicesReducer.loading) {
+  if (rolesReducer.loading) {
     return (
       <Layout>
         <div className="flex justify-center items-center h-screen">
@@ -137,45 +154,6 @@ export default function UserCrud({ history, match }) {
               />
               <small className="text-red-600"></small>
             </div>
-            {/* <div className="my-5">
-              <input
-                name="description"
-                value={formData.description}
-                type="text"
-                placeholder={"Description"}
-                onChange={(e) => {
-                  onChange(e);
-                }}
-                className="w-full font-normal border shadow p-4 outline-none rounded-md focus:outline-none text-gray-600"
-              />
-              <small className="text-red-600"></small>
-            </div> */}
-            <div className="my-5">
-              <input
-                type="text"
-                name="price"
-                value={formData.price}
-                placeholder="Price"
-                onChange={(e) => {
-                  onChange(e);
-                }}
-                className="w-full  font-normal border shadow p-4 outline-none rounded-md  focus:outline-none text-gray-600"
-              />
-              <small className="text-red-600"></small>
-            </div>
-            <div className="my-5">
-              <input
-                type="text"
-                name="note"
-                value={formData.note}
-                placeholder="Note"
-                onChange={(e) => {
-                  onChange(e);
-                }}
-                className="w-full  font-normal border shadow p-4 outline-none rounded-md  focus:outline-none text-gray-600"
-              />
-              <small className="text-red-600"></small>
-            </div>
 
             <div className="w-full flex items-center justify-center">
               <div
@@ -185,11 +163,11 @@ export default function UserCrud({ history, match }) {
                   backgroundColor: _objI(errorValidation) ? "#666" : "#212121",
                   borderColor: "#212121",
                 }}
-                className={` ${servicesReducer.loading ? `animate-pulse` : ``} 
+                className={` ${rolesReducer.loading ? `animate-pulse` : ``} 
                
                   w-full text-white py-3 px-4 text-center font-medium rounded-lg mt-16 cursor-pointer hover:bg-black `}
               >
-                {servicesReducer.loading ? (
+                {rolesReducer.loading ? (
                   <svg
                     className="animate-spin h-5 w-5 mr-3 absolute border-white rounded-full border-r-2 left-3"
                     viewBox="0 0 24 24"

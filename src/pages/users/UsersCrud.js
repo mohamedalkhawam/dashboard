@@ -21,9 +21,9 @@ export default function UserCrud({ history, match }) {
   const [errorValidation, setErrorValidation] = useState({});
   const [formData, setFormData] = useState({
     // userName: "dddd",
-    email: "sdsd@fdf.com",
-    password: "Mohamed0",
-    passwordConfirmation: "Mohamed0",
+    email: "",
+    password: "",
+    passwordConfirmation: "",
     // roles: "",
   });
   const onChange = (e) => {

@@ -10,6 +10,12 @@ const Services = lazy(() => import("../pages/services/Index"));
 const ServicesCrud = lazy(() => import("../pages/services/ServicesCrud"));
 const Plans = lazy(() => import("../pages/plans/Index"));
 const PlansCrud = lazy(() => import("../pages/plans/PlansCrud"));
+const Roles = lazy(() => import("../pages/roles/Index"));
+const RolesCrud = lazy(() => import("../pages/roles/rolesCrud"));
+const permissions = lazy(() => import("../pages/permissions/Index"));
+const permissionsCrud = lazy(() =>
+  import("../pages/permissions/permissionsCrud")
+);
 const Routes = () => {
   return (
     <Suspense
@@ -44,6 +50,26 @@ const Routes = () => {
         <ProtectedRoute exact path="/plans/:id/edit" component={PlansCrud} />
         <ProtectedRoute exact path="/plans/new" component={PlansCrud} />
         {/* end User mangment */}
+
+        {/* start Roles mangment */}
+        <ProtectedRoute exact path="/roles" component={Roles} />
+        <ProtectedRoute exact path="/roles/:id/edit" component={RolesCrud} />
+        <ProtectedRoute exact path="/roles/new" component={RolesCrud} />
+        {/* end Roles mangment */}
+
+        {/* start Permissions mangment */}
+        <ProtectedRoute exact path="/permissions" component={permissions} />
+        <ProtectedRoute
+          exact
+          path="/permissions/:id/edit"
+          component={permissionsCrud}
+        />
+        <ProtectedRoute
+          exact
+          path="/permissions/new"
+          component={permissionsCrud}
+        />
+        {/* end Permissions mangment */}
       </Switch>
     </Suspense>
   );

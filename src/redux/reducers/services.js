@@ -24,36 +24,37 @@ export default function (state = initialState, action) {
     case READ_SERVICES:
       return {
         ...state,
-        services: payload,
+        services: payload.data,
         readable: true,
       };
     case READ_ONE_SERVICE:
       return {
         ...state,
-        service: payload,
+        service: payload.data,
       };
     case CREATE_SERVICE:
       return {
         ...state,
-        services: [payload, ...state.services],
+        services: [payload.data, ...state.services],
       };
     case UPDATE_SERVICE:
       return {
         ...state,
         services: [
           ...state.services.map((service) =>
-            service.id === payload.service.data.id
-              ? payload.service.data
+            service.id === payload.data.service.data.id
+              ? payload.data.service.data
               : service
           ),
         ],
       };
     case DELETE_SERVICE:
-      console.log({ payload });
       return {
         ...state,
         services: [
-          ...state.services.filter((service) => service._id !== payload._id),
+          ...state.services.filter(
+            (service) => service._id !== payload.data._id
+          ),
         ],
       };
     case CLEAR_SERVICE:

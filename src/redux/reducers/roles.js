@@ -24,32 +24,34 @@ export default function (state = initialState, action) {
     case READ_ROLES:
       return {
         ...state,
-        roles: payload,
+        roles: payload.data,
         readable: true,
       };
     case READ_ONE_ROLE:
       return {
         ...state,
-        role: payload,
+        role: payload.data,
       };
     case CREATE_ROLE:
       return {
         ...state,
-        roles: [payload, ...state.roles],
+        roles: [payload.data, ...state.roles],
       };
     case UPDATE_ROLE:
       return {
         ...state,
         roles: [
           ...state.roles.map((role) =>
-            role.id === payload.role.id ? payload.role : role
+            role.id === payload.data.role.id ? payload.data.role : role
           ),
         ],
       };
     case DELETE_ROLE:
       return {
         ...state,
-        roles: [...state.roles.filter((role) => role.id !== payload.role.id)],
+        roles: [
+          ...state.roles.filter((role) => role.id !== payload.data.role.id),
+        ],
       };
     case CLEAR_ROLE:
       return {
