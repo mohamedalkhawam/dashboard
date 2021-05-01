@@ -12,6 +12,7 @@ import { FiSettings } from "react-icons/fi";
 import { GrServices } from "react-icons/gr";
 import { SiOpenaccess } from "react-icons/si";
 import { BiBuildingHouse } from "react-icons/bi";
+import { VscGitPullRequest } from "react-icons/vsc";
 import { GiModernCity } from "react-icons/gi";
 import { Fa500Px, FaCriticalRole } from "react-icons/fa";
 import { mainColor, background } from "../styles/mainColors";
@@ -87,6 +88,16 @@ const Layout = ({ children, parentClassName }) => {
             >
               <Fa500Px size="1.6rem" color={mainColor} />
               <div className="pl-2">Plans</div>
+            </div>
+            <div
+              onClick={() => {
+                history.push("/orders");
+              }}
+              style={{ color: mainColor, backgroundColor: background }}
+              className="flex items-center py-2 bg-white text-green-700 rounded font-semibold cursor-pointer px-2 my-2 shadow-md hover:shadow-lg transform-gpu hover:scale-105 transition"
+            >
+              <VscGitPullRequest size="1.6rem" color={mainColor} />
+              <div className="pl-2">Orders</div>
             </div>
             <div
               onClick={() => {

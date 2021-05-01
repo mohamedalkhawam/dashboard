@@ -7,6 +7,7 @@ import rolesReducer from "./roles";
 import permissionsReducer from "./permissions";
 import citiesReducer from "./city";
 import buildingsReducer from "./buildings";
+import ordersReducer from "./orders";
 export default combineReducers({
   authReducer,
   userReducer,
@@ -16,4 +17,5 @@ export default combineReducers({
   permissionsReducer,
   citiesReducer,
   buildingsReducer,
+  ordersReducer,
 });
