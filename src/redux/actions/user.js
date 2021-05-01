@@ -78,7 +78,7 @@ export const updateUser = (formData) =>
     finishedReload: finishedUsersReload,
     title: "User",
     formData,
-    id: formData.id,
+    id: formData._id,
     headers: {
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*",

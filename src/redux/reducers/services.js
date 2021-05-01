@@ -42,7 +42,7 @@ export default function (state = initialState, action) {
         ...state,
         services: [
           ...state.services.map((service) =>
-            service.id === payload.data.service.data.id
+            service._id === payload.data.service.data._id
               ? payload.data.service.data
               : service
           ),

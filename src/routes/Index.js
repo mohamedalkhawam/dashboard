@@ -16,6 +16,10 @@ const permissions = lazy(() => import("../pages/permissions/Index"));
 const permissionsCrud = lazy(() =>
   import("../pages/permissions/permissionsCrud")
 );
+const City = lazy(() => import("../pages/city/Index"));
+const CityCrud = lazy(() => import("../pages/city/CityCrud"));
+const Buildings = lazy(() => import("../pages/buildings/Index"));
+const BuildingsCrud = lazy(() => import("../pages/buildings/BuildingsCrud"));
 const Routes = () => {
   return (
     <Suspense
@@ -70,6 +74,22 @@ const Routes = () => {
           component={permissionsCrud}
         />
         {/* end Permissions mangment */}
+
+        {/* start Roles mangment */}
+        <ProtectedRoute exact path="/city" component={City} />
+        <ProtectedRoute exact path="/city/:id/edit" component={CityCrud} />
+        <ProtectedRoute exact path="/city/new" component={CityCrud} />
+        {/* end Roles mangment */}
+
+        {/* start Roles mangment */}
+        <ProtectedRoute exact path="/buildings" component={Buildings} />
+        <ProtectedRoute
+          exact
+          path="/buildings/:id/edit"
+          component={BuildingsCrud}
+        />
+        <ProtectedRoute exact path="/buildings/new" component={BuildingsCrud} />
+        {/* end Roles mangment */}
       </Switch>
     </Suspense>
   );

@@ -32,7 +32,7 @@ export default function UserCrud({ history, match }) {
     if (match.params.id) {
       dispatch(readOnePlan(match.params.id))
         .then((res) => {
-          setFormData({ ...formData, ...res.data });
+          setFormData({ ...formData, ...res.data.data });
           console.log({ res: res.data });
         })
         .catch((err) => {});
@@ -82,7 +82,7 @@ export default function UserCrud({ history, match }) {
     } else if (match.params.id) {
       dispatch(
         updatePlan({
-          id: match.params.id,
+          _id: match.params.id,
           name: formData.name,
           label: formData.label,
           price: formData.price,

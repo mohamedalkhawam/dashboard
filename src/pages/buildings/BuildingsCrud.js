@@ -3,35 +3,32 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Redirect, Route, useHistory, useLocation } from "react-router-dom";
 import {
-  updateService,
-  readServices,
-  deleteService,
-  clearService,
-  readOneService,
-  createsService,
-} from "../../redux/actions/services";
+  updateBuilding,
+  readBuildings,
+  deleteBuilding,
+  clearBuilding,
+  readOneBuilding,
+  createsBuilding,
+} from "../../redux/actions/building";
 
 import _objO from "../../utils/_objO";
 import _objI from "../../utils/_objI";
 export default function UserCrud({ history, match }) {
   const dispatch = useDispatch();
-  const servicesReducer = useSelector((state) => state.servicesReducer);
+  const buildingsReducer = useSelector((state) => state.buildingsReducer);
   const [errorValidation, setErrorValidation] = useState({});
   const [formData, setFormData] = useState({
     name: "",
     label: "",
-    price: "",
-    note: "",
     description: "",
   });
   const onChange = (e) => {
     e.preventDefault();
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-  console.log(formData.description);
   useEffect(() => {
     if (match.params.id) {
-      dispatch(readOneService(match.params.id))
+      dispatch(readOneBuilding(match.params.id))
         .then((res) => {
           setFormData({ ...formData, ...res.data.data });
           console.log({ res: res.data.data });
@@ -40,37 +37,33 @@ export default function UserCrud({ history, match }) {
     }
   }, [match.params.id]);
   useEffect(() => {
-    dispatch(readServices());
+    dispatch(readBuildings());
   }, []);
 
   const onUserSubmit = async (e) => {
     e.preventDefault();
     if (!match.params.id) {
       dispatch(
-        createsService({
+        createsBuilding({
           name: formData.name,
           label: formData.label,
-          price: formData.price,
-          note: formData.note,
           description: formData.description,
         })
-      ).then((res) => history.push(`/services`));
+      ).then((res) => history.push(`/buildings`));
     } else if (match.params.id) {
       dispatch(
-        updateService({
+        updateBuilding({
           _id: match.params.id,
           name: formData.name,
           label: formData.label,
-          price: formData.price,
-          note: formData.note,
           description: formData.description,
         })
-      ).then((res) => history.push(`/services`));
+      ).then((res) => history.push(`/buildings`));
     } else {
       console.log("error");
     }
   };
-  if (servicesReducer.loading) {
+  if (buildingsReducer.loading) {
     return (
       <Layout>
         <div className="flex justify-center items-center h-screen">
@@ -93,18 +86,18 @@ export default function UserCrud({ history, match }) {
         >
           <div className="flex justify-between items-center  select-none  w-full flex-wrap transition-all">
             <div className=" text-4xl  text-gray-500 text-left font-normal my-10 flex-grow transition-all">
-              Services
+              Buildings
               <div className="flex items-center w-full text-left text-sm mt-4 text-gray-500 transition-all">
                 <div className=" font-medium cursor-pointer hover:text-gray-600 transform transition-all hover:scale-110 duration-100  ">
                   Dashboard
                 </div>
                 <div className="px-3 font-medium">{`->`}</div>
                 <div className=" font-medium cursor-pointer hover:text-gray-600 transform transition-all hover:scale-110 duration-100">
-                  Services
+                  Buildings
                 </div>
                 <div className="px-3 font-medium">{`->`}</div>
                 <div className=" font-medium cursor-pointer hover:text-gray-600 transform transition-all hover:scale-110 duration-100">
-                  New service
+                  New building
                 </div>
               </div>
             </div>
@@ -150,32 +143,6 @@ export default function UserCrud({ history, match }) {
               />
               <small className="text-red-600"></small>
             </div>
-            <div className="my-5">
-              <input
-                type="text"
-                name="price"
-                value={formData.price}
-                placeholder="Price"
-                onChange={(e) => {
-                  onChange(e);
-                }}
-                className="w-full  font-normal border shadow p-4 outline-none rounded-md  focus:outline-none text-gray-600"
-              />
-              <small className="text-red-600"></small>
-            </div>
-            <div className="my-5">
-              <input
-                type="text"
-                name="note"
-                value={formData.note}
-                placeholder="Note"
-                onChange={(e) => {
-                  onChange(e);
-                }}
-                className="w-full  font-normal border shadow p-4 outline-none rounded-md  focus:outline-none text-gray-600"
-              />
-              <small className="text-red-600"></small>
-            </div>
 
             <div className="w-full flex items-center justify-center">
               <div
@@ -185,11 +152,11 @@ export default function UserCrud({ history, match }) {
                   backgroundColor: _objI(errorValidation) ? "#666" : "#212121",
                   borderColor: "#212121",
                 }}
-                className={` ${servicesReducer.loading ? `animate-pulse` : ``} 
+                className={` ${buildingsReducer.loading ? `animate-pulse` : ``} 
                
                   w-full text-white py-3 px-4 text-center font-medium rounded-lg mt-16 cursor-pointer hover:bg-black `}
               >
-                {servicesReducer.loading ? (
+                {buildingsReducer.loading ? (
                   <svg
                     className="animate-spin h-5 w-5 mr-3 absolute border-white rounded-full border-r-2 left-3"
                     viewBox="0 0 24 24"

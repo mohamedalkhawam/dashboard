@@ -78,7 +78,7 @@ export const updatePlan = (formData) =>
     finishedReload: finishedPlansReload,
     title: "Plans",
     formData,
-    id: formData.id,
+    id: formData._id,
     headers: {
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*",

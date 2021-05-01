@@ -11,7 +11,8 @@ import { RiDashboardLine, RiLogoutBoxLine } from "react-icons/ri";
 import { FiSettings } from "react-icons/fi";
 import { GrServices } from "react-icons/gr";
 import { SiOpenaccess } from "react-icons/si";
-
+import { BiBuildingHouse } from "react-icons/bi";
+import { GiModernCity } from "react-icons/gi";
 import { Fa500Px, FaCriticalRole } from "react-icons/fa";
 import { mainColor, background } from "../styles/mainColors";
 import { logout } from "../redux/actions/auth";
@@ -57,7 +58,6 @@ const Layout = ({ children, parentClassName }) => {
 
           <div className="pb-8 pt-2  ">
             {/* content start */}
-
             <div
               onClick={() => {
                 history.push("/users");
@@ -110,6 +110,26 @@ const Layout = ({ children, parentClassName }) => {
             </div>
             <div
               onClick={() => {
+                history.push("/city");
+              }}
+              style={{ color: mainColor, backgroundColor: background }}
+              className="flex items-center py-2 bg-white text-green-700 rounded font-semibold cursor-pointer px-2 my-2 shadow-md hover:shadow-lg transform-gpu hover:scale-105 transition"
+            >
+              <GiModernCity size="1.6rem" color={mainColor} />
+              <div className="pl-2">Cities</div>
+            </div>
+            <div
+              onClick={() => {
+                history.push("/buildings");
+              }}
+              style={{ color: mainColor, backgroundColor: background }}
+              className="flex items-center py-2 bg-white text-green-700 rounded font-semibold cursor-pointer px-2 my-2 shadow-md hover:shadow-lg transform-gpu hover:scale-105 transition"
+            >
+              <BiBuildingHouse size="1.6rem" color={mainColor} />
+              <div className="pl-2">Buildings</div>
+            </div>
+            <div
+              onClick={() => {
                 dispatch(logout());
                 history.push("/auth");
               }}
@@ -119,7 +139,6 @@ const Layout = ({ children, parentClassName }) => {
               <RiLogoutBoxLine size="1.6rem" color={mainColor} />
               <div className="pl-2">Logout</div>
             </div>
-
             {/* content end */}
           </div>
         </div>

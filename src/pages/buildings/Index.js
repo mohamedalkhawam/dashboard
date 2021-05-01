@@ -5,20 +5,19 @@ import { FaEdit } from "react-icons/fa";
 import { AiOutlineDelete } from "react-icons/ai";
 import Layout from "../../components/Layout";
 import {
-  readServices,
-  deleteService,
-  clearService,
-} from "../../redux/actions/services";
+  readBuildings,
+  deleteBuilding,
+  clearBuilding,
+} from "../../redux/actions/building";
 // import { readServices } from "../../redux/actions/services";
 export default function Services({ history }) {
   const dispatch = useDispatch();
-  const servicesReducer = useSelector((state) => state.servicesReducer);
-  console.log({ servicesReducer });
+  const buildingsReducer = useSelector((state) => state.buildingsReducer);
+  console.log({ buildingsReducer });
   useEffect(() => {
-    dispatch(readServices());
+    dispatch(readBuildings());
   }, []);
-  console.log({ servicesReducer });
-  if (servicesReducer.loading) {
+  if (buildingsReducer.loading) {
     return (
       <Layout>
         <div className="flex justify-center items-center h-screen  ">
@@ -41,24 +40,24 @@ export default function Services({ history }) {
         >
           <div className="flex justify-between items-center  select-none  w-full flex-wrap transition-all">
             <div className=" text-4xl  text-gray-500 text-left font-normal my-10 flex-grow transition-all">
-              Services
+              Buildings
               <div className="flex items-center w-full text-left text-sm mt-4 text-gray-500 transition-all">
                 <div className=" font-medium cursor-pointer hover:text-gray-600 transform transition-all hover:scale-110 duration-100  ">
                   Dashboard
                 </div>
                 <div className="px-3 font-medium">{`->`}</div>
                 <div className=" font-medium cursor-pointer hover:text-gray-600 transform transition-all hover:scale-110 duration-100">
-                  Services
+                  Buildings
                 </div>
               </div>
             </div>
             <div
-              onClick={() => history.push("/services/new")}
+              onClick={() => history.push("/buildings/new")}
               style={{ backgroundColor: "#212121" }}
               className=" cursor-pointer transition-all   rounded-md shadow-md hover:shadow-lg my-10 py-3 px-4"
             >
               <div className="text-center text-white   text-sm   transition-all">
-                Add new Service
+                Add new building
               </div>
             </div>
           </div>
@@ -72,47 +71,34 @@ export default function Services({ history }) {
                 <th className="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
                   Label
                 </th>
-                <th className="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
-                  Price
-                </th>
+
                 <th className="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
                   Description
                 </th>
-                <th className="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
-                  Note
-                </th>
+
                 <th className="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
                   Actions
                 </th>
               </tr>
             </thead>
             <tbody>
-              {servicesReducer.services.map((service) => (
+              {buildingsReducer.buildings.map((building) => (
                 <tr className="bg-white lg:hover:bg-gray-100 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0">
                   <td className="w-full lg:w-auto p-3 text-gray-800  border border-b text-center block lg:table-cell relative lg:static">
                     <span className="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">
                       Name
                     </span>
-                    {service.name}
+                    {building.name}
                   </td>
                   <td className="w-full lg:w-auto p-3 text-gray-800  border border-b text-center block lg:table-cell relative lg:static">
                     <span className="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">
                       Role
                     </span>
                     <span className="rounded text-gray-500 py-1 px-3 text-xs font-bold">
-                      {service.label}
+                      {building.label}
                     </span>
                   </td>
-                  <td className="w-full lg:w-auto p-3 text-gray-800  border border-b text-center block lg:table-cell relative lg:static">
-                    <span className="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">
-                      Price
-                    </span>
-                    <span
-                      className={`rounded py-1 px-3 text-xs font-semibold text-gray-500`}
-                    >
-                      {service.price}
-                    </span>
-                  </td>
+
                   <td className="w-full lg:w-auto p-3 text-gray-800  border border-b text-center block lg:table-cell relative lg:static">
                     <span className="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">
                       Description
@@ -120,19 +106,10 @@ export default function Services({ history }) {
                     <span
                       className={`rounded py-1 px-3 text-xs font-semibold text-gray-500`}
                     >
-                      {service.description}
+                      {building.description}
                     </span>
                   </td>
-                  <td className="w-full lg:w-auto p-3 text-gray-800  border border-b text-center block lg:table-cell relative lg:static">
-                    <span className="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">
-                      Note
-                    </span>
-                    <span
-                      className={`rounded py-1 px-3 text-xs font-semibold text-gray-500`}
-                    >
-                      {service.note}
-                    </span>
-                  </td>
+
                   <td className="w-full lg:w-auto p-3 text-gray-800 border border-b text-center block lg:table-cell relative lg:static">
                     <span className="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">
                       Actions
@@ -140,8 +117,8 @@ export default function Services({ history }) {
                     <div className="flex items-center justify-evenly">
                       <div
                         onClick={() => {
-                          dispatch(clearService());
-                          history.push(`/services/${service._id}/edit`);
+                          dispatch(clearBuilding());
+                          history.push(`/buildings/${building._id}/edit`);
                         }}
                         className="text-blue-400 hover:text-blue-600 underline cursor-pointer"
                       >
@@ -149,8 +126,8 @@ export default function Services({ history }) {
                       </div>
                       <div
                         onClick={() => {
-                          dispatch(clearService());
-                          dispatch(deleteService(service._id));
+                          dispatch(clearBuilding());
+                          dispatch(deleteBuilding(building._id));
                         }}
                         className="text-red-500 hover:text-red-500 underline  cursor-pointer"
                       >

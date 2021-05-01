@@ -35,7 +35,7 @@ export default function UserCrud({ history, match }) {
     if (match.params.id) {
       dispatch(readOneUser(match.params.id))
         .then((res) => {
-          setFormData({ ...formData, ...res.data });
+          setFormData({ ...formData, ...res.data.data });
           console.log({ res: res.data });
         })
         .catch((err) => {});
@@ -86,8 +86,8 @@ export default function UserCrud({ history, match }) {
       formData.password.length > 0
         ? dispatch(
             updateUser({
-              id: formData.id,
-              userName: formData.userName,
+              _id: formData._id,
+              // userName: formData.userName,
               password: formData.password,
               passwordConfirmation: formData.passwordConfirmation,
               email: formData.email,
@@ -95,8 +95,8 @@ export default function UserCrud({ history, match }) {
           ).then((res) => history.push(`/users`))
         : dispatch(
             updateUser({
-              id: formData.id,
-              userName: formData.userName,
+              _id: formData._id,
+              // userName: formData.userName,
               email: formData.email,
             })
           ).then((res) => history.push(`/users`));

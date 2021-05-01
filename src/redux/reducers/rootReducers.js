@@ -5,11 +5,15 @@ import servicesReducer from "./services";
 import plansReducer from "./plans";
 import rolesReducer from "./roles";
 import permissionsReducer from "./permissions";
+import citiesReducer from "./city";
+import buildingsReducer from "./buildings";
 export default combineReducers({
-  authReducer: authReducer,
-  userReducer: userReducer,
-  servicesReducer: servicesReducer,
-  plansReducer: plansReducer,
-  rolesReducer: rolesReducer,
-  permissionsReducer: permissionsReducer,
+  authReducer,
+  userReducer,
+  servicesReducer,
+  plansReducer,
+  rolesReducer,
+  permissionsReducer,
+  citiesReducer,
+  buildingsReducer,
 });

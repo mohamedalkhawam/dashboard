@@ -22,7 +22,6 @@ export default function (state = initialState, action) {
 
   switch (type) {
     case READ_USERS:
-      console.log({ updateUserrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr: payload });
       return {
         ...state,
         users: payload.data,
