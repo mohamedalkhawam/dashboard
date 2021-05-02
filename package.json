@@ -22,8 +22,7 @@
     "web-vitals": "^1.1.1"
   },
   "scripts": {
-    "start": "npm run build && node server/server.js",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install npm && run build",
+    "start": "node server/server.js",
     "dev": "craco start",
     "build": "craco build",
     "test": "craco test",
