@@ -1,7 +1,11 @@
 const path = require('path');
 const express = require('express');
+const cors = require('cors');
+
 const app = express();
-const port = process.env.PORT || 4000;
+app.use(cors()); // <---- use cors middleware
+
+const port = process.env.PORT || 3000;
 const publicPath = path.join(__dirname, '..', 'build');
 app.use(express.static(publicPath));
 
