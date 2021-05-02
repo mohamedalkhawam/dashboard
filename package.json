@@ -23,7 +23,8 @@
   },
   "scripts": {
     "start": "npm run build && node server/server.js",
-    "develop": "craco start",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install npm && run build",
+    "dev": "craco start",
     "build": "craco build",
     "test": "craco test",
     "eject": "react-scripts eject"
@@ -51,5 +52,8 @@
     "autoprefixer": "^9.8.6",
     "postcss": "^7.0.35",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.4"
+  },
+  "engines": {
+    "node": "14.x"
   }
 }

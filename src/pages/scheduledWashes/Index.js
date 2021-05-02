@@ -5,22 +5,24 @@ import { FaEdit } from 'react-icons/fa';
 import { AiOutlineDelete } from 'react-icons/ai';
 import Layout from '../../components/Layout';
 import {
-  readOrders,
-  deleteOrder,
-  clearOrder,
-} from '../../redux/actions/orders';
+  readScheduledWashes,
+  deleteScheduledWash,
+  clearScheduledWash,
+} from '../../redux/actions/scheduledWashes';
 import { readServices } from '../../redux/actions/services';
 // import { readServices } from "../../redux/actions/services";
 export default function Services({ history }) {
   const dispatch = useDispatch();
-  const ordersReducer = useSelector(state => state.ordersReducer);
+  const scheduledWashesReducer = useSelector(
+    state => state.scheduledWashesReducer
+  );
   const servicesReducer = useSelector(state => state.servicesReducer);
-  console.log({ ordersReducer });
+  console.log({ scheduledWashesReducer });
   useEffect(() => {
-    dispatch(readOrders());
+    dispatch(readScheduledWashes());
     dispatch(readServices());
   }, []);
-  if (ordersReducer.loading || servicesReducer.loading) {
+  if (scheduledWashesReducer.loading || servicesReducer.loading) {
     return (
       <Layout>
         <div className='flex items-center justify-center h-screen '>
@@ -42,24 +44,24 @@ export default function Services({ history }) {
           className='flex flex-col items-center w-full h-screen p-10 pb-20 overflow-y-auto transition-all '>
           <div className='flex flex-wrap items-center justify-between w-full transition-all select-none'>
             <div className='flex-grow my-10 text-4xl font-normal text-left text-gray-500 transition-all '>
-              Orders
+              ScheduledWashes
               <div className='flex items-center w-full mt-4 text-sm text-left text-gray-500 transition-all'>
-                <div className='font-medium transition-all duration-100 transform cursor-pointer  hover:text-gray-600 hover:scale-110'>
+                <div className='font-medium transition-all duration-100 transform cursor-pointer hover:text-gray-600 hover:scale-110'>
                   Dashboard
                 </div>
                 <div className='px-3 font-medium'>{`->`}</div>
-                <div className='font-medium transition-all duration-100 transform cursor-pointer  hover:text-gray-600 hover:scale-110'>
-                  Orders
+                <div className='font-medium transition-all duration-100 transform cursor-pointer hover:text-gray-600 hover:scale-110'>
+                  ScheduledWashes
                 </div>
               </div>
             </div>
             {/* <div
-              onClick={() => history.push("/orders/new")}
+              onClick={() => history.push("/scheduledWashes/new")}
               style={{ backgroundColor: "#212121" }}
-              className="px-4 py-3 my-10 transition-all rounded-md shadow-md cursor-pointer  hover:shadow-lg"
+              className="px-4 py-3 my-10 transition-all rounded-md shadow-md cursor-pointer hover:shadow-lg"
             >
               <div className="text-sm text-center text-white transition-all">
-                Add new order
+                Add new scheduledWash
               </div>
             </div> */}
           </div>
@@ -86,13 +88,13 @@ export default function Services({ history }) {
               </tr>
             </thead>
             <tbody>
-              {ordersReducer.orders.map(order => (
+              {scheduledWashesReducer.scheduledWashes.map(scheduledWash => (
                 <tr className='flex flex-row flex-wrap mb-10 bg-white lg:hover:bg-gray-100 lg:table-row lg:flex-row lg:flex-no-wrap lg:mb-0'>
                   <td className='relative block w-full p-3 text-center text-gray-800 border border-b lg:w-auto lg:table-cell lg:static'>
                     <span className='absolute top-0 left-0 px-2 py-1 text-xs font-bold uppercase bg-blue-200 lg:hidden'>
                       Name
                     </span>
-                    {order.name}
+                    {scheduledWash.name}
                   </td>
                   <td className='relative block w-full p-3 text-center text-gray-800 border border-b lg:w-auto lg:table-cell lg:static'>
                     <span className='absolute top-0 left-0 px-2 py-1 text-xs font-bold uppercase bg-blue-200 lg:hidden'>
@@ -100,11 +102,11 @@ export default function Services({ history }) {
                     </span>
                     <span
                       className={`rounded ${
-                        order.type === 'plan'
+                        scheduledWash.type === 'plan'
                           ? `text-red-400`
                           : `text-purple-400`
                       } py-1 px-3 text-xs font-bold`}>
-                      {order.type}
+                      {scheduledWash.type}
                     </span>
                   </td>
                   <td className='relative block w-full p-3 text-center text-gray-800 border border-b lg:w-auto lg:table-cell lg:static'>
@@ -113,7 +115,7 @@ export default function Services({ history }) {
                     </span>
                     <span
                       className={`rounded py-1 px-3 text-xs font-semibold text-gray-500`}>
-                      {order.price}
+                      {scheduledWash.price}
                     </span>
                   </td>
                   <td className='relative block w-full p-3 text-center text-gray-800 border border-b lg:w-auto lg:table-cell lg:static'>
@@ -122,15 +124,15 @@ export default function Services({ history }) {
                     </span>
                     <span
                       className={`rounded py-1 px-3 text-xs font-semibold text-gray-500`}>
-                      {order.services
+                      {scheduledWash.services
                         .filter(service => service.count > 0)
                         .map(
-                          order =>
+                          scheduledWash =>
                             servicesReducer.services.find(
-                              service => service._id === order.service
+                              service => service._id === scheduledWash.service
                             ) &&
                             servicesReducer.services.find(
-                              service => service._id === order.service
+                              service => service._id === scheduledWash.service
                             ).label && (
                               <div className='flex items-center justify-between '>
                                 <div className='flex items-center justify-between mt-1 font-bold text-gray-600 text-md'>
@@ -140,7 +142,8 @@ export default function Services({ history }) {
                                   <span className='pr-2 font-semibold text-gray-400'>
                                     {
                                       servicesReducer.services.find(
-                                        service => service._id === order.service
+                                        service =>
+                                          service._id === scheduledWash.service
                                       ).label
                                     }
                                   </span>
@@ -150,7 +153,7 @@ export default function Services({ history }) {
                                   <span className='pr-2 font-semibold text-gray-400'>
                                     count:
                                   </span>
-                                  {order.count}
+                                  {scheduledWash.count}
                                 </div>
                               </div>
                             )
@@ -165,8 +168,8 @@ export default function Services({ history }) {
                     <div className="flex items-center justify-evenly">
                       <div
                         onClick={() => {
-                          dispatch(clearOrder());
-                          history.push(`/orders/${order._id}/edit`);
+                          dispatch(clearScheduledWash());
+                          history.push(`/scheduledWashes/${scheduledWash._id}/edit`);
                         }}
                         className="text-blue-400 underline cursor-pointer hover:text-blue-600"
                       >
@@ -174,8 +177,8 @@ export default function Services({ history }) {
                       </div>
                       <div
                         onClick={() => {
-                          dispatch(clearOrder());
-                          dispatch(deleteOrder(order._id));
+                          dispatch(clearScheduledWash());
+                          dispatch(deleteScheduledWash(scheduledWash._id));
                         }}
                         className="text-red-500 underline cursor-pointer hover:text-red-500"
                       >
