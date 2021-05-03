@@ -2,20 +2,20 @@ import Layout from "../../components/Layout";
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Redirect, Route, useHistory, useLocation } from "react-router-dom";
-import {
-  updateService,
-  readServices,
-  deleteService,
-  clearService,
-  readOneService,
-  createsService,
-} from "../../redux/actions/services";
+// import {
+//   updateOrder,
+//   readOrders,
+//   deleteOrder,
+//   clearOrder,
+//   readOneOrder,
+//   createsOrder,
+// } from "../../redux/actions/orders";
 
 import _objO from "../../utils/_objO";
 import _objI from "../../utils/_objI";
 export default function UserCrud({ history, match }) {
   const dispatch = useDispatch();
-  const servicesReducer = useSelector((state) => state.servicesReducer);
+  const ordersReducer = useSelector((state) => state.ordersReducer);
   const [errorValidation, setErrorValidation] = useState({});
   const [formData, setFormData] = useState({
     name: "",
@@ -24,52 +24,52 @@ export default function UserCrud({ history, match }) {
     note: "",
     description: "",
   });
-  const onChange = (e) => {
-    e.preventDefault();
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-  console.log(formData.description);
-  useEffect(() => {
-    if (match.params.id) {
-      dispatch(readOneService(match.params.id))
-        .then((res) => {
-          setFormData({ ...formData, ...res.data.data });
-          console.log({ res: res.data.data });
-        })
-        .catch((err) => {});
-    }
-  }, [match.params.id]);
-  useEffect(() => {
-    dispatch(readServices());
-  }, []);
+  // const onChange = (e) => {
+  //   e.preventDefault();
+  //   setFormData({ ...formData, [e.target.name]: e.target.value });
+  // };
+  // console.log(formData.description);
+  // useEffect(() => {
+  //   if (match.params.id) {
+  //     dispatch(readOneOrder(match.params.id))
+  //       .then((res) => {
+  //         setFormData({ ...formData, ...res.data.data });
+  //         console.log({ res: res.data.data });
+  //       })
+  //       .catch((err) => {});
+  //   }
+  // }, [match.params.id]);
+  // useEffect(() => {
+  //   dispatch(readOrders());
+  // }, []);
 
-  const onUserSubmit = async (e) => {
-    e.preventDefault();
-    if (!match.params.id) {
-      dispatch(
-        createsService({
-          name: formData.name,
-          label: formData.label,
-          price: formData.price,
-          note: formData.note,
-          description: formData.description,
-        })
-      ).then((res) => history.push(`/services`));
-    } else if (match.params.id) {
-      dispatch(
-        updateService({
-          _id: match.params.id,
-          name: formData.name,
-          label: formData.label,
-          price: formData.price,
-          note: formData.note,
-          description: formData.description,
-        })
-      ).then((res) => history.push(`/services`));
-    } else {
-      console.log("error");
-    }
-  };
+  // const onUserSubmit = async (e) => {
+  //   e.preventDefault();
+  //   if (!match.params.id) {
+  //     dispatch(
+  //       createsService({
+  //         name: formData.name,
+  //         label: formData.label,
+  //         price: formData.price,
+  //         note: formData.note,
+  //         description: formData.description,
+  //       })
+  //     ).then((res) => history.push(`/orders`));
+  //   } else if (match.params.id) {
+  //     dispatch(
+  //       updateService({
+  //         _id: match.params.id,
+  //         name: formData.name,
+  //         label: formData.label,
+  //         price: formData.price,
+  //         note: formData.note,
+  //         description: formData.description,
+  //       })
+  //     ).then((res) => history.push(`/services`));
+  //   } else {
+  //     console.log("error");
+  //   }
+  // };
   if (servicesReducer.loading) {
     return (
       <Layout>
@@ -91,6 +91,8 @@ export default function UserCrud({ history, match }) {
           style={{ backgroundColor: "#F8F8F8" }}
           className="p-10 h-full w-full transition-all overflow-y-auto"
         >
+          {" "}
+          {/*
           <div className="flex justify-between items-center  select-none  w-full flex-wrap transition-all">
             <div className=" text-4xl  text-gray-500 text-left font-normal my-10 flex-grow transition-all">
               Services
@@ -109,7 +111,6 @@ export default function UserCrud({ history, match }) {
               </div>
             </div>
           </div>
-          {/*  */}
           <div className="bg-white shadow-md hover:shadow-lg rounded border px-14 py-16 ">
             <div className="my-5">
               <input
@@ -179,7 +180,6 @@ export default function UserCrud({ history, match }) {
 
             <div className="w-full flex items-center justify-center">
               <div
-                // disabled={_objI(errorValidation)}
                 onClick={(e) => onUserSubmit(e)}
                 style={{
                   backgroundColor: _objI(errorValidation) ? "#666" : "#212121",
@@ -200,7 +200,7 @@ export default function UserCrud({ history, match }) {
                 Save
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </Layout>
     );

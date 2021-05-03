@@ -88,7 +88,7 @@ export const updateUser = (formData) =>
 
 export const deleteUser = (id) =>
   deleteItemAsync({
-    url: "http://localhost:8080/api/users",
+    url: "https://car-wash-uae.herokuapp.com/api/users",
     successType: DELETE_USER,
     errorType: USER_ERROR,
     startReload: startUsersReload,
