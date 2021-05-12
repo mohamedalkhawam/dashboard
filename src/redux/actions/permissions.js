@@ -8,100 +8,100 @@ import {
   CLEAR_PERMISION,
   START_PERMISIONS_RELOAD,
   FINISHED_PERMISIONS_RELOAD,
-} from "../types/permissions";
+} from '../types/permissions';
 
-import { readItemsAsync } from "./equCurd/readItems";
-import { readOneItemAsync } from "./equCurd/readOneItem";
-import { createItemAsync } from "./equCurd/createItem";
-import { updateItemAsync } from "./equCurd/updateItem";
-import { deleteItemAsync } from "./equCurd/deleteItem";
+import { readItemsAsync } from './equCurd/readItems';
+import { readOneItemAsync } from './equCurd/readOneItem';
+import { createItemAsync } from './equCurd/createItem';
+import { updateItemAsync } from './equCurd/updateItem';
+import { deleteItemAsync } from './equCurd/deleteItem';
 
-export const startPermissionsReload = () => (dispatch) => {
+export const startPermissionsReload = () => dispatch => {
   dispatch({ type: START_PERMISIONS_RELOAD });
 };
 
-export const finishedPermissionsReload = () => (dispatch) => {
+export const finishedPermissionsReload = () => dispatch => {
   dispatch({ type: FINISHED_PERMISIONS_RELOAD });
 };
 
 export const readPermissions = () =>
   readItemsAsync({
-    url: "https://car-wash-uae.herokuapp.com/api/permissions/all",
+    url: 'https://car-wash-uae.herokuapp.com/api/permissions/all',
     successType: READ_PERMISIONS,
     errorType: PERMISION_ERROR,
     startReload: startPermissionsReload,
     finishedReload: finishedPermissionsReload,
     headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-      "x-access-token": localStorage.getItem("token"),
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'x-access-token': localStorage.getItem('token'),
     },
   });
 
-export const readOnePermission = (id) =>
+export const readOnePermission = id =>
   readOneItemAsync({
-    url: "https://car-wash-uae.herokuapp.com/api/permissions/",
-    successType: READ_ONE_Permission,
+    url: 'https://car-wash-uae.herokuapp.com/api/permissions/',
+    successType: READ_ONE_PERMISION,
     errorType: PERMISION_ERROR,
     startReload: startPermissionsReload,
     finishedReload: finishedPermissionsReload,
     id,
     headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-      "x-access-token": localStorage.getItem("token"),
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'x-access-token': localStorage.getItem('token'),
     },
   });
 
-export const createPermission = (formData) =>
+export const createPermission = formData =>
   createItemAsync({
-    url: "https://car-wash-uae.herokuapp.com/api/permissions/",
-    successType: CREATE_Permission,
+    url: 'https://car-wash-uae.herokuapp.com/api/permissions/',
+    successType: CREATE_PERMISION,
     errorType: PERMISION_ERROR,
     startReload: startPermissionsReload,
     finishedReload: finishedPermissionsReload,
     formData,
-    title: "Permissions",
+    title: 'Permissions',
     headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-      "x-access-token": localStorage.getItem("token"),
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'x-access-token': localStorage.getItem('token'),
     },
   });
 
-export const updatePermission = (formData) =>
+export const updatePermission = formData =>
   updateItemAsync({
-    url: "https://car-wash-uae.herokuapp.com/api/permissions/",
-    successType: UPDATE_Permission,
+    url: 'https://car-wash-uae.herokuapp.com/api/permissions/',
+    successType: UPDATE_PERMISION,
     errorType: PERMISION_ERROR,
     startReload: startPermissionsReload,
     finishedReload: finishedPermissionsReload,
     formData,
     id: formData.id,
-    title: "Permissions",
+    title: 'Permissions',
     headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-      "x-access-token": localStorage.getItem("token"),
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'x-access-token': localStorage.getItem('token'),
     },
   });
 
-export const deletePermission = (id) =>
+export const deletePermission = id =>
   deleteItemAsync({
-    url: "https://car-wash-uae.herokuapp.com/api/permissions/",
-    successType: DELETE_Permission,
+    url: 'https://car-wash-uae.herokuapp.com/api/permissions/',
+    successType: DELETE_PERMISION,
     errorType: PERMISION_ERROR,
     startReload: startPermissionsReload,
     finishedReload: finishedPermissionsReload,
     id,
-    title: "Permissions",
+    title: 'Permissions',
     headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-      "x-access-token": localStorage.getItem("token"),
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'x-access-token': localStorage.getItem('token'),
     },
   });
 
-export const clearPermission = () => (dispatch) => {
+export const clearPermission = () => dispatch => {
   dispatch({ type: CLEAR_PERMISION });
 };

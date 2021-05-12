@@ -9,6 +9,7 @@ import citiesReducer from './city';
 import buildingsReducer from './buildings';
 import ordersReducer from './orders';
 import scheduledWashesReducer from './scheduledWashes';
+import carsReducer from './cars';
 export default combineReducers({
   authReducer,
   userReducer,
@@ -20,4 +21,5 @@ export default combineReducers({
   buildingsReducer,
   ordersReducer,
   scheduledWashesReducer,
+  carsReducer,
 });
