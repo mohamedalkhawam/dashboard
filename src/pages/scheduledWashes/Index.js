@@ -122,6 +122,12 @@ export default function Services({ history }) {
                     <span className="absolute top-0 left-0 px-2 py-1 text-xs font-bold uppercase bg-blue-200 lg:hidden">
                       Status
                     </span>
+                    <span className="absolute top-0 right-0 px-2 py-1 text-xs font-bold text-white uppercase bg-gray-600 lg:hidden flex items-center text-center justify-center rounded shadow-md hover:shadow-lg cursor-pointer transform transition hover:scale-105">
+                      <FaEdit size="1.4rem" />
+                    </span>
+                    <span className="absolute top-0 right-0 px-2 py-1 text-xs font-bold text-white uppercase bg-gray-600  lg:block flex items-center text-center justify-center rounded shadow-md hover:shadow-lg cursor-pointer transform transition hover:scale-105">
+                      <FaEdit size="1.4rem" />
+                    </span>
                     <span
                       className={`rounded ${
                         scheduledWash.type == "pending"
