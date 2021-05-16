@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { createsFile, readOneFile } from "../../redux/actions/file";
 import { Redirect, Route, useHistory, useLocation } from "react-router-dom";
 import { FaEdit } from "react-icons/fa";
 import { AiOutlineDelete } from "react-icons/ai";
 import Layout from "../../components/Layout";
+import ViewImage from "../../components/viewImage";
 import { readIntro, deleteIntro, clearIntro } from "../../redux/actions/intro";
 // import { readServices } from "../../redux/actions/services";
 export default function Services({ history }) {
@@ -122,7 +124,9 @@ export default function Services({ history }) {
                     <span
                       className={`rounded py-1 px-3 text-xs font-semibold text-gray-500`}
                     >
-                      {/* {intro.img} */}sssss
+                      <div className="w-full flex justify-center items-center">
+                        <ViewImage id={intro.image} width="w-20" />
+                      </div>
                     </span>
                   </td>
                   <td className="w-full lg:w-auto p-3 text-gray-800 border border-b text-center block lg:table-cell relative lg:static">

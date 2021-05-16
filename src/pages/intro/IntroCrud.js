@@ -10,13 +10,15 @@ import {
   readOneIntro,
   createsIntro,
 } from "../../redux/actions/intro";
-
+import axios from "axios";
+import { createsFile, readOneFile } from "../../redux/actions/file";
 import _objO from "../../utils/_objO";
 import _objI from "../../utils/_objI";
 export default function UserCrud({ history, match }) {
   const dispatch = useDispatch();
   const introReducer = useSelector((state) => state.introReducer);
   const [errorValidation, setErrorValidation] = useState({});
+  const [fileData, setFileData] = useState({});
   const [formData, setFormData] = useState({
     name: "",
     label: "",
@@ -27,6 +29,25 @@ export default function UserCrud({ history, match }) {
     e.preventDefault();
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
+  const onFileChange = (e) => {
+    const fileData = e.target.files[0];
+    const data = new FormData();
+    data.append("file", fileData);
+    dispatch(createsFile(data))
+      .then((result) => {
+        if (result.status === 201) {
+          setFileData(result.data);
+          setFormData({ ...formData, image: result.data.data._id });
+        } else {
+          alert("faild");
+        }
+      })
+      .catch((err) => {
+        alert(err);
+      });
+  };
+  console.log({ fileData });
   useEffect(() => {
     if (match.params.id) {
       dispatch(readOneIntro(match.params.id))
@@ -40,6 +61,15 @@ export default function UserCrud({ history, match }) {
   useEffect(() => {
     dispatch(readIntro());
   }, []);
+  useEffect(() => {
+    if (formData.image !== "") {
+      dispatch(readOneFile(formData.image)).then((res) => {
+        if (res.status === 200) {
+          setFileData(res.data);
+        }
+      });
+    }
+  }, [formData.image]);
 
   const onIntroSubmit = async (e) => {
     e.preventDefault();
@@ -49,6 +79,7 @@ export default function UserCrud({ history, match }) {
           name: formData.name,
           label: formData.label,
           description: formData.description,
+          image: formData.image,
         })
       ).then((res) => history.push(`/intro`));
     } else if (match.params.id) {
@@ -57,6 +88,7 @@ export default function UserCrud({ history, match }) {
           _id: match.params.id,
           name: formData.name,
           label: formData.label,
+          image: formData.image,
           description: formData.description,
         })
       ).then((res) => history.push(`/intro`));
@@ -104,7 +136,7 @@ export default function UserCrud({ history, match }) {
             </div>
           </div>
           {/*  */}
-          <div className="bg-white shadow-md hover:shadow-lg rounded border px-14 py-16 ">
+          <div className="bg-white shadow-md hover:shadow-lg rounded border p-8 sm:px-14 sm:py-16 ">
             <div className="my-5">
               <input
                 placeholder={"Name"}
@@ -147,21 +179,33 @@ export default function UserCrud({ history, match }) {
 
             <div className="my-5">
               <input
-                type="text"
-                name="note"
-                value={formData.image}
-                placeholder="Note"
+                name="file"
+                id="file"
+                type="file"
+                placeholder="file"
                 onChange={(e) => {
-                  onChange(e);
+                  onFileChange(e);
                 }}
                 className="hidden"
               />
-              <div className="w-full  font-normal cursor-pointer text-xl border-2  border-dashed shadow p-4 outline-none rounded-md  flex justify-center items-center h-36 focus:outline-none text-gray-400">
+              <div
+                onClick={() => document.getElementById("file").click()}
+                className="w-full  font-normal cursor-pointer text-xl border-2  border-dashed shadow p-4 outline-none rounded-md  flex justify-center items-center h-36 focus:outline-none text-gray-400"
+              >
                 Click to upload an Image
               </div>
               <small className="text-red-600"></small>
             </div>
-
+            <div className="w-full flex justify-center items-center">
+              <img
+                src={
+                  _objI(fileData)
+                    ? `https://car-wash-uae.herokuapp.com/${fileData.data.path}`
+                    : ""
+                }
+                className="w-60 sm:w-72"
+              />
+            </div>
             <div className="w-full flex items-center justify-center">
               <div
                 // disabled={_objI(errorValidation)}
