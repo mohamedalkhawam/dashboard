@@ -8,37 +8,37 @@ import {
   CLEAR_USER,
   START_USERS_RELOAD,
   FINISHED_USERS_RELOAD,
-} from "../types/user";
+} from '../types/user';
 
-import { readItemsAsync } from "./equCurd/readItems";
-import { readOneItemAsync } from "./equCurd/readOneItem";
-import { createItemAsync } from "./equCurd/createItem";
-import { updateItemAsync } from "./equCurd/updateItem";
-import { deleteItemAsync } from "./equCurd/deleteItem";
+import { readItemsAsync } from './equCurd/readItems';
+import { readOneItemAsync } from './equCurd/readOneItem';
+import { createItemAsync } from './equCurd/createItem';
+import { updateItemAsync } from './equCurd/updateItem';
+import { deleteItemAsync } from './equCurd/deleteItem';
 
-export const startUsersReload = () => (dispatch) => {
+export const startUsersReload = () => dispatch => {
   dispatch({ type: START_USERS_RELOAD });
 };
 
-export const finishedUsersReload = () => (dispatch) => {
+export const finishedUsersReload = () => dispatch => {
   dispatch({ type: FINISHED_USERS_RELOAD });
 };
 
-export const readUsers = () =>
+export const readUsers = query =>
   readItemsAsync({
-    url: "https://car-wash-uae.herokuapp.com/api/users/all",
+    url: `https://car-wash-uae.herokuapp.com/api/users/all`,
     successType: READ_USERS,
     errorType: USER_ERROR,
     startReload: startUsersReload,
     finishedReload: finishedUsersReload,
     headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-      "x-access-token": localStorage.getItem("token"),
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'x-access-token': localStorage.getItem('token'),
     },
   });
 
-export const readOneUser = (id) =>
+export const readOneUser = id =>
   readOneItemAsync({
     url: `https://car-wash-uae.herokuapp.com/api/users/`,
     successType: READ_ONE_USER,
@@ -47,61 +47,61 @@ export const readOneUser = (id) =>
     finishedReload: finishedUsersReload,
     id,
     headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-      "x-access-token": localStorage.getItem("token"),
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'x-access-token': localStorage.getItem('token'),
     },
   });
 
-export const createUser = (formData) =>
+export const createUser = formData =>
   createItemAsync({
-    url: "https://car-wash-uae.herokuapp.com/api/auth/register",
+    url: 'https://car-wash-uae.herokuapp.com/api/auth/register',
     successType: CREATE_USER,
     errorType: USER_ERROR,
     startReload: startUsersReload,
     finishedReload: finishedUsersReload,
-    title: "User",
+    title: 'User',
     formData,
     headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-      "x-access-token": localStorage.getItem("token"),
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'x-access-token': localStorage.getItem('token'),
     },
   });
 
-export const updateUser = (formData) =>
+export const updateUser = formData =>
   updateItemAsync({
-    url: "https://car-wash-uae.herokuapp.com/api/users/",
+    url: 'https://car-wash-uae.herokuapp.com/api/users/',
     successType: UPDATE_USER,
     errorType: USER_ERROR,
     startReload: startUsersReload,
     finishedReload: finishedUsersReload,
-    title: "User",
+    title: 'User',
     formData,
     id: formData._id,
     headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-      "x-access-token": localStorage.getItem("token"),
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'x-access-token': localStorage.getItem('token'),
     },
   });
 
-export const deleteUser = (id) =>
+export const deleteUser = id =>
   deleteItemAsync({
-    url: "https://car-wash-uae.herokuapp.com/api/users",
+    url: 'https://car-wash-uae.herokuapp.com/api/users',
     successType: DELETE_USER,
     errorType: USER_ERROR,
     startReload: startUsersReload,
     finishedReload: finishedUsersReload,
-    title: "User",
+    title: 'User',
     id: id,
     headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-      "x-access-token": localStorage.getItem("token"),
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'x-access-token': localStorage.getItem('token'),
     },
   });
 
-export const clearUser = () => (dispatch) => {
+export const clearUser = () => dispatch => {
   dispatch({ type: CLEAR_USER });
 };

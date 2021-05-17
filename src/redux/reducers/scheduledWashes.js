@@ -42,8 +42,8 @@ export default function scheduledWashesReducer(state = initialState, action) {
         ...state,
         scheduledWashes: [
           ...state.scheduledWashes.map(scheduledWash =>
-            scheduledWash._id === payload.data.scheduledWash.data._id
-              ? payload.data.scheduledWash.data
+            scheduledWash._id === payload.data._id
+              ? payload.data
               : scheduledWash
           ),
         ],

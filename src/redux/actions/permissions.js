@@ -1,13 +1,13 @@
 import {
-  READ_PERMISIONS,
-  READ_ONE_PERMISION,
-  CREATE_PERMISION,
-  UPDATE_PERMISION,
-  DELETE_PERMISION,
-  PERMISION_ERROR,
-  CLEAR_PERMISION,
-  START_PERMISIONS_RELOAD,
-  FINISHED_PERMISIONS_RELOAD,
+  READ_PERMISSIONS,
+  READ_ONE_PERMISSION,
+  CREATE_PERMISSION,
+  UPDATE_PERMISSION,
+  DELETE_PERMISSION,
+  PERMISSION_ERROR,
+  CLEAR_PERMISSION,
+  START_PERMISSIONS_RELOAD,
+  FINISHED_PERMISSIONS_RELOAD,
 } from '../types/permissions';
 
 import { readItemsAsync } from './equCurd/readItems';
@@ -17,18 +17,18 @@ import { updateItemAsync } from './equCurd/updateItem';
 import { deleteItemAsync } from './equCurd/deleteItem';
 
 export const startPermissionsReload = () => dispatch => {
-  dispatch({ type: START_PERMISIONS_RELOAD });
+  dispatch({ type: START_PERMISSIONS_RELOAD });
 };
 
 export const finishedPermissionsReload = () => dispatch => {
-  dispatch({ type: FINISHED_PERMISIONS_RELOAD });
+  dispatch({ type: FINISHED_PERMISSIONS_RELOAD });
 };
 
 export const readPermissions = () =>
   readItemsAsync({
     url: 'https://car-wash-uae.herokuapp.com/api/permissions/all',
-    successType: READ_PERMISIONS,
-    errorType: PERMISION_ERROR,
+    successType: READ_PERMISSIONS,
+    errorType: PERMISSION_ERROR,
     startReload: startPermissionsReload,
     finishedReload: finishedPermissionsReload,
     headers: {
@@ -41,8 +41,8 @@ export const readPermissions = () =>
 export const readOnePermission = id =>
   readOneItemAsync({
     url: 'https://car-wash-uae.herokuapp.com/api/permissions/',
-    successType: READ_ONE_PERMISION,
-    errorType: PERMISION_ERROR,
+    successType: READ_ONE_PERMISSION,
+    errorType: PERMISSION_ERROR,
     startReload: startPermissionsReload,
     finishedReload: finishedPermissionsReload,
     id,
@@ -56,8 +56,8 @@ export const readOnePermission = id =>
 export const createPermission = formData =>
   createItemAsync({
     url: 'https://car-wash-uae.herokuapp.com/api/permissions/',
-    successType: CREATE_PERMISION,
-    errorType: PERMISION_ERROR,
+    successType: CREATE_PERMISSION,
+    errorType: PERMISSION_ERROR,
     startReload: startPermissionsReload,
     finishedReload: finishedPermissionsReload,
     formData,
@@ -72,8 +72,8 @@ export const createPermission = formData =>
 export const updatePermission = formData =>
   updateItemAsync({
     url: 'https://car-wash-uae.herokuapp.com/api/permissions/',
-    successType: UPDATE_PERMISION,
-    errorType: PERMISION_ERROR,
+    successType: UPDATE_PERMISSION,
+    errorType: PERMISSION_ERROR,
     startReload: startPermissionsReload,
     finishedReload: finishedPermissionsReload,
     formData,
@@ -89,8 +89,8 @@ export const updatePermission = formData =>
 export const deletePermission = id =>
   deleteItemAsync({
     url: 'https://car-wash-uae.herokuapp.com/api/permissions/',
-    successType: DELETE_PERMISION,
-    errorType: PERMISION_ERROR,
+    successType: DELETE_PERMISSION,
+    errorType: PERMISSION_ERROR,
     startReload: startPermissionsReload,
     finishedReload: finishedPermissionsReload,
     id,
@@ -103,5 +103,5 @@ export const deletePermission = id =>
   });
 
 export const clearPermission = () => dispatch => {
-  dispatch({ type: CLEAR_PERMISION });
+  dispatch({ type: CLEAR_PERMISSION });
 };

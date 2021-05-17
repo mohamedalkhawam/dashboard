@@ -10,10 +10,12 @@ import {
   readScheduledWashes,
   deleteScheduledWash,
   clearScheduledWash,
+  updateScheduledWash,
 } from '../../redux/actions/scheduledWashes';
 import { readCities } from '../../redux/actions/city';
 import { readBuildings } from '../../redux/actions/building';
 import { readServices } from '../../redux/actions/services';
+import { FiCheckCircle, FiCircle, FiDisc, FiSlash } from 'react-icons/fi';
 // import { readServices } from "../../redux/actions/services";
 export default function Services({ history }) {
   const dispatch = useDispatch();
@@ -24,16 +26,29 @@ export default function Services({ history }) {
   const citiesReducer = useSelector(state => state.citiesReducer);
   const buildingsReducer = useSelector(state => state.buildingsReducer);
   console.log({ scheduledWashesReducer });
+  const [data, setData] = useState([]);
   useEffect(() => {
-    dispatch(readScheduledWashes());
+    dispatch(readScheduledWashes())
+      .then(result => {
+        setData(result.data.data);
+      })
+      .catch(err => {});
     dispatch(readServices());
     dispatch(readCities());
     dispatch(readBuildings());
   }, []);
+
+  const [query, setQuery] = useState({
+    service: 'all',
+    city: 'all',
+    building: 'all',
+  });
+  console.log({ data });
   if (
     scheduledWashesReducer.loading ||
     servicesReducer.loading ||
     citiesReducer.loading ||
+    data.length === 0 ||
     buildingsReducer.loading
   ) {
     return (
@@ -69,7 +84,89 @@ export default function Services({ history }) {
               </div>
             </div>
           </div>
+          <div className='flex items-center justify-between w-full my-3'>
+            <select
+              className='p-2 py-1 border rounded shadow'
+              value={query.service}
+              onChange={e => {
+                setQuery({
+                  service: e.target.value,
+                  city: 'all',
+                  building: 'all',
+                });
+                setData(
+                  e.target.value === 'all'
+                    ? scheduledWashesReducer.scheduledWashes
+                    : scheduledWashesReducer.scheduledWashes.filter(d =>
+                        d.services.find(
+                          service => service.service === e.target.value
+                        )
+                      )
+                );
+              }}>
+              <option value='all'>Service</option>
+              {servicesReducer.services.map(service => (
+                <option value={service._id}>{service.name}</option>
+              ))}
+            </select>
+            <select
+              className='p-2 py-1 border rounded shadow'
+              value={query.city}
+              onChange={e => {
+                setQuery({
+                  service: 'all',
+                  city: e.target.value,
+                  building: 'all',
+                });
 
+                setData(
+                  e.target.value === 'all'
+                    ? scheduledWashesReducer.scheduledWashes
+                    : scheduledWashesReducer.scheduledWashes.filter(
+                        d => d.car && d.car.city === e.target.value
+                      )
+                );
+              }}>
+              <option value='all'>City</option>
+
+              {citiesReducer.cities.map(city => (
+                <option value={city._id}>{city.name}</option>
+              ))}
+            </select>
+
+            <select
+              className='p-2 py-1 border rounded shadow'
+              value={query.building}
+              onChange={e => {
+                setQuery({
+                  service: 'all',
+                  city: 'all',
+                  building: e.target.value,
+                });
+
+                setData(
+                  e.target.value === 'all'
+                    ? scheduledWashesReducer.scheduledWashes
+                    : scheduledWashesReducer.scheduledWashes.filter(
+                        d => d.car && d.car.building === e.target.value
+                      )
+                );
+              }}>
+              <option value='all'>Building</option>
+
+              {query.city !== 'all'
+                ? buildingsReducer.buildings.map(building => (
+                    <option value={building._id}>{building.name}</option>
+                  ))
+                : buildingsReducer.buildings.map(building => (
+                    <option value={building._id}>{building.name}</option>
+                  ))}
+            </select>
+            {/* <select className='p-2 py-1 border rounded shadow'>
+              <option value='sort'>Sort</option>
+              <option value='filter'>Filter</option>
+            </select> */}
+          </div>
           <table className='w-full border-collapse shadow-lg table-auto hover:shadow-lg '>
             <thead>
               <tr>
@@ -98,10 +195,13 @@ export default function Services({ history }) {
                 <th className='hidden p-3 font-bold text-gray-600 uppercase bg-gray-200 border border-gray-300 lg:table-cell'>
                   Services
                 </th>
+                <th className='hidden p-3 font-bold text-gray-600 uppercase bg-gray-200 border border-gray-300 lg:table-cell'>
+                  Action
+                </th>
               </tr>
             </thead>
             <tbody>
-              {scheduledWashesReducer.scheduledWashes.map(scheduledWash => (
+              {data.map(scheduledWash => (
                 <tr className='flex flex-row flex-wrap mb-10 bg-white lg:hover:bg-gray-100 lg:table-row lg:flex-row lg:flex-no-wrap lg:mb-0'>
                   <td className='relative block w-full p-3 text-center text-gray-800 border border-b lg:w-auto lg:table-cell lg:static'>
                     <span className='absolute top-0 left-0 px-2 py-1 text-xs font-bold uppercase bg-blue-200 lg:hidden'>
@@ -109,9 +209,13 @@ export default function Services({ history }) {
                     </span>
                     <span
                       className={`rounded ${
-                        scheduledWash.type == 'pending'
-                          ? `text-red-400`
-                          : `text-purple-400`
+                        scheduledWash.status === 'completed'
+                          ? `text-blue-600`
+                          : scheduledWash.status === 'progress'
+                          ? `text-green-600`
+                          : scheduledWash.status === 'reject'
+                          ? `text-red-600`
+                          : 'text-gray-600'
                       } py-1 px-3 text-xs font-bold`}>
                       {scheduledWash.status}
                     </span>
@@ -158,10 +262,10 @@ export default function Services({ history }) {
                         ) &&
                         citiesReducer.cities.find(
                           city => city._id === scheduledWash.car.city
-                        ).label
+                        ).name
                         ? citiesReducer.cities.find(
                             city => city._id === scheduledWash.car.city
-                          ).label
+                          ).name
                         : ''
                       : ''}
                   </td>
@@ -210,24 +314,63 @@ export default function Services({ history }) {
                             ) &&
                             servicesReducer.services.find(
                               service => service._id === scheduledWash.service
-                            ).label && (
+                            ).name && (
                               <div className='flex flex-wrap items-center justify-center '>
                                 <div className='flex items-center justify-between mt-1 font-bold text-gray-600 text-md'>
-                                  <span className='pr-2 font-bold text-gray-600'>
-                                    Service name:
-                                  </span>
                                   <span className='pr-2 font-semibold text-gray-400'>
                                     {
                                       servicesReducer.services.find(
                                         service =>
                                           service._id === scheduledWash.service
-                                      ).label
+                                      ).name
                                     }
                                   </span>
                                 </div>
                               </div>
                             )
                         )}
+                    </span>
+                  </td>
+
+                  <td className='relative block w-full p-3 text-center text-gray-800 border border-b lg:w-auto lg:table-cell lg:static'>
+                    <span className='absolute top-0 left-0 px-2 py-1 text-xs font-bold uppercase bg-blue-200 lg:hidden'>
+                      Action
+                    </span>
+                    <span
+                      className={`rounded py-1 px-3 text-xs font-semibold text-gray-500 flex justify-between items-center`}>
+                      <div
+                        onClick={() =>
+                          dispatch(
+                            updateScheduledWash({
+                              _id: scheduledWash._id,
+                              status: 'reject',
+                            })
+                          )
+                        }>
+                        <FiSlash className='mx-1 text-xl text-red-500 cursor-pointer' />
+                      </div>
+                      <div
+                        onClick={() =>
+                          dispatch(
+                            updateScheduledWash({
+                              _id: scheduledWash._id,
+                              status: 'progress',
+                            })
+                          )
+                        }>
+                        <FiDisc className='mx-1 text-xl text-green-500 cursor-pointer' />
+                      </div>
+                      <div
+                        onClick={() =>
+                          dispatch(
+                            updateScheduledWash({
+                              _id: scheduledWash._id,
+                              status: 'completed',
+                            })
+                          )
+                        }>
+                        <FiCheckCircle className='mx-1 text-xl text-blue-500 cursor-pointer' />
+                      </div>
                     </span>
                   </td>
                 </tr>

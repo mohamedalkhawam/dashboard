@@ -80,6 +80,7 @@ const Routes = () => {
           path='/permissions/new'
           component={permissionsCrud}
         />
+
         {/* end Permissions mangment */}
 
         {/* start City mangment */}

@@ -25,6 +25,7 @@ export default function UserCrud({ history, match }) {
     label: '',
     price: '',
     note: '',
+    period: '',
     services: [],
   });
 
@@ -87,6 +88,8 @@ export default function UserCrud({ history, match }) {
           label: formData.label,
           price: formData.price,
           note: formData.note,
+          services: formData.services,
+          period: formData.period,
         })
       ).then(res => history.push(`/plans`));
     } else if (match.params.id) {
@@ -97,6 +100,8 @@ export default function UserCrud({ history, match }) {
           label: formData.label,
           price: formData.price,
           note: formData.note,
+          services: formData.services,
+          period: formData.period,
         })
       ).then(res => history.push(`/plans`));
     } else {
@@ -195,7 +200,19 @@ export default function UserCrud({ history, match }) {
               />
               <small className='text-red-600'></small>
             </div>
-
+            <div className='my-5'>
+              <input
+                type='number'
+                name='period'
+                value={formData.period}
+                placeholder='Period'
+                onChange={e => {
+                  onChange(e);
+                }}
+                className='w-full p-4 font-normal text-gray-600 border rounded-md shadow outline-none focus:outline-none'
+              />
+              <small className='text-red-600'></small>
+            </div>
             <div className='flex my-5'>
               <select
                 name='service'
@@ -233,7 +250,7 @@ export default function UserCrud({ history, match }) {
             </div>
             <div className='flex flex-wrap w-full'>
               {formData.services.map(service => (
-                <div className='relative px-3 py-3 pr-6 mr-2 text-xs text-white bg-blue-500 rounded cursor-pointer hover:bg-blue-600'>
+                <div className='relative px-3 py-3 pr-6 my-2 mr-2 text-xs text-white bg-blue-500 rounded cursor-pointer hover:bg-blue-600'>
                   <span className='mx-2'>
                     name:
                     {servicesReducer.services.find(
