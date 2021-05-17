@@ -26,9 +26,9 @@ export default function Services({ history }) {
         <div className="flex items-center justify-center h-screen ">
           <div className="relative w-24 h-24 ease-linear bg-black border-8 border-t-0 border-black rounded-full loader animate-spin">
             <div className="relative w-16 h-16 ease-linear transform bg-white border-8 border-t-0 border-white rounded-full loader Infinity animate-pulse">
-              {/* <div className="relative w-10 h-10 ease-linear bg-black border-8 border-t-0 border-black rounded-full loader Infinity animate-spin">
+              <div className="relative w-10 h-10 ease-linear bg-black border-8 border-t-0 border-black rounded-full loader Infinity animate-spin">
                 <div className="relative w-6 h-6 ease-linear -rotate-90 bg-black border-8 border-t-0 border-black rounded-full loader Infinity"></div>
-              </div> */}
+              </div>
             </div>
           </div>
         </div>
@@ -84,9 +84,9 @@ export default function Services({ history }) {
                   Extra Services
                 </th>
 
-                {/* <th className="hidden p-3 font-bold text-gray-600 uppercase bg-gray-200 border border-gray-300 lg:table-cell">
+                <th className="hidden p-3 font-bold text-gray-600 uppercase bg-gray-200 border border-gray-300 lg:table-cell">
                   Actions
-                </th> */}
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -172,7 +172,7 @@ export default function Services({ history }) {
                     </span>
                   </td>
 
-                  {/* <td className="relative block w-full p-3 text-center text-gray-800 border border-b lg:w-auto lg:table-cell lg:static">
+                  <td className="relative block w-full p-3 text-center text-gray-800 border border-b lg:w-auto lg:table-cell lg:static">
                     <span className="absolute top-0 left-0 px-2 py-1 text-xs font-bold uppercase bg-blue-200 lg:hidden">
                       Actions
                     </span>
@@ -196,7 +196,7 @@ export default function Services({ history }) {
                         <AiOutlineDelete size="1.8rem" />
                       </div>
                     </div>
-                  </td> */}
+                  </td>
                 </tr>
               ))}
             </tbody>

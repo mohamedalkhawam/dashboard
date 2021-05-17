@@ -32,6 +32,7 @@ export default function UserCrud({ history, match }) {
 
   const onFileChange = (e) => {
     const fileData = e.target.files[0];
+    console.log(fileData);
     const data = new FormData();
     data.append("file", fileData);
     dispatch(createsFile(data))
@@ -199,7 +200,7 @@ export default function UserCrud({ history, match }) {
             <div className="w-full flex justify-center items-center">
               <img
                 src={
-                  _objI(fileData)
+                  fileData.data
                     ? `https://car-wash-uae.herokuapp.com/${fileData.data.path}`
                     : ""
                 }
