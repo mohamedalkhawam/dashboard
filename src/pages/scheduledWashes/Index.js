@@ -171,6 +171,9 @@ export default function Services({ history }) {
             <thead>
               <tr>
                 <th className='hidden p-3 font-bold text-gray-600 uppercase bg-gray-200 border border-gray-300 lg:table-cell'>
+                  #
+                </th>
+                <th className='hidden p-3 font-bold text-gray-600 uppercase bg-gray-200 border border-gray-300 lg:table-cell'>
                   Status
                 </th>
 
@@ -257,6 +260,24 @@ export default function Services({ history }) {
                       City
                     </span>
                     {scheduledWash.car !== null
+                      ? scheduledWash.car.parkingNumber
+                      : ''}
+                  </td>
+                  <td className='relative block w-full p-3 text-center text-gray-800 border border-b lg:w-auto lg:table-cell lg:static '>
+                    <span className='absolute top-0 left-0 px-2 py-1 text-xs font-bold uppercase bg-blue-200 lg:hidden'>
+                      plate
+                    </span>
+                    <div>
+                      {scheduledWash.car !== null
+                        ? scheduledWash.car.plate
+                        : ''}
+                    </div>
+                  </td>
+                  <td className='relative block w-full p-3 text-center text-gray-800 border border-b lg:w-auto lg:table-cell lg:static '>
+                    <span className='absolute top-0 left-0 px-2 py-1 text-xs font-bold uppercase bg-blue-200 lg:hidden'>
+                      City
+                    </span>
+                    {scheduledWash.car !== null
                       ? citiesReducer.cities.find(
                           city => city._id === scheduledWash.car.city
                         ) &&
@@ -283,6 +304,10 @@ export default function Services({ history }) {
                             building._id === scheduledWash.car.building
                         ).label
                         ? buildingsReducer.buildings.find(
+                            building =>
+                              building._id === scheduledWash.car.building
+                          ) &&
+                          buildingsReducer.buildings.find(
                             building =>
                               building._id === scheduledWash.car.building
                           ).label

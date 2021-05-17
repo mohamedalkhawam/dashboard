@@ -78,7 +78,7 @@ export default function UserCrud({ history, match }) {
   //       );
   //     }
   //   }, [formData, match.params.id]);
-  console.log({ plansReducer });
+  console.log({ formData });
   const onUserSubmit = async e => {
     e.preventDefault();
     if (!match.params.id) {
@@ -130,18 +130,18 @@ export default function UserCrud({ history, match }) {
           className='w-full h-full p-10 overflow-y-auto transition-all'>
           <div className='flex flex-wrap items-center justify-between w-full transition-all select-none'>
             <div className='flex-grow my-10 text-4xl font-normal text-left text-gray-500 transition-all '>
-              Services
+              Plans
               <div className='flex items-center w-full mt-4 text-sm text-left text-gray-500 transition-all'>
                 <div className='font-medium transition-all duration-100 transform cursor-pointer hover:text-gray-600 hover:scale-110'>
                   Dashboard
                 </div>
                 <div className='px-3 font-medium'>{`->`}</div>
                 <div className='font-medium transition-all duration-100 transform cursor-pointer hover:text-gray-600 hover:scale-110'>
-                  Services
+                  Plans
                 </div>
                 <div className='px-3 font-medium'>{`->`}</div>
                 <div className='font-medium transition-all duration-100 transform cursor-pointer hover:text-gray-600 hover:scale-110'>
-                  New service
+                  New Plan
                 </div>
               </div>
             </div>
@@ -190,9 +190,9 @@ export default function UserCrud({ history, match }) {
             <div className='my-5'>
               <input
                 type='text'
-                name='note'
-                value={formData.note}
-                placeholder='Note'
+                name='period'
+                value={formData.period}
+                placeholder='Period'
                 onChange={e => {
                   onChange(e);
                 }}
@@ -227,16 +227,44 @@ export default function UserCrud({ history, match }) {
                 ))}
               </select>
               <input
-                type='number'
-                name='count'
-                value={serviceData.count}
-                placeholder='Count'
+                type='text'
+                name='note'
+                value={formData.note}
+                placeholder='Note'
                 onChange={e => {
-                  setServiceData({ ...serviceData, count: e.target.value });
+                  onChange(e);
                 }}
-                className='w-full p-4 mx-2 font-normal text-gray-600 border rounded-md shadow outline-none focus:outline-none'
+                className='w-full p-4 font-normal text-gray-600 border rounded-md shadow outline-none  focus:outline-none'
               />
+              <small className='text-red-600'></small>
+            </div>
 
+            <div className='flex flex-wrap justify-between my-5'>
+              <div className='flex flex-grow my-1 '>
+                <select
+                  name='service'
+                  value={serviceData.service}
+                  placeholder='Service'
+                  onChange={e => {
+                    setServiceData({ ...serviceData, service: e.target.value });
+                  }}
+                  className='w-full p-4 mr-1 font-normal text-gray-600 border rounded-md shadow outline-none sm:w-6/12 focus:outline-none'>
+                  <option value=''>Select Service</option>
+                  {servicesReducer.services.map(service => (
+                    <option value={service._id}>{service.name}</option>
+                  ))}
+                </select>
+                <input
+                  type='number'
+                  name='count'
+                  value={serviceData.count}
+                  placeholder='Count'
+                  onChange={e => {
+                    setServiceData({ ...serviceData, count: e.target.value });
+                  }}
+                  className='w-full p-4 ml-1 font-normal text-center text-gray-600 border rounded-md shadow outline-none sm:w-6/12 md:mr-2 focus:outline-none sm:text-left'
+                />
+              </div>
               <div
                 onClick={e =>
                   setFormData({
@@ -244,7 +272,7 @@ export default function UserCrud({ history, match }) {
                     services: [...formData.services, serviceData],
                   })
                 }
-                className={`w-full text-white py-3 px-4 text-center font-medium rounded-md cursor-pointer bg-blue-600 hover:bg-blue-700`}>
+                className={`w-full flex items-center justify-center md:w-5/12 text-white py-3 px-4 text-center font-medium rounded-md cursor-pointer bg-blue-600 hover:bg-blue-700 my-1`}>
                 Add
               </div>
             </div>

@@ -62,6 +62,9 @@ export default function Roles({ history }) {
             <thead>
               <tr>
                 <th className="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
+                  #
+                </th>
+                <th className="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
                   Name
                 </th>
                 <th className="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
@@ -74,8 +77,14 @@ export default function Roles({ history }) {
               </tr>
             </thead>
             <tbody>
-              {rolesReducer.roles.map((role) => (
+              {rolesReducer.roles.map((role, index) => (
                 <tr className="bg-white lg:hover:bg-gray-100 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0">
+                  <td className="relative block w-full p-3 text-center text-gray-800 border border-b lg:w-auto lg:table-cell lg:static ">
+                    <span className="absolute top-0 left-0 px-2 py-1 text-xs font-bold uppercase bg-blue-200 lg:hidden">
+                      #
+                    </span>
+                    {index + 1}
+                  </td>
                   <td className="w-full lg:w-auto p-3 text-gray-800  border border-b text-center block lg:table-cell relative lg:static">
                     <span className="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">
                       Name
@@ -84,7 +93,7 @@ export default function Roles({ history }) {
                   </td>
                   <td className="w-full lg:w-auto p-3 text-gray-800  border border-b text-center block lg:table-cell relative lg:static">
                     <span className="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">
-                      Role
+                      Label
                     </span>
                     <span className="rounded text-gray-500 py-1 px-3 text-xs font-bold">
                       {role.label}

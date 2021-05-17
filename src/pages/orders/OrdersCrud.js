@@ -70,29 +70,28 @@ export default function UserCrud({ history, match }) {
   //     console.log("error");
   //   }
   // };
-  if (servicesReducer.loading) {
-    return (
-      <Layout>
-        <div className="flex justify-center items-center h-screen">
-          <div className="loader animate-spin   border-black relative ease-linear border-t-0 rounded-full border-8  w-24 h-24 bg-black">
-            <div className="loader Infinity animate-pulse transform border-white  relative ease-linear border-t-0 rounded-full border-8  w-16 h-16 bg-white">
-              {/* <div className="loader Infinity border-black relative ease-linear animate-spin  border-t-0 rounded-full border-8  w-10 h-10 bg-black">
-                <div className="loader Infinity border-black -rotate-90 relative ease-linear border-t-0 rounded-full border-8  w-6 h-6 bg-black"></div>
-              </div> */}
-            </div>
-          </div>
-        </div>
-      </Layout>
-    );
-  } else {
-    return (
-      <Layout parentClassName={" "}>
-        <div
-          style={{ backgroundColor: "#F8F8F8" }}
-          className="p-10 h-full w-full transition-all overflow-y-auto"
-        >
-          {" "}
-          {/*
+  // if (ordersReducer.loading) {
+  //   return (
+  //     <Layout>
+  //       <div className="flex justify-center items-center h-screen">
+  //         <div className="loader animate-spin   border-black relative ease-linear border-t-0 rounded-full border-8  w-24 h-24 bg-black">
+  //           <div className="loader Infinity animate-pulse transform border-white  relative ease-linear border-t-0 rounded-full border-8  w-16 h-16 bg-white">
+  //             {/* <div className="loader Infinity border-black relative ease-linear animate-spin  border-t-0 rounded-full border-8  w-10 h-10 bg-black">
+  //               <div className="loader Infinity border-black -rotate-90 relative ease-linear border-t-0 rounded-full border-8  w-6 h-6 bg-black"></div>
+  //             </div> */}
+  //           </div>
+  //         </div>
+  //       </div>
+  //     </Layout>
+  //   );
+  // } else {
+  return (
+    <Layout parentClassName={" "}>
+      <div
+        style={{ backgroundColor: "#F8F8F8" }}
+        className="p-10 h-full w-full transition-all overflow-y-auto"
+      >
+        {/*
           <div className="flex justify-between items-center  select-none  w-full flex-wrap transition-all">
             <div className=" text-4xl  text-gray-500 text-left font-normal my-10 flex-grow transition-all">
               Services
@@ -201,8 +200,8 @@ export default function UserCrud({ history, match }) {
               </div>
             </div>
           </div> */}
-        </div>
-      </Layout>
-    );
-  }
+      </div>
+    </Layout>
+  );
 }
+// }
