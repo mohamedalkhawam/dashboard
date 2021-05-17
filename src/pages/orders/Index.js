@@ -177,7 +177,7 @@ export default function Services({ history }) {
                       Actions
                     </span>
                     <div className="flex items-center justify-evenly">
-                      <div
+                      {/* <div
                         onClick={() => {
                           dispatch(clearOrder());
                           history.push(`/orders/${order._id}/edit`);
@@ -185,7 +185,7 @@ export default function Services({ history }) {
                         className="text-blue-400 underline cursor-pointer hover:text-blue-600"
                       >
                         <FaEdit size="1.8rem" />
-                      </div>
+                      </div> */}
                       <div
                         onClick={() => {
                           dispatch(clearOrder());
