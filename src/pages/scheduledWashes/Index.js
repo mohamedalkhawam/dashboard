@@ -371,6 +371,16 @@ export default function Services({ history }) {
                               status: 'reject',
                             })
                           )
+                            .then(result => {
+                              setData(
+                                data.map(d =>
+                                  d._id === result.data.data._id
+                                    ? result.data.data
+                                    : { ...d }
+                                )
+                              );
+                            })
+                            .catch(err => {})
                         }>
                         <FiSlash className='mx-1 text-xl text-red-500 cursor-pointer' />
                       </div>
@@ -382,6 +392,16 @@ export default function Services({ history }) {
                               status: 'progress',
                             })
                           )
+                            .then(result => {
+                              setData(
+                                data.map(d =>
+                                  d._id === result.data.data._id
+                                    ? result.data.data
+                                    : { ...d }
+                                )
+                              );
+                            })
+                            .catch(err => {})
                         }>
                         <FiDisc className='mx-1 text-xl text-green-500 cursor-pointer' />
                       </div>
@@ -393,6 +413,16 @@ export default function Services({ history }) {
                               status: 'completed',
                             })
                           )
+                            .then(result => {
+                              setData(
+                                data.map(d =>
+                                  d._id === result.data.data._id
+                                    ? result.data.data
+                                    : { ...d }
+                                )
+                              );
+                            })
+                            .catch(err => {})
                         }>
                         <FiCheckCircle className='mx-1 text-xl text-blue-500 cursor-pointer' />
                       </div>
