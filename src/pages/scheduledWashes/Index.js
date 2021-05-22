@@ -367,9 +367,24 @@ export default function Services({ history }) {
                               status: "reject",
                             })
                           )
+<<<<<<< HEAD
                         }
                       >
                         <FiSlash className="mx-1 text-xl text-red-500 cursor-pointer" />
+=======
+                            .then(result => {
+                              setData(
+                                data.map(d =>
+                                  d._id === result.data.data._id
+                                    ? result.data.data
+                                    : { ...d }
+                                )
+                              );
+                            })
+                            .catch(err => {})
+                        }>
+                        <FiSlash className='mx-1 text-xl text-red-500 cursor-pointer' />
+>>>>>>> b1a5a09b923b679361ec45fc846708f6b5bdda86
                       </div>
                       <div
                         onClick={() =>
@@ -379,9 +394,24 @@ export default function Services({ history }) {
                               status: "progress",
                             })
                           )
+<<<<<<< HEAD
                         }
                       >
                         <FiDisc className="mx-1 text-xl text-green-500 cursor-pointer" />
+=======
+                            .then(result => {
+                              setData(
+                                data.map(d =>
+                                  d._id === result.data.data._id
+                                    ? result.data.data
+                                    : { ...d }
+                                )
+                              );
+                            })
+                            .catch(err => {})
+                        }>
+                        <FiDisc className='mx-1 text-xl text-green-500 cursor-pointer' />
+>>>>>>> b1a5a09b923b679361ec45fc846708f6b5bdda86
                       </div>
                       <div
                         onClick={() =>
@@ -391,9 +421,24 @@ export default function Services({ history }) {
                               status: "completed",
                             })
                           )
+<<<<<<< HEAD
                         }
                       >
                         <FiCheckCircle className="mx-1 text-xl text-blue-500 cursor-pointer" />
+=======
+                            .then(result => {
+                              setData(
+                                data.map(d =>
+                                  d._id === result.data.data._id
+                                    ? result.data.data
+                                    : { ...d }
+                                )
+                              );
+                            })
+                            .catch(err => {})
+                        }>
+                        <FiCheckCircle className='mx-1 text-xl text-blue-500 cursor-pointer' />
+>>>>>>> b1a5a09b923b679361ec45fc846708f6b5bdda86
                       </div>
                     </span>
                   </td>
