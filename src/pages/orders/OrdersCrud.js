@@ -1,7 +1,7 @@
-import Layout from "../../components/Layout";
-import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { Redirect, Route, useHistory, useLocation } from "react-router-dom";
+import Layout from '../../components/Layout';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Redirect, Route, useHistory, useLocation } from 'react-router-dom';
 // import {
 //   updateOrder,
 //   readOrders,
@@ -11,18 +11,19 @@ import { Redirect, Route, useHistory, useLocation } from "react-router-dom";
 //   createsOrder,
 // } from "../../redux/actions/orders";
 
-import _objO from "../../utils/_objO";
-import _objI from "../../utils/_objI";
+import _objO from '../../utils/_objO';
+import _objI from '../../utils/_objI';
+import Spinner from '../../components/Spinner';
 export default function UserCrud({ history, match }) {
   const dispatch = useDispatch();
-  const ordersReducer = useSelector((state) => state.ordersReducer);
+  const ordersReducer = useSelector(state => state.ordersReducer);
   const [errorValidation, setErrorValidation] = useState({});
   const [formData, setFormData] = useState({
-    name: "",
-    label: "",
-    price: "",
-    note: "",
-    description: "",
+    name: '',
+    label: '',
+    price: '',
+    note: '',
+    description: '',
   });
   // const onChange = (e) => {
   //   e.preventDefault();
@@ -70,47 +71,40 @@ export default function UserCrud({ history, match }) {
   //     console.log("error");
   //   }
   // };
-  // if (ordersReducer.loading) {
-  //   return (
-  //     <Layout>
-  //       <div className="flex justify-center items-center h-screen">
-  //         <div className="loader animate-spin   border-black relative ease-linear border-t-0 rounded-full border-8  w-24 h-24 bg-black">
-  //           <div className="loader Infinity animate-pulse transform border-white  relative ease-linear border-t-0 rounded-full border-8  w-16 h-16 bg-white">
-  //             {/* <div className="loader Infinity border-black relative ease-linear animate-spin  border-t-0 rounded-full border-8  w-10 h-10 bg-black">
-  //               <div className="loader Infinity border-black -rotate-90 relative ease-linear border-t-0 rounded-full border-8  w-6 h-6 bg-black"></div>
-  //             </div> */}
-  //           </div>
-  //         </div>
-  //       </div>
-  //     </Layout>
-  //   );
-  // } else {
-  return (
-    <Layout parentClassName={" "}>
-      <div
-        style={{ backgroundColor: "#F8F8F8" }}
-        className="p-10 h-full w-full transition-all overflow-y-auto"
-      >
-        {/*
-          <div className="flex justify-between items-center  select-none  w-full flex-wrap transition-all">
-            <div className=" text-4xl  text-gray-500 text-left font-normal my-10 flex-grow transition-all">
+  if (ordersReducer.loading) {
+    return (
+      <Layout>
+        <div className='flex items-center justify-center h-screen'>
+          <Spinner />
+        </div>
+      </Layout>
+    );
+  } else {
+    return (
+      <Layout parentClassName={' '}>
+        <div
+          style={{ backgroundColor: '#F8F8F8' }}
+          className='w-full h-full p-10 transition-all'>
+          {/*
+          <div className="flex flex-wrap items-center justify-between w-full transition-all select-none">
+            <div className="flex-grow my-10 text-4xl font-normal text-left text-gray-500 transition-all ">
               Services
-              <div className="flex items-center w-full text-left text-sm mt-4 text-gray-500 transition-all">
-                <div className=" font-medium cursor-pointer hover:text-gray-600 transform transition-all hover:scale-110 duration-100  ">
+              <div className="flex items-center w-full mt-4 text-sm text-left text-gray-500 transition-all">
+                <div className="font-medium transition-all duration-100 transform cursor-pointer hover:text-gray-600 hover:scale-110">
                   Dashboard
                 </div>
                 <div className="px-3 font-medium">{`->`}</div>
-                <div className=" font-medium cursor-pointer hover:text-gray-600 transform transition-all hover:scale-110 duration-100">
+                <div className="font-medium transition-all duration-100 transform cursor-pointer hover:text-gray-600 hover:scale-110">
                   Services
                 </div>
                 <div className="px-3 font-medium">{`->`}</div>
-                <div className=" font-medium cursor-pointer hover:text-gray-600 transform transition-all hover:scale-110 duration-100">
+                <div className="font-medium transition-all duration-100 transform cursor-pointer hover:text-gray-600 hover:scale-110">
                   New service
                 </div>
               </div>
             </div>
           </div>
-          <div className="bg-white shadow-md hover:shadow-lg rounded border px-14 py-16 ">
+          <div className="py-16 bg-white border rounded shadow-md hover:shadow-lg px-14 ">
             <div className="my-5">
               <input
                 placeholder={"Name"}
@@ -120,7 +114,7 @@ export default function UserCrud({ history, match }) {
                 onChange={(e) => {
                   onChange(e);
                 }}
-                className="w-full  font-normal border shadow p-4 outline-none rounded-md  focus:outline-none text-gray-600"
+                className="w-full p-4 font-normal text-gray-600 border rounded-md shadow outline-none focus:outline-none"
               />
               <small className="text-red-600"></small>
             </div>
@@ -133,7 +127,7 @@ export default function UserCrud({ history, match }) {
                 onChange={(e) => {
                   onChange(e);
                 }}
-                className="w-full font-normal border shadow p-4 outline-none rounded-md focus:outline-none text-gray-600"
+                className="w-full p-4 font-normal text-gray-600 border rounded-md shadow outline-none focus:outline-none"
               />
               <small className="text-red-600"></small>
             </div>
@@ -146,7 +140,7 @@ export default function UserCrud({ history, match }) {
                 onChange={(e) => {
                   onChange(e);
                 }}
-                className="w-full font-normal border shadow p-4 outline-none rounded-md focus:outline-none text-gray-600"
+                className="w-full p-4 font-normal text-gray-600 border rounded-md shadow outline-none focus:outline-none"
               />
               <small className="text-red-600"></small>
             </div>
@@ -159,7 +153,7 @@ export default function UserCrud({ history, match }) {
                 onChange={(e) => {
                   onChange(e);
                 }}
-                className="w-full  font-normal border shadow p-4 outline-none rounded-md  focus:outline-none text-gray-600"
+                className="w-full p-4 font-normal text-gray-600 border rounded-md shadow outline-none focus:outline-none"
               />
               <small className="text-red-600"></small>
             </div>
@@ -172,12 +166,12 @@ export default function UserCrud({ history, match }) {
                 onChange={(e) => {
                   onChange(e);
                 }}
-                className="w-full  font-normal border shadow p-4 outline-none rounded-md  focus:outline-none text-gray-600"
+                className="w-full p-4 font-normal text-gray-600 border rounded-md shadow outline-none focus:outline-none"
               />
               <small className="text-red-600"></small>
             </div>
 
-            <div className="w-full flex items-center justify-center">
+            <div className="flex items-center justify-center w-full">
               <div
                 onClick={(e) => onUserSubmit(e)}
                 style={{
@@ -190,7 +184,7 @@ export default function UserCrud({ history, match }) {
               >
                 {servicesReducer.loading ? (
                   <svg
-                    className="animate-spin h-5 w-5 mr-3 absolute border-white rounded-full border-r-2 left-3"
+                    className="absolute w-5 h-5 mr-3 border-r-2 border-white rounded-full animate-spin left-3"
                     viewBox="0 0 24 24"
                   ></svg>
                 ) : (
@@ -200,8 +194,9 @@ export default function UserCrud({ history, match }) {
               </div>
             </div>
           </div> */}
-      </div>
-    </Layout>
-  );
+        </div>
+      </Layout>
+    );
+  }
 }
 // }

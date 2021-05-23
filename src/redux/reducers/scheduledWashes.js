@@ -3,6 +3,7 @@ import {
   READ_ONE_SCHEDULED_WASH,
   CREATE_SCHEDULED_WASH,
   UPDATE_SCHEDULED_WASH,
+  UPDATE_SCHEDULED_WASH_STATUS,
   DELETE_SCHEDULED_WASH,
   CLEAR_SCHEDULED_WASH,
   START_SCHEDULED_WASHES_RELOAD,
@@ -45,6 +46,16 @@ export default function scheduledWashesReducer(state = initialState, action) {
             scheduledWash._id === payload.data._id
               ? payload.data
               : scheduledWash
+          ),
+        ],
+      };
+
+    case UPDATE_SCHEDULED_WASH_STATUS:
+      return {
+        ...state,
+        scheduledWashes: [
+          ...state.scheduledWashes.filter(
+            scheduledWash => scheduledWash._id !== payload.data._id
           ),
         ],
       };

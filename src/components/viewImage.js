@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { createsFile, readOneFile } from "../redux/actions/file";
-import _objI from "../utils/_objI";
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { createsFile, readOneFile } from '../redux/actions/file';
+import _objI from '../utils/_objI';
 export default function ImageViewr({ id, width, height }) {
   const dispatch = useDispatch();
-  const [fileData, setFileData] = useState("");
+  const [fileData, setFileData] = useState('');
 
-  const getFileData = (id) => {
-    dispatch(readOneFile(id)).then((res) => {
+  const getFileData = id => {
+    dispatch(readOneFile(id)).then(res => {
       if (res.status === 200) {
         setFileData(res.data);
       }
@@ -22,8 +22,8 @@ export default function ImageViewr({ id, width, height }) {
     <img
       src={
         _objI(fileData)
-          ? `https://car-wash-uae.herokuapp.com/${fileData.data.path}`
-          : ""
+          ? process.env.REACT_APP_BACKEND_URL + `/${fileData.data.path}`
+          : ''
       }
       className={`${width ? width : ``}`}
     />

@@ -8,100 +8,100 @@ import {
   CLEAR_ORDER,
   START_ORDERS_RELOAD,
   FINISHED_ORDERS_RELOAD,
-} from "../types/orders";
+} from '../types/orders';
 
-import { readItemsAsync } from "./equCurd/readItems";
-import { readOneItemAsync } from "./equCurd/readOneItem";
-import { createItemAsync } from "./equCurd/createItem";
-import { updateItemAsync } from "./equCurd/updateItem";
-import { deleteItemAsync } from "./equCurd/deleteItem";
+import { readItemsAsync } from './equCurd/readItems';
+import { readOneItemAsync } from './equCurd/readOneItem';
+import { createItemAsync } from './equCurd/createItem';
+import { updateItemAsync } from './equCurd/updateItem';
+import { deleteItemAsync } from './equCurd/deleteItem';
 
-export const startOrdersReload = () => (dispatch) => {
+export const startOrdersReload = () => dispatch => {
   dispatch({ type: START_ORDERS_RELOAD });
 };
 
-export const finishedOrdersReload = () => (dispatch) => {
+export const finishedOrdersReload = () => dispatch => {
   dispatch({ type: FINISHED_ORDERS_RELOAD });
 };
 
 export const readOrders = () =>
   readItemsAsync({
-    url: "https://car-wash-uae.herokuapp.com/api/orders/all",
+    url: process.env.REACT_APP_BACKEND_URL + '/api/orders/all',
     successType: READ_ORDERS,
     errorType: ORDER_ERROR,
     startReload: startOrdersReload,
     finishedReload: finishedOrdersReload,
     headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-      "x-access-token": localStorage.getItem("token"),
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'x-access-token': localStorage.getItem('token'),
     },
   });
 
-export const readOneOrder = (id) =>
+export const readOneOrder = id =>
   readOneItemAsync({
-    url: `https://car-wash-uae.herokuapp.com/api/orders/`,
+    url: process.env.REACT_APP_BACKEND_URL + `/api/orders/`,
     successType: READ_ONE_ORDER,
     errorType: ORDER_ERROR,
     startReload: startOrdersReload,
     finishedReload: finishedOrdersReload,
     id,
     headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-      "x-access-token": localStorage.getItem("token"),
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'x-access-token': localStorage.getItem('token'),
     },
   });
 
-export const createsOrder = (formData) =>
+export const createsOrder = formData =>
   createItemAsync({
-    url: "https://car-wash-uae.herokuapp.com/api/orders/",
+    url: process.env.REACT_APP_BACKEND_URL + '/api/orders/',
     successType: CREATE_ORDER,
     errorType: ORDER_ERROR,
     startReload: startOrdersReload,
     finishedReload: finishedOrdersReload,
-    title: "Orders",
+    title: 'Orders',
     formData,
     headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-      "x-access-token": localStorage.getItem("token"),
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'x-access-token': localStorage.getItem('token'),
     },
   });
 
-export const updateOrder = (formData) =>
+export const updateOrder = formData =>
   updateItemAsync({
-    url: "https://car-wash-uae.herokuapp.com/api/orders",
+    url: process.env.REACT_APP_BACKEND_URL + '/api/orders',
     successType: UPDATE_ORDER,
     errorType: ORDER_ERROR,
     startReload: startOrdersReload,
     finishedReload: finishedOrdersReload,
-    title: "Orders",
+    title: 'Orders',
     formData,
     id: formData._id,
     headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-      "x-access-token": localStorage.getItem("token"),
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'x-access-token': localStorage.getItem('token'),
     },
   });
 
-export const deleteOrder = (id) =>
+export const deleteOrder = id =>
   deleteItemAsync({
-    url: "https://car-wash-uae.herokuapp.com/api/orders/",
+    url: process.env.REACT_APP_BACKEND_URL + '/api/orders/',
     successType: DELETE_ORDER,
     errorType: ORDER_ERROR,
     startReload: startOrdersReload,
     finishedReload: finishedOrdersReload,
-    title: "Orders",
+    title: 'Orders',
     id: id,
     headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-      "x-access-token": localStorage.getItem("token"),
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'x-access-token': localStorage.getItem('token'),
     },
   });
 
-export const clearOrder = () => (dispatch) => {
+export const clearOrder = () => dispatch => {
   dispatch({ type: CLEAR_ORDER });
 };

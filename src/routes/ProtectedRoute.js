@@ -19,14 +19,9 @@ const ProtectedRoute = ({
     <Route
       {...rest}
       render={props =>
-        loading && !isAuthenticated ? (
-          <div className='relative flex flex-col app bg-gray-p'>
-            {/* <Spinner /> */}
-          </div>
+        !isAuthenticated ? (
+          <Auth />
         ) : (
-          // !isAuthenticated ? (
-          //   <Redirect to="/login" />
-          // ) :
           isAuthenticated && !loading && <Component {...props} {...rest} />
         )
       }

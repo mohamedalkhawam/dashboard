@@ -27,7 +27,7 @@ export const finishedCarsReload = () => dispatch => {
 
 export const readCars = () =>
   readItemsAsync({
-    url: 'https://car-wash-uae.herokuapp.com/api/cars/all',
+    url: process.env.REACT_APP_BACKEND_URL + '/api/cars/all',
     successType: READ_CARS,
     errorType: CAR_ERROR,
     startReload: startCarsReload,
@@ -41,7 +41,7 @@ export const readCars = () =>
 
 export const readOneCar = id =>
   readOneItemAsync({
-    url: 'https://car-wash-uae.herokuapp.com/api/cars/',
+    url: process.env.REACT_APP_BACKEND_URL + '/api/cars/',
     successType: READ_ONE_CAR,
     errorType: CAR_ERROR,
     startReload: startCarsReload,
@@ -56,7 +56,7 @@ export const readOneCar = id =>
 
 export const createCar = formData =>
   createItemAsync({
-    url: 'https://car-wash-uae.herokuapp.com/api/cars/',
+    url: process.env.REACT_APP_BACKEND_URL + '/api/cars/',
 
     successType: CREATE_CAR,
     errorType: CAR_ERROR,
@@ -73,7 +73,7 @@ export const createCar = formData =>
 
 export const updateCar = formData =>
   updateItemAsync({
-    url: 'https://car-wash-uae.herokuapp.com/api/cars/',
+    url: process.env.REACT_APP_BACKEND_URL + '/api/cars/',
     successType: UPDATE_CAR,
     errorType: CAR_ERROR,
     startReload: startCarsReload,
@@ -90,7 +90,7 @@ export const updateCar = formData =>
 
 export const deleteCar = id =>
   deleteItemAsync({
-    url: 'https://car-wash-uae.herokuapp.com/api/cars/',
+    url: process.env.REACT_APP_BACKEND_URL + '/api/cars/',
     successType: DELETE_CAR,
     errorType: CAR_ERROR,
     startReload: startCarsReload,

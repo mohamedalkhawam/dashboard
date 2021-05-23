@@ -8,100 +8,100 @@ import {
   CLEAR_CITY,
   START_CITIES_RELOAD,
   FINISHED_CITIES_RELOAD,
-} from "../types/city";
+} from '../types/city';
 
-import { readItemsAsync } from "./equCurd/readItems";
-import { readOneItemAsync } from "./equCurd/readOneItem";
-import { createItemAsync } from "./equCurd/createItem";
-import { updateItemAsync } from "./equCurd/updateItem";
-import { deleteItemAsync } from "./equCurd/deleteItem";
+import { readItemsAsync } from './equCurd/readItems';
+import { readOneItemAsync } from './equCurd/readOneItem';
+import { createItemAsync } from './equCurd/createItem';
+import { updateItemAsync } from './equCurd/updateItem';
+import { deleteItemAsync } from './equCurd/deleteItem';
 
-export const startCityReload = () => (dispatch) => {
+export const startCityReload = () => dispatch => {
   dispatch({ type: START_CITIES_RELOAD });
 };
 
-export const finishedCityReload = () => (dispatch) => {
+export const finishedCityReload = () => dispatch => {
   dispatch({ type: FINISHED_CITIES_RELOAD });
 };
 
 export const readCities = () =>
   readItemsAsync({
-    url: "https://car-wash-uae.herokuapp.com/api/cities/all",
+    url: process.env.REACT_APP_BACKEND_URL + '/api/cities/all',
     successType: READ_CITIES,
     errorType: CITY_ERROR,
     startReload: startCityReload,
     finishedReload: finishedCityReload,
     headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-      "x-access-token": localStorage.getItem("token"),
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'x-access-token': localStorage.getItem('token'),
     },
   });
 
-export const readOneCity = (id) =>
+export const readOneCity = id =>
   readOneItemAsync({
-    url: `https://car-wash-uae.herokuapp.com/api/cities/`,
+    url: process.env.REACT_APP_BACKEND_URL + `/api/cities/`,
     successType: READ_ONE_CITY,
     errorType: CITY_ERROR,
     startReload: startCityReload,
     finishedReload: finishedCityReload,
     id,
     headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-      "x-access-token": localStorage.getItem("token"),
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'x-access-token': localStorage.getItem('token'),
     },
   });
 
-export const createsCity = (formData) =>
+export const createsCity = formData =>
   createItemAsync({
-    url: "https://car-wash-uae.herokuapp.com/api/cities/",
+    url: process.env.REACT_APP_BACKEND_URL + '/api/cities/',
     successType: CREATE_CITY,
     errorType: CITY_ERROR,
     startReload: startCityReload,
     finishedReload: finishedCityReload,
-    title: "Cities",
+    title: 'Cities',
     formData,
     headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-      "x-access-token": localStorage.getItem("token"),
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'x-access-token': localStorage.getItem('token'),
     },
   });
 
-export const updateCity = (formData) =>
+export const updateCity = formData =>
   updateItemAsync({
-    url: "https://car-wash-uae.herokuapp.com/api/cities",
+    url: process.env.REACT_APP_BACKEND_URL + '/api/cities',
     successType: UPDATE_CITY,
     errorType: CITY_ERROR,
     startReload: startCityReload,
     finishedReload: finishedCityReload,
-    title: "Cities",
+    title: 'Cities',
     formData,
     id: formData._id,
     headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-      "x-access-token": localStorage.getItem("token"),
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'x-access-token': localStorage.getItem('token'),
     },
   });
 
-export const deleteCity = (id) =>
+export const deleteCity = id =>
   deleteItemAsync({
-    url: "https://car-wash-uae.herokuapp.com/api/cities/",
+    url: process.env.REACT_APP_BACKEND_URL + '/api/cities/',
     successType: DELETE_CITY,
     errorType: CITY_ERROR,
     startReload: startCityReload,
     finishedReload: finishedCityReload,
-    title: "Cities",
+    title: 'Cities',
     id: id,
     headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-      "x-access-token": localStorage.getItem("token"),
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'x-access-token': localStorage.getItem('token'),
     },
   });
 
-export const clearCity = () => (dispatch) => {
+export const clearCity = () => dispatch => {
   dispatch({ type: CLEAR_CITY });
 };

@@ -8,100 +8,100 @@ import {
   CLEAR_BUILDING,
   START_BUILDINGS_RELOAD,
   FINISHED_BUILDINGS_RELOAD,
-} from "../types/buildings";
+} from '../types/buildings';
 
-import { readItemsAsync } from "./equCurd/readItems";
-import { readOneItemAsync } from "./equCurd/readOneItem";
-import { createItemAsync } from "./equCurd/createItem";
-import { updateItemAsync } from "./equCurd/updateItem";
-import { deleteItemAsync } from "./equCurd/deleteItem";
+import { readItemsAsync } from './equCurd/readItems';
+import { readOneItemAsync } from './equCurd/readOneItem';
+import { createItemAsync } from './equCurd/createItem';
+import { updateItemAsync } from './equCurd/updateItem';
+import { deleteItemAsync } from './equCurd/deleteItem';
 
-export const startBuildingReload = () => (dispatch) => {
+export const startBuildingReload = () => dispatch => {
   dispatch({ type: START_BUILDINGS_RELOAD });
 };
 
-export const finishedBuildingReload = () => (dispatch) => {
+export const finishedBuildingReload = () => dispatch => {
   dispatch({ type: FINISHED_BUILDINGS_RELOAD });
 };
 
 export const readBuildings = () =>
   readItemsAsync({
-    url: "https://car-wash-uae.herokuapp.com/api/buildings/all",
+    url: process.env.REACT_APP_BACKEND_URL + '/api/buildings/all',
     successType: READ_BUILDINGS,
     errorType: BUILDING_ERROR,
     startReload: startBuildingReload,
     finishedReload: finishedBuildingReload,
     headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-      "x-access-token": localStorage.getItem("token"),
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'x-access-token': localStorage.getItem('token'),
     },
   });
 
-export const readOneBuilding = (id) =>
+export const readOneBuilding = id =>
   readOneItemAsync({
-    url: `https://car-wash-uae.herokuapp.com/api/buildings/`,
+    url: process.env.REACT_APP_BACKEND_URL + `/api/buildings/`,
     successType: READ_ONE_BUILDING,
     errorType: BUILDING_ERROR,
     startReload: startBuildingReload,
     finishedReload: finishedBuildingReload,
     id,
     headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-      "x-access-token": localStorage.getItem("token"),
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'x-access-token': localStorage.getItem('token'),
     },
   });
 
-export const createsBuilding = (formData) =>
+export const createsBuilding = formData =>
   createItemAsync({
-    url: "https://car-wash-uae.herokuapp.com/api/buildings/",
+    url: process.env.REACT_APP_BACKEND_URL + '/api/buildings/',
     successType: CREATE_BUILDING,
     errorType: BUILDING_ERROR,
     startReload: startBuildingReload,
     finishedReload: finishedBuildingReload,
-    title: "Buildings",
+    title: 'Buildings',
     formData,
     headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-      "x-access-token": localStorage.getItem("token"),
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'x-access-token': localStorage.getItem('token'),
     },
   });
 
-export const updateBuilding = (formData) =>
+export const updateBuilding = formData =>
   updateItemAsync({
-    url: "https://car-wash-uae.herokuapp.com/api/buildings",
+    url: process.env.REACT_APP_BACKEND_URL + '/api/buildings',
     successType: UPDATE_BUILDING,
     errorType: BUILDING_ERROR,
     startReload: startBuildingReload,
     finishedReload: finishedBuildingReload,
-    title: "Buildings",
+    title: 'Buildings',
     formData,
     id: formData._id,
     headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-      "x-access-token": localStorage.getItem("token"),
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'x-access-token': localStorage.getItem('token'),
     },
   });
 
-export const deleteBuilding = (id) =>
+export const deleteBuilding = id =>
   deleteItemAsync({
-    url: "https://car-wash-uae.herokuapp.com/api/buildings/",
+    url: process.env.REACT_APP_BACKEND_URL + '/api/buildings/',
     successType: DELETE_BUILDING,
     errorType: BUILDING_ERROR,
     startReload: startBuildingReload,
     finishedReload: finishedBuildingReload,
-    title: "Buildings",
+    title: 'Buildings',
     id: id,
     headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-      "x-access-token": localStorage.getItem("token"),
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'x-access-token': localStorage.getItem('token'),
     },
   });
 
-export const clearBuilding = () => (dispatch) => {
+export const clearBuilding = () => dispatch => {
   dispatch({ type: CLEAR_BUILDING });
 };
