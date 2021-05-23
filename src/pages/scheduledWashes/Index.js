@@ -37,7 +37,6 @@ export default function Services({ history }) {
     dispatch(readCities());
     dispatch(readBuildings());
   }, []);
-
   const [query, setQuery] = useState({
     service: "all",
     city: "all",
@@ -180,9 +179,11 @@ export default function Services({ history }) {
                 <th className="hidden p-3 font-bold text-gray-600 uppercase bg-gray-200 border border-gray-300 lg:table-cell">
                   Status
                 </th>
-
                 <th className="hidden p-3 font-bold text-gray-600 uppercase bg-gray-200 border border-gray-300 lg:table-cell">
                   Color
+                </th>
+                <th className="hidden p-3 font-bold text-gray-600 uppercase bg-gray-200 border border-gray-300 lg:table-cell">
+                  Type
                 </th>
                 <th className="hidden p-3 font-bold text-gray-600 uppercase bg-gray-200 border border-gray-300 lg:table-cell">
                   Parking Number
@@ -245,6 +246,13 @@ export default function Services({ history }) {
                         ? scheduledWash.car.color
                         : ""}
                     </div>
+                  </td>
+                  <td className="relative block w-full p-3 text-center text-gray-800 border border-b lg:w-auto lg:table-cell lg:static ">
+                    <span className="absolute top-0 left-0 px-2 py-1 text-xs font-bold uppercase bg-blue-200 lg:hidden">
+                      Type
+                    </span>
+
+                    <div>{scheduledWash.type}</div>
                   </td>
                   <td className="relative block w-full p-3 text-center text-gray-800 border border-b lg:w-auto lg:table-cell lg:static ">
                     <span className="absolute top-0 left-0 px-2 py-1 text-xs font-bold uppercase bg-blue-200 lg:hidden">
@@ -367,24 +375,19 @@ export default function Services({ history }) {
                               status: "reject",
                             })
                           )
-<<<<<<< HEAD
-                        }
-                      >
-                        <FiSlash className="mx-1 text-xl text-red-500 cursor-pointer" />
-=======
-                            .then(result => {
+                            .then((result) => {
                               setData(
-                                data.map(d =>
+                                data.map((d) =>
                                   d._id === result.data.data._id
                                     ? result.data.data
                                     : { ...d }
                                 )
                               );
                             })
-                            .catch(err => {})
-                        }>
-                        <FiSlash className='mx-1 text-xl text-red-500 cursor-pointer' />
->>>>>>> b1a5a09b923b679361ec45fc846708f6b5bdda86
+                            .catch((err) => {})
+                        }
+                      >
+                        <FiSlash className="mx-1 text-xl text-red-500 cursor-pointer" />
                       </div>
                       <div
                         onClick={() =>
@@ -394,24 +397,19 @@ export default function Services({ history }) {
                               status: "progress",
                             })
                           )
-<<<<<<< HEAD
-                        }
-                      >
-                        <FiDisc className="mx-1 text-xl text-green-500 cursor-pointer" />
-=======
-                            .then(result => {
+                            .then((result) => {
                               setData(
-                                data.map(d =>
+                                data.map((d) =>
                                   d._id === result.data.data._id
                                     ? result.data.data
                                     : { ...d }
                                 )
                               );
                             })
-                            .catch(err => {})
-                        }>
-                        <FiDisc className='mx-1 text-xl text-green-500 cursor-pointer' />
->>>>>>> b1a5a09b923b679361ec45fc846708f6b5bdda86
+                            .catch((err) => {})
+                        }
+                      >
+                        <FiDisc className="mx-1 text-xl text-green-500 cursor-pointer" />
                       </div>
                       <div
                         onClick={() =>
@@ -421,24 +419,19 @@ export default function Services({ history }) {
                               status: "completed",
                             })
                           )
-<<<<<<< HEAD
-                        }
-                      >
-                        <FiCheckCircle className="mx-1 text-xl text-blue-500 cursor-pointer" />
-=======
-                            .then(result => {
+                            .then((result) => {
                               setData(
-                                data.map(d =>
+                                data.map((d) =>
                                   d._id === result.data.data._id
                                     ? result.data.data
                                     : { ...d }
                                 )
                               );
                             })
-                            .catch(err => {})
-                        }>
-                        <FiCheckCircle className='mx-1 text-xl text-blue-500 cursor-pointer' />
->>>>>>> b1a5a09b923b679361ec45fc846708f6b5bdda86
+                            .catch((err) => {})
+                        }
+                      >
+                        <FiCheckCircle className="mx-1 text-xl text-blue-500 cursor-pointer" />
                       </div>
                     </span>
                   </td>
