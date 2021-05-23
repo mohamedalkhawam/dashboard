@@ -3,6 +3,7 @@ import {
   READ_ONE_SCHEDULED_WASH,
   CREATE_SCHEDULED_WASH,
   UPDATE_SCHEDULED_WASH,
+  UPDATE_SCHEDULED_WASH_STATUS,
   DELETE_SCHEDULED_WASH,
   SCHEDULED_WASH_ERROR,
   CLEAR_SCHEDULED_WASH,
@@ -26,7 +27,7 @@ export const finishedScheduledWashesReload = () => dispatch => {
 
 export const readScheduledWashes = () =>
   readItemsAsync({
-    url: 'https://car-wash-uae.herokuapp.com/api/scheduled-wash/all',
+    url: process.env.REACT_APP_BACKEND_URL + '/api/scheduled-wash/all',
     successType: READ_SCHEDULED_WASHES,
     errorType: SCHEDULED_WASH_ERROR,
     startReload: startScheduledWashesReload,
@@ -40,7 +41,7 @@ export const readScheduledWashes = () =>
 
 export const readOneScheduledWash = id =>
   readOneItemAsync({
-    url: `https://car-wash-uae.herokuapp.com/api/scheduled-wash/`,
+    url: process.env.REACT_APP_BACKEND_URL + `/api/scheduled-wash/`,
     successType: READ_ONE_SCHEDULED_WASH,
     errorType: SCHEDULED_WASH_ERROR,
     startReload: startScheduledWashesReload,
@@ -55,7 +56,7 @@ export const readOneScheduledWash = id =>
 
 export const createsScheduledWash = formData =>
   createItemAsync({
-    url: 'https://car-wash-uae.herokuapp.com/api/scheduled-wash/',
+    url: process.env.REACT_APP_BACKEND_URL + '/api/scheduled-wash/',
     successType: CREATE_SCHEDULED_WASH,
     errorType: SCHEDULED_WASH_ERROR,
     startReload: startScheduledWashesReload,
@@ -71,8 +72,28 @@ export const createsScheduledWash = formData =>
 
 export const updateScheduledWash = formData =>
   updateItemAsync({
-    url: 'https://car-wash-uae.herokuapp.com/api/scheduled-wash',
+    url: process.env.REACT_APP_BACKEND_URL + '/api/scheduled-wash',
     successType: UPDATE_SCHEDULED_WASH,
+    errorType: SCHEDULED_WASH_ERROR,
+    startReload: startScheduledWashesReload,
+    finishedReload: finishedScheduledWashesReload,
+    title: 'ScheduledWashes',
+    formData,
+    id: formData._id,
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'x-access-token': localStorage.getItem('token'),
+    },
+  });
+
+export const updateScheduledWashStatus = formData =>
+  updateItemAsync({
+    url:
+      process.env.REACT_APP_BACKEND_URL +
+      '/api/scheduled-wash/' +
+      formData.status,
+    successType: UPDATE_SCHEDULED_WASH_STATUS,
     errorType: SCHEDULED_WASH_ERROR,
     startReload: startScheduledWashesReload,
     finishedReload: finishedScheduledWashesReload,
@@ -88,7 +109,7 @@ export const updateScheduledWash = formData =>
 
 export const deleteScheduledWash = id =>
   deleteItemAsync({
-    url: 'https://car-wash-uae.herokuapp.com/api/scheduled-wash/',
+    url: process.env.REACT_APP_BACKEND_URL + '/api/scheduled-wash/',
     successType: DELETE_SCHEDULED_WASH,
     errorType: SCHEDULED_WASH_ERROR,
     startReload: startScheduledWashesReload,

@@ -9,6 +9,7 @@ import {
   deletePermission,
   clearPermission,
 } from '../../redux/actions/permissions';
+import Spinner from '../../components/Spinner';
 // import { readPermissions } from "../../redux/actions/permissions";
 export default function Permissions({ history }) {
   const dispatch = useDispatch();
@@ -19,14 +20,8 @@ export default function Permissions({ history }) {
   if (permissionsReducer.loading) {
     return (
       <Layout>
-        <div className='flex items-center justify-center h-screen '>
-          <div className='relative w-24 h-24 ease-linear bg-black border-8 border-t-0 border-black rounded-full loader animate-spin'>
-            <div className='relative w-16 h-16 ease-linear transform bg-white border-8 border-t-0 border-white rounded-full loader Infinity animate-pulse'>
-              {/* <div className="relative w-10 h-10 ease-linear bg-black border-8 border-t-0 border-black rounded-full loader Infinity animate-spin">
-                <div className="relative w-6 h-6 ease-linear -rotate-90 bg-black border-8 border-t-0 border-black rounded-full loader Infinity"></div>
-              </div> */}
-            </div>
-          </div>
+        <div className='flex items-center justify-center h-screen'>
+          <Spinner />
         </div>
       </Layout>
     );
@@ -35,7 +30,7 @@ export default function Permissions({ history }) {
       <Layout>
         <div
           style={{ backgroundColor: '#F8F8F8' }}
-          className='flex flex-col items-center w-full h-screen p-10 pb-20 overflow-y-auto transition-all '>
+          className='flex flex-col items-center w-full h-screen p-10 pb-20 transition-all '>
           <div className='flex flex-wrap items-center justify-between w-full transition-all select-none'>
             <div className='flex-grow my-10 text-4xl font-normal text-left text-gray-500 transition-all '>
               Permissions

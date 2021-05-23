@@ -10,12 +10,13 @@ import {
   readScheduledWashes,
   deleteScheduledWash,
   clearScheduledWash,
-  updateScheduledWash,
+  updateScheduledWashStatus,
 } from "../../redux/actions/scheduledWashes";
 import { readCities } from "../../redux/actions/city";
 import { readBuildings } from "../../redux/actions/building";
 import { readServices } from "../../redux/actions/services";
 import { FiCheckCircle, FiCircle, FiDisc, FiSlash } from "react-icons/fi";
+import Spinner from "../../components/Spinner";
 // import { readServices } from "../../redux/actions/services";
 export default function Services({ history }) {
   const dispatch = useDispatch();
@@ -52,14 +53,8 @@ export default function Services({ history }) {
   ) {
     return (
       <Layout>
-        <div className="flex items-center justify-center h-screen ">
-          <div className="relative w-24 h-24 ease-linear bg-black border-8 border-t-0 border-black rounded-full loader animate-spin">
-            <div className="relative w-16 h-16 ease-linear transform bg-white border-8 border-t-0 border-white rounded-full loader Infinity animate-pulse">
-              {/* <div className="relative w-10 h-10 ease-linear bg-black border-8 border-t-0 border-black rounded-full loader Infinity animate-spin">
-                <div className="relative w-6 h-6 ease-linear -rotate-90 bg-black border-8 border-t-0 border-black rounded-full loader Infinity"></div>
-              </div> */}
-            </div>
-          </div>
+        <div className="flex items-center justify-center h-screen">
+          <Spinner />
         </div>
       </Layout>
     );
@@ -68,7 +63,7 @@ export default function Services({ history }) {
       <Layout>
         <div
           style={{ backgroundColor: "#F8F8F8" }}
-          className="flex flex-col items-center w-full h-screen p-10 pb-20 overflow-y-auto transition-all "
+          className="flex flex-col items-center w-full h-screen p-10 pb-20 transition-all "
         >
           <div className="flex flex-wrap items-center justify-between w-full transition-all select-none">
             <div className="flex-grow my-10 text-4xl font-normal text-left text-gray-500 transition-all ">
@@ -209,14 +204,8 @@ export default function Services({ history }) {
               </tr>
             </thead>
             <tbody>
-              {data.reverse().map((scheduledWash, index) => (
+              {[...data].reverse().map((scheduledWash) => (
                 <tr className="flex flex-row flex-wrap mb-10 bg-white lg:hover:bg-gray-100 lg:table-row lg:flex-row lg:flex-no-wrap lg:mb-0">
-                  <td className="relative block w-full p-3 text-center text-gray-800 border border-b lg:w-auto lg:table-cell lg:static">
-                    <span className="absolute top-0 left-0 px-2 py-1 text-xs font-bold uppercase bg-blue-200 lg:hidden">
-                      #
-                    </span>
-                    {index + 1}
-                  </td>
                   <td className="relative block w-full p-3 text-center text-gray-800 border border-b lg:w-auto lg:table-cell lg:static">
                     <span className="absolute top-0 left-0 px-2 py-1 text-xs font-bold uppercase bg-blue-200 lg:hidden">
                       Status
@@ -227,7 +216,7 @@ export default function Services({ history }) {
                           ? `text-blue-600`
                           : scheduledWash.status === "progress"
                           ? `text-green-600`
-                          : scheduledWash.status === "reject"
+                          : scheduledWash.status === "rejected"
                           ? `text-red-600`
                           : "text-gray-600"
                       } py-1 px-3 text-xs font-bold`}
@@ -370,9 +359,9 @@ export default function Services({ history }) {
                       <div
                         onClick={() =>
                           dispatch(
-                            updateScheduledWash({
+                            updateScheduledWashStatus({
                               _id: scheduledWash._id,
-                              status: "reject",
+                              status: "rejected",
                             })
                           )
                             .then((result) => {
@@ -392,7 +381,7 @@ export default function Services({ history }) {
                       <div
                         onClick={() =>
                           dispatch(
-                            updateScheduledWash({
+                            updateScheduledWashStatus({
                               _id: scheduledWash._id,
                               status: "progress",
                             })
@@ -414,7 +403,7 @@ export default function Services({ history }) {
                       <div
                         onClick={() =>
                           dispatch(
-                            updateScheduledWash({
+                            updateScheduledWashStatus({
                               _id: scheduledWash._id,
                               status: "completed",
                             })

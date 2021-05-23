@@ -8,100 +8,100 @@ import {
   CLEAR_PLAN,
   START_PLANS_RELOAD,
   FINISHED_PLANS_RELOAD,
-} from "../types/plans";
+} from '../types/plans';
 
-import { readItemsAsync } from "./equCurd/readItems";
-import { readOneItemAsync } from "./equCurd/readOneItem";
-import { createItemAsync } from "./equCurd/createItem";
-import { updateItemAsync } from "./equCurd/updateItem";
-import { deleteItemAsync } from "./equCurd/deleteItem";
+import { readItemsAsync } from './equCurd/readItems';
+import { readOneItemAsync } from './equCurd/readOneItem';
+import { createItemAsync } from './equCurd/createItem';
+import { updateItemAsync } from './equCurd/updateItem';
+import { deleteItemAsync } from './equCurd/deleteItem';
 
-export const startPlansReload = () => (dispatch) => {
+export const startPlansReload = () => dispatch => {
   dispatch({ type: START_PLANS_RELOAD });
 };
 
-export const finishedPlansReload = () => (dispatch) => {
+export const finishedPlansReload = () => dispatch => {
   dispatch({ type: FINISHED_PLANS_RELOAD });
 };
 
 export const readPlans = () =>
   readItemsAsync({
-    url: "https://car-wash-uae.herokuapp.com/api/plans/all",
+    url: process.env.REACT_APP_BACKEND_URL + '/api/plans/all',
     successType: READ_PLANS,
     errorType: PLAN_ERROR,
     startReload: startPlansReload,
     finishedReload: finishedPlansReload,
     headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-      "x-access-token": localStorage.getItem("token"),
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'x-access-token': localStorage.getItem('token'),
     },
   });
 
-export const readOnePlan = (id) =>
+export const readOnePlan = id =>
   readOneItemAsync({
-    url: `https://car-wash-uae.herokuapp.com/api/Plans/`,
+    url: process.env.REACT_APP_BACKEND_URL + `/api/Plans/`,
     successType: READ_ONE_PLAN,
     errorType: PLAN_ERROR,
     startReload: startPlansReload,
     finishedReload: finishedPlansReload,
     id,
     headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-      "x-access-token": localStorage.getItem("token"),
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'x-access-token': localStorage.getItem('token'),
     },
   });
 
-export const createsPlan = (formData) =>
+export const createsPlan = formData =>
   createItemAsync({
-    url: "https://car-wash-uae.herokuapp.com/api/Plans/",
+    url: process.env.REACT_APP_BACKEND_URL + '/api/Plans/',
     successType: CREATE_PLAN,
     errorType: PLAN_ERROR,
     startReload: startPlansReload,
     finishedReload: finishedPlansReload,
-    title: "Plans",
+    title: 'Plans',
     formData,
     headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-      "x-access-token": localStorage.getItem("token"),
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'x-access-token': localStorage.getItem('token'),
     },
   });
 
-export const updatePlan = (formData) =>
+export const updatePlan = formData =>
   updateItemAsync({
-    url: "https://car-wash-uae.herokuapp.com/api/Plans",
+    url: process.env.REACT_APP_BACKEND_URL + '/api/Plans',
     successType: UPDATE_PLAN,
     errorType: PLAN_ERROR,
     startReload: startPlansReload,
     finishedReload: finishedPlansReload,
-    title: "Plans",
+    title: 'Plans',
     formData,
     id: formData._id,
     headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-      "x-access-token": localStorage.getItem("token"),
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'x-access-token': localStorage.getItem('token'),
     },
   });
 
-export const deletePlan = (id) =>
+export const deletePlan = id =>
   deleteItemAsync({
-    url: "https://car-wash-uae.herokuapp.com/api/Plans/",
+    url: process.env.REACT_APP_BACKEND_URL + '/api/Plans/',
     successType: DELETE_PLAN,
     errorType: PLAN_ERROR,
     startReload: startPlansReload,
     finishedReload: finishedPlansReload,
-    title: "Plans",
+    title: 'Plans',
     id: id,
     headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-      "x-access-token": localStorage.getItem("token"),
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'x-access-token': localStorage.getItem('token'),
     },
   });
 
-export const clearPlan = () => (dispatch) => {
+export const clearPlan = () => dispatch => {
   dispatch({ type: CLEAR_PLAN });
 };
