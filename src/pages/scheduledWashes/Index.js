@@ -204,95 +204,102 @@ export default function Services({ history }) {
               </tr>
             </thead>
             <tbody>
-              {[...data].reverse().map((scheduledWash) => (
-                <tr className="flex flex-row flex-wrap mb-10 bg-white lg:hover:bg-gray-100 lg:table-row lg:flex-row lg:flex-no-wrap lg:mb-0">
-                  <td className="relative block w-full p-3 text-center text-gray-800 border border-b lg:w-auto lg:table-cell lg:static">
-                    <span className="absolute top-0 left-0 px-2 py-1 text-xs font-bold uppercase bg-blue-200 lg:hidden">
-                      Status
-                    </span>
-                    <span
-                      className={`rounded ${
-                        scheduledWash.status === "completed"
-                          ? `text-blue-600`
-                          : scheduledWash.status === "progress"
-                          ? `text-green-600`
-                          : scheduledWash.status === "rejected"
-                          ? `text-red-600`
-                          : "text-gray-600"
-                      } py-1 px-3 text-xs font-bold`}
-                    >
-                      {scheduledWash.status}
-                    </span>
-                  </td>
+              {[...data]
+                .reverse()
+                .filter(
+                  (item) =>
+                    item.status !== "completed" &&
+                    item.status !== "rejected" &&
+                    item.status !== "notFound"
+                )
+                .map((scheduledWash, index) => (
+                  <tr className="flex flex-row flex-wrap mb-10 bg-white lg:hover:bg-gray-100 lg:table-row lg:flex-row lg:flex-no-wrap lg:mb-0">
+                    <td className="relative block w-full p-3 text-center text-gray-800 border border-b lg:w-auto lg:table-cell lg:static ">
+                      <span className="absolute top-0 left-0 px-2 py-1 text-xs font-bold uppercase bg-blue-200 lg:hidden">
+                        #
+                      </span>
 
-                  <td className="relative block w-full p-3 text-center text-gray-800 border border-b lg:w-auto lg:table-cell lg:static ">
-                    <span className="absolute top-0 left-0 px-2 py-1 text-xs font-bold uppercase bg-blue-200 lg:hidden">
-                      Color
-                    </span>
+                      <div>{index + 1}</div>
+                    </td>
+                    <td className="relative block w-full p-3 text-center text-gray-800 border border-b lg:w-auto lg:table-cell lg:static">
+                      <span className="absolute top-0 left-0 px-2 py-1 text-xs font-bold uppercase bg-blue-200 lg:hidden">
+                        Status
+                      </span>
+                      <span
+                        className={`rounded ${
+                          scheduledWash.status === "completed"
+                            ? `text-blue-600`
+                            : scheduledWash.status === "progress"
+                            ? `text-green-600`
+                            : scheduledWash.status === "rejected"
+                            ? `text-red-600`
+                            : "text-gray-600"
+                        } py-1 px-3 text-xs font-bold`}
+                      >
+                        {scheduledWash.status}
+                      </span>
+                    </td>
 
-                    <div>
-                      {scheduledWash.car !== null
-                        ? scheduledWash.car.color
-                        : ""}
-                    </div>
-                  </td>
-                  <td className="relative block w-full p-3 text-center text-gray-800 border border-b lg:w-auto lg:table-cell lg:static ">
-                    <span className="absolute top-0 left-0 px-2 py-1 text-xs font-bold uppercase bg-blue-200 lg:hidden">
-                      Type
-                    </span>
+                    <td className="relative block w-full p-3 text-center text-gray-800 border border-b lg:w-auto lg:table-cell lg:static ">
+                      <span className="absolute top-0 left-0 px-2 py-1 text-xs font-bold uppercase bg-blue-200 lg:hidden">
+                        Color
+                      </span>
 
-                    <div>{scheduledWash.type}</div>
-                  </td>
-                  <td className="relative block w-full p-3 text-center text-gray-800 border border-b lg:w-auto lg:table-cell lg:static ">
-                    <span className="absolute top-0 left-0 px-2 py-1 text-xs font-bold uppercase bg-blue-200 lg:hidden">
-                      Parking Number
-                    </span>
-                    <div>
+                      <div>
+                        {scheduledWash.car !== null
+                          ? scheduledWash.car.color
+                          : ""}
+                      </div>
+                    </td>
+                    <td className="relative block w-full p-3 text-center text-gray-800 border border-b lg:w-auto lg:table-cell lg:static ">
+                      <span className="absolute top-0 left-0 px-2 py-1 text-xs font-bold uppercase bg-blue-200 lg:hidden">
+                        Type
+                      </span>
+
+                      <div>{scheduledWash.type}</div>
+                    </td>
+                    <td className="relative block w-full p-3 text-center text-gray-800 border border-b lg:w-auto lg:table-cell lg:static ">
+                      <span className="absolute top-0 left-0 px-2 py-1 text-xs font-bold uppercase bg-blue-200 lg:hidden">
+                        Parking Number
+                      </span>
+                      <div>
+                        {scheduledWash.car !== null
+                          ? scheduledWash.car.parkingNumber
+                          : ""}
+                      </div>
+                    </td>
+                    <td className="relative block w-full p-3 text-center text-gray-800 border border-b lg:w-auto lg:table-cell lg:static ">
+                      <span className="absolute top-0 left-0 px-2 py-1 text-xs font-bold uppercase bg-blue-200 lg:hidden">
+                        plate
+                      </span>
+                      <div>
+                        {scheduledWash.car !== null
+                          ? scheduledWash.car.plate
+                          : ""}
+                      </div>
+                    </td>
+                    <td className="relative block w-full p-3 text-center text-gray-800 border border-b lg:w-auto lg:table-cell lg:static ">
+                      <span className="absolute top-0 left-0 px-2 py-1 text-xs font-bold uppercase bg-blue-200 lg:hidden">
+                        City
+                      </span>
                       {scheduledWash.car !== null
-                        ? scheduledWash.car.parkingNumber
-                        : ""}
-                    </div>
-                  </td>
-                  <td className="relative block w-full p-3 text-center text-gray-800 border border-b lg:w-auto lg:table-cell lg:static ">
-                    <span className="absolute top-0 left-0 px-2 py-1 text-xs font-bold uppercase bg-blue-200 lg:hidden">
-                      plate
-                    </span>
-                    <div>
-                      {scheduledWash.car !== null
-                        ? scheduledWash.car.plate
-                        : ""}
-                    </div>
-                  </td>
-                  <td className="relative block w-full p-3 text-center text-gray-800 border border-b lg:w-auto lg:table-cell lg:static ">
-                    <span className="absolute top-0 left-0 px-2 py-1 text-xs font-bold uppercase bg-blue-200 lg:hidden">
-                      City
-                    </span>
-                    {scheduledWash.car !== null
-                      ? citiesReducer.cities.find(
-                          (city) => city._id === scheduledWash.car.city
-                        ) &&
-                        citiesReducer.cities.find(
-                          (city) => city._id === scheduledWash.car.city
-                        ).label
                         ? citiesReducer.cities.find(
                             (city) => city._id === scheduledWash.car.city
+                          ) &&
+                          citiesReducer.cities.find(
+                            (city) => city._id === scheduledWash.car.city
                           ).label
-                        : ""
-                      : ""}
-                  </td>
-                  <td className="relative block w-full p-3 text-center text-gray-800 border border-b lg:w-auto lg:table-cell lg:static ">
-                    <span className="absolute top-0 left-0 px-2 py-1 text-xs font-bold uppercase bg-blue-200 lg:hidden">
-                      Building
-                    </span>
-                    {scheduledWash.car !== null
-                      ? buildingsReducer.buildings.find(
-                          (building) =>
-                            building._id === scheduledWash.car.building
-                        ) &&
-                        buildingsReducer.buildings.find(
-                          (building) =>
-                            building._id === scheduledWash.car.building
-                        ).label
+                          ? citiesReducer.cities.find(
+                              (city) => city._id === scheduledWash.car.city
+                            ).label
+                          : ""
+                        : ""}
+                    </td>
+                    <td className="relative block w-full p-3 text-center text-gray-800 border border-b lg:w-auto lg:table-cell lg:static ">
+                      <span className="absolute top-0 left-0 px-2 py-1 text-xs font-bold uppercase bg-blue-200 lg:hidden">
+                        Building
+                      </span>
+                      {scheduledWash.car !== null
                         ? buildingsReducer.buildings.find(
                             (building) =>
                               building._id === scheduledWash.car.building
@@ -301,131 +308,142 @@ export default function Services({ history }) {
                             (building) =>
                               building._id === scheduledWash.car.building
                           ).label
-                        : ""
-                      : ""}
-                  </td>
-                  <td className="relative block w-full p-3 text-center text-gray-800 border border-b lg:w-auto lg:table-cell lg:static">
-                    <span className="absolute top-0 left-0 px-2 py-1 text-xs font-bold uppercase bg-blue-200 lg:hidden">
-                      Date & Time
-                    </span>
-                    <span
-                      className={`rounded py-1 px-3 text-xs font-semibold text-gray-500`}
-                    >
-                      {new Date(scheduledWash.date).toLocaleDateString()} -{" "}
-                      {new Date(scheduledWash.date).toLocaleTimeString()}
-                    </span>
-                  </td>
-                  <td className="relative block w-full p-3 text-center text-gray-800 border border-b lg:w-auto lg:table-cell lg:static">
-                    <span className="absolute top-0 left-0 px-2 py-1 text-xs font-bold uppercase bg-blue-200 lg:hidden">
-                      Services
-                    </span>
-                    <span
-                      className={`rounded py-1 px-3 text-xs font-semibold text-gray-500`}
-                    >
-                      {scheduledWash.services
-                        .filter((service) => service.count > 0)
-                        .map(
-                          (scheduledWash) =>
-                            servicesReducer.services.find(
-                              (service) => service._id === scheduledWash.service
+                          ? buildingsReducer.buildings.find(
+                              (building) =>
+                                building._id === scheduledWash.car.building
                             ) &&
-                            servicesReducer.services.find(
-                              (service) => service._id === scheduledWash.service
-                            ).name && (
-                              <div className="flex flex-wrap items-center justify-center ">
-                                <div className="flex items-center justify-between mt-1 font-bold text-gray-600 text-md">
-                                  <span className="pr-2 font-semibold text-gray-400">
-                                    {
-                                      servicesReducer.services.find(
-                                        (service) =>
-                                          service._id === scheduledWash.service
-                                      ).name
-                                    }
-                                  </span>
+                            buildingsReducer.buildings.find(
+                              (building) =>
+                                building._id === scheduledWash.car.building
+                            ).label
+                          : ""
+                        : ""}
+                    </td>
+                    <td className="relative block w-full p-3 text-center text-gray-800 border border-b lg:w-auto lg:table-cell lg:static">
+                      <span className="absolute top-0 left-0 px-2 py-1 text-xs font-bold uppercase bg-blue-200 lg:hidden">
+                        Date & Time
+                      </span>
+                      <span
+                        className={`rounded py-1 px-3 text-xs font-semibold text-gray-500`}
+                      >
+                        {new Date(scheduledWash.date).toLocaleDateString()} -{" "}
+                        {new Date(scheduledWash.date).toLocaleTimeString()}
+                      </span>
+                    </td>
+                    <td className="relative block w-full p-3 text-center text-gray-800 border border-b lg:w-auto lg:table-cell lg:static">
+                      <span className="absolute top-0 left-0 px-2 py-1 text-xs font-bold uppercase bg-blue-200 lg:hidden">
+                        Services
+                      </span>
+                      <span
+                        className={`rounded py-1 px-3 text-xs font-semibold text-gray-500`}
+                      >
+                        {scheduledWash.services
+                          .filter((service) => service.count > 0)
+                          .map(
+                            (scheduledWash) =>
+                              servicesReducer.services.find(
+                                (service) =>
+                                  service._id === scheduledWash.service
+                              ) &&
+                              servicesReducer.services.find(
+                                (service) =>
+                                  service._id === scheduledWash.service
+                              ).name && (
+                                <div className="flex flex-wrap items-center justify-center ">
+                                  <div className="flex items-center justify-between mt-1 font-bold text-gray-600 text-md">
+                                    <span className="pr-2 font-semibold text-gray-400">
+                                      {
+                                        servicesReducer.services.find(
+                                          (service) =>
+                                            service._id ===
+                                            scheduledWash.service
+                                        ).name
+                                      }
+                                    </span>
+                                  </div>
                                 </div>
-                              </div>
-                            )
-                        )}
-                    </span>
-                  </td>
+                              )
+                          )}
+                      </span>
+                    </td>
 
-                  <td className="relative block w-full p-3 text-center text-gray-800 border border-b lg:w-auto lg:table-cell lg:static">
-                    <span className="absolute top-0 left-0 px-2 py-1 text-xs font-bold uppercase bg-blue-200 lg:hidden">
-                      Action
-                    </span>
-                    <span
-                      className={`rounded py-1 px-3 text-xs font-semibold text-gray-500 flex justify-between items-center`}
-                    >
-                      <div
-                        onClick={() =>
-                          dispatch(
-                            updateScheduledWashStatus({
-                              _id: scheduledWash._id,
-                              status: "rejected",
-                            })
-                          )
-                            .then((result) => {
-                              setData(
-                                data.map((d) =>
-                                  d._id === result.data.data._id
-                                    ? result.data.data
-                                    : { ...d }
-                                )
-                              );
-                            })
-                            .catch((err) => {})
-                        }
+                    <td className="relative block w-full p-3 text-center text-gray-800 border border-b lg:w-auto lg:table-cell lg:static">
+                      <span className="absolute top-0 left-0 px-2 py-1 text-xs font-bold uppercase bg-blue-200 lg:hidden">
+                        Action
+                      </span>
+                      <span
+                        className={`rounded py-1 px-3 text-xs font-semibold text-gray-500 flex justify-between items-center`}
                       >
-                        <FiSlash className="mx-1 text-xl text-red-500 cursor-pointer" />
-                      </div>
-                      <div
-                        onClick={() =>
-                          dispatch(
-                            updateScheduledWashStatus({
-                              _id: scheduledWash._id,
-                              status: "progress",
-                            })
-                          )
-                            .then((result) => {
-                              setData(
-                                data.map((d) =>
-                                  d._id === result.data.data._id
-                                    ? result.data.data
-                                    : { ...d }
-                                )
-                              );
-                            })
-                            .catch((err) => {})
-                        }
-                      >
-                        <FiDisc className="mx-1 text-xl text-green-500 cursor-pointer" />
-                      </div>
-                      <div
-                        onClick={() =>
-                          dispatch(
-                            updateScheduledWashStatus({
-                              _id: scheduledWash._id,
-                              status: "completed",
-                            })
-                          )
-                            .then((result) => {
-                              setData(
-                                data.map((d) =>
-                                  d._id === result.data.data._id
-                                    ? result.data.data
-                                    : { ...d }
-                                )
-                              );
-                            })
-                            .catch((err) => {})
-                        }
-                      >
-                        <FiCheckCircle className="mx-1 text-xl text-blue-500 cursor-pointer" />
-                      </div>
-                    </span>
-                  </td>
-                </tr>
-              ))}
+                        <div
+                          onClick={() =>
+                            dispatch(
+                              updateScheduledWashStatus({
+                                _id: scheduledWash._id,
+                                status: "rejected",
+                              })
+                            )
+                              .then((result) => {
+                                setData(
+                                  data.map((d) =>
+                                    d._id === result.data.data._id
+                                      ? result.data.data
+                                      : { ...d }
+                                  )
+                                );
+                              })
+                              .catch((err) => {})
+                          }
+                        >
+                          <FiSlash className="mx-1 text-xl text-red-500 cursor-pointer" />
+                        </div>
+                        <div
+                          onClick={() =>
+                            dispatch(
+                              updateScheduledWashStatus({
+                                _id: scheduledWash._id,
+                                status: "progress",
+                              })
+                            )
+                              .then((result) => {
+                                setData(
+                                  data.map((d) =>
+                                    d._id === result.data.data._id
+                                      ? result.data.data
+                                      : { ...d }
+                                  )
+                                );
+                              })
+                              .catch((err) => {})
+                          }
+                        >
+                          <FiDisc className="mx-1 text-xl text-green-500 cursor-pointer" />
+                        </div>
+                        <div
+                          onClick={() =>
+                            dispatch(
+                              updateScheduledWashStatus({
+                                _id: scheduledWash._id,
+                                status: "completed",
+                              })
+                            )
+                              .then((result) => {
+                                setData(
+                                  data.map((d) =>
+                                    d._id === result.data.data._id
+                                      ? result.data.data
+                                      : { ...d }
+                                  )
+                                );
+                              })
+                              .catch((err) => {})
+                          }
+                        >
+                          <FiCheckCircle className="mx-1 text-xl text-blue-500 cursor-pointer" />
+                        </div>
+                      </span>
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         </div>

@@ -5,7 +5,7 @@ import { AiOutlineCloseCircle, AiOutlineDelete } from "react-icons/ai";
 import { Redirect, Route, useHistory, useLocation } from "react-router-dom";
 import { FaEdit } from "react-icons/fa";
 import { readCars } from "../../redux/actions/cars";
-import { readUsers } from "../../redux/actions/user";
+import { readAllUsers } from "../../redux/actions/user";
 
 import _objI from "../../utils/_objI";
 import Layout from "../../components/Layout";
@@ -32,7 +32,7 @@ export default function Services({ history }) {
   useEffect(() => {
     dispatch(readOrders());
     dispatch(readServices());
-    dispatch(readUsers());
+    dispatch(readAllUsers());
     dispatch(readCars());
   }, []);
   if (
