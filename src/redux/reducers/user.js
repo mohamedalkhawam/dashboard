@@ -7,17 +7,18 @@ import {
   CLEAR_USER,
   START_USERS_RELOAD,
   FINISHED_USERS_RELOAD,
-} from "../types/user";
+} from '../types/user';
 
 const initialState = {
   users: [],
+  pagination: {},
   user: {},
   error: {},
   loading: false,
   readable: false,
 };
 
-export default function (state = initialState, action) {
+export default function userReducer(state = initialState, action) {
   const { type, payload } = action;
 
   switch (type) {
@@ -25,6 +26,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         users: payload.data,
+        pagination: payload.pagination,
         readable: true,
       };
     case READ_ONE_USER:
@@ -44,7 +46,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         users: [
-          ...state.users.map((user) =>
+          ...state.users.map(user =>
             user.id === payload.data.id ? payload.data : user
           ),
         ],
@@ -52,7 +54,7 @@ export default function (state = initialState, action) {
     case DELETE_USER:
       return {
         ...state,
-        users: [...state.users.filter((user) => user.id !== payload.data.id)],
+        users: [...state.users.filter(user => user.id !== payload.data.id)],
       };
     case CLEAR_USER:
       return {

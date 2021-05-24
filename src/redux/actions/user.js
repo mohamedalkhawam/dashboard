@@ -24,9 +24,25 @@ export const finishedUsersReload = () => dispatch => {
   dispatch({ type: FINISHED_USERS_RELOAD });
 };
 
-export const readUsers = query =>
+export const readAllUsers = query =>
   readItemsAsync({
     url: process.env.REACT_APP_BACKEND_URL + `/api/users/all`,
+    successType: READ_USERS,
+    errorType: USER_ERROR,
+    startReload: startUsersReload,
+    finishedReload: finishedUsersReload,
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'x-access-token': localStorage.getItem('token'),
+    },
+  });
+
+export const readUsers = query =>
+  readItemsAsync({
+    url:
+      process.env.REACT_APP_BACKEND_URL +
+      `/api/users?page=${query.page}&limit=${query.limit}`,
     successType: READ_USERS,
     errorType: USER_ERROR,
     startReload: startUsersReload,

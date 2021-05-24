@@ -39,7 +39,7 @@ const Layout = ({ children, parentClassName, isAuthenticated }) => {
         } opacity-50 select-none hover:opacity-100 shadow-md hover:shadow-lg cursor-pointer left-8 top-8 w-9 h-9 text-white transition-all duration-200 transform hover:scale-105 z-50 overflow-x-hidden`}>
         <AiOutlineMenuUnfold size='1.7rem' className='text-white ' />
       </div>
-      <div className='relative flex h-screen overflow-x-hidden transition duration-1000 '>
+      <div className='relative flex overflow-x-hidden transition duration-1000 '>
         <div
           style={{ backgroundColor: mainColor }}
           className={`bg-green-700 min-h-screen shadow-md hover:shadow-lg ${

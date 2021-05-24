@@ -17,11 +17,28 @@ export default function Users({ history }) {
   const rolesReducer = useSelector(state => state.rolesReducer);
   const carsReducer = useSelector(state => state.carsReducer);
 
+  const [limit, setLimit] = useState(
+    typeof userReducer.pagination.limit !== 'undefined'
+      ? userReducer.pagination.limit
+      : 50
+  );
+  const [page, setPage] = useState(
+    typeof userReducer.pagination.page !== 'undefined'
+      ? userReducer.pagination.page
+      : 1
+  );
+  const [query, setQuery] = useState({
+    page: page,
+    limit: limit,
+  });
   useEffect(() => {
-    dispatch(readUsers());
     dispatch(readRoles());
     dispatch(readCars());
   }, []);
+  useEffect(() => {
+    dispatch(readUsers(query));
+  }, [query]);
+
   if (userReducer.loading) {
     return (
       <Layout>
@@ -93,7 +110,56 @@ export default function Users({ history }) {
             </div>
           </div>
 
-          <table className='w-full border-collapse shadow-lg table-auto hover:shadow-lg '>
+          <div className='flex justify-start w-full'>
+            <div className='flex items-center p-2 px-3 text-xs text-gray-700'>
+              Total Count: {userReducer.pagination.totalCount}
+            </div>
+            <div className='flex items-center p-2 px-3 text-xs text-gray-700'>
+              Total Pages: {userReducer.pagination.totalPages}
+            </div>
+
+            <div className='flex items-center p-2 px-3 text-xs text-gray-700'>
+              Current Page: {userReducer.pagination.current}
+            </div>
+            <div className='flex items-center p-2 px-3 text-xs text-gray-700'>
+              Count: {userReducer.pagination.count}
+            </div>
+            <div className='flex items-center p-2 px-3 text-xs text-gray-700'>
+              <p> Limit:</p>
+              <input
+                value={limit}
+                type='number'
+                name='limit'
+                className='w-20 p-2 py-1 ml-2 border border-r-0 rounded rounded-r-none shadow'
+                onChange={e => setLimit(Number(e.target.value))}
+              />{' '}
+              <div
+                className='p-2 py-1 text-xs border border-l-0 rounded rounded-l-none shadow cursor-pointer hover:bg-gray-100'
+                onClick={() => setQuery({ ...query, limit: limit })}>
+                submit
+              </div>
+              <div className='flex items-center p-2 px-3 text-xs text-gray-700'>
+                <p> Go To:</p>
+                <input
+                  value={page}
+                  type='number'
+                  name='page'
+                  className='w-20 p-2 py-1 ml-2 border border-r-0 rounded rounded-r-none shadow'
+                  onChange={e =>
+                    e.target.value > 0 &&
+                    e.target.value <= userReducer.pagination.totalPages &&
+                    setPage(Number(e.target.value))
+                  }
+                />{' '}
+                <div
+                  className='p-2 py-1 text-xs border border-l-0 rounded rounded-l-none shadow cursor-pointer hover:bg-gray-100'
+                  onClick={() => setQuery({ ...query, page: page })}>
+                  submit
+                </div>
+              </div>
+            </div>
+          </div>
+          <table className='w-full mb-6 border-collapse shadow-lg table-auto hover:shadow-lg'>
             <thead>
               <tr>
                 <th className='hidden p-3 font-bold text-gray-600 uppercase bg-gray-200 border border-gray-300 lg:table-cell'>
@@ -215,6 +281,68 @@ export default function Users({ history }) {
               ))}
             </tbody>
           </table>
+          <div className='flex justify-between w-full py-6'>
+            <div className='flex items-center justify-start'>
+              {userReducer.pagination.previous !== 1 &&
+                userReducer.pagination.current !== 1 && (
+                  <div
+                    className='p-2 px-3 mr-6 text-xs text-gray-700 bg-white border rounded shadow cursor-pointer hover:bg-gray-100'
+                    onClick={() =>
+                      setQuery({
+                        ...query,
+                        page: 1,
+                      })
+                    }>
+                    1
+                  </div>
+                )}
+
+              {userReducer.pagination.previous && (
+                <div
+                  className='p-2 px-3 mr-2 text-xs text-gray-700 bg-white border rounded shadow cursor-pointer hover:bg-gray-100'
+                  onClick={() =>
+                    setQuery({
+                      ...query,
+                      page: userReducer.pagination.previous,
+                    })
+                  }>
+                  {userReducer.pagination.previous}
+                </div>
+              )}
+              <div
+                className='p-2 px-3 mr-2 text-xs font-bold text-gray-700 bg-white border rounded shadow cursor-pointer hover:bg-gray-100'
+                onClick={() =>
+                  setQuery({ ...query, page: userReducer.pagination.current })
+                }>
+                {userReducer.pagination.current}
+              </div>
+              {userReducer.pagination.next && (
+                <div
+                  className='p-2 px-3 mr-2 text-xs text-gray-700 bg-white border rounded shadow cursor-pointer hover:bg-gray-100'
+                  onClick={() =>
+                    setQuery({ ...query, page: userReducer.pagination.next })
+                  }>
+                  {userReducer.pagination.next}
+                </div>
+              )}
+
+              {userReducer.pagination.totalPages !==
+                userReducer.pagination.next &&
+                userReducer.pagination.totalPages !==
+                  userReducer.pagination.current && (
+                  <div
+                    className='p-2 px-3 mx-6 text-xs text-gray-700 bg-white border rounded shadow cursor-pointer hover:bg-gray-100'
+                    onClick={() =>
+                      setQuery({
+                        ...query,
+                        page: userReducer.pagination.totalPages,
+                      })
+                    }>
+                    {userReducer.pagination.totalPages}
+                  </div>
+                )}
+            </div>
+          </div>
         </div>
       </Layout>
     );
