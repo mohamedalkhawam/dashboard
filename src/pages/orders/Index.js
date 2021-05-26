@@ -50,8 +50,11 @@ export default function Services({ history }) {
     return (
       <Layout>
         {_objI(model) && (
-          <div className="fixed  h-screen w-screen top-0 bottom-0 left-0 right-0  flex items-center justify-center bg-gray-300 bg-opacity-30">
-            <div className="relative z-50 w-6/12 p-6 bg-white border rounded shadow">
+          <div
+            style={{ zIndex: 1001 }}
+            className="fixed  h-screen w-screen top-0 bottom-0 left-0 right-0  flex items-center justify-center bg-black bg-opacity-60"
+          >
+            <div className="relative z-50 w-auto max-w-10/12 p-6 bg-gray-50 border rounded shadow">
               <span onClick={() => setModel({})}>
                 <AiOutlineCloseCircle className="absolute text-2xl text-red-600 cursor-pointer top-3 right-3 hover:text-red-700" />
               </span>
@@ -63,7 +66,10 @@ export default function Services({ history }) {
                     key !== "updatedAt" &&
                     key !== "_id" &&
                     key !== "createdBy" &&
-                    key !== "__v"
+                    key !== "__v" &&
+                    key !== "permissions" &&
+                    key !== "roles" &&
+                    key !== "services"
                   ) {
                     return (
                       <div className="flex w-full py-1">

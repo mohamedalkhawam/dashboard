@@ -11,6 +11,7 @@ import { readServices } from "../../redux/actions/services";
 import Spinner from "../../components/Spinner";
 import PopOver from "../../components/PopOver";
 import _objI from "../../utils/_objI";
+import ImageViewer from "../../components/viewImage";
 export default function Services({ history }) {
   const dispatch = useDispatch();
   const scheduledWashesReducer = useSelector(
@@ -38,13 +39,13 @@ export default function Services({ history }) {
     service: "all",
     city: "all",
     building: "all",
+    status: "all",
   });
   console.log({ data });
   if (
     scheduledWashesReducer.loading ||
     servicesReducer.loading ||
     citiesReducer.loading ||
-    data.length === 0 ||
     buildingsReducer.loading ||
     userReducer.loading
   ) {
@@ -59,8 +60,11 @@ export default function Services({ history }) {
     return (
       <Layout>
         {_objI(model) && (
-          <div className="fixed  h-screen w-screen top-0 bottom-0 left-0 right-0  flex items-center justify-center bg-gray-300 bg-opacity-30">
-            <div className="relative z-50 w-6/12 p-6 bg-white border rounded shadow">
+          <div
+            style={{ zIndex: 1001 }}
+            className="fixed  h-screen w-screen top-0 bottom-0 left-0 right-0  flex items-center justify-center bg-black bg-opacity-60"
+          >
+            <div className="relative z-50 w-6/12 p-6 bg-gray-50 border rounded shadow">
               <span onClick={() => setModel({})}>
                 <AiOutlineCloseCircle className="absolute text-2xl text-red-600 cursor-pointer top-3 right-3 hover:text-red-700" />
               </span>
@@ -80,9 +84,13 @@ export default function Services({ history }) {
                           {key}:
                         </span>
                         <span>
-                          {typeof value === "object" && value !== null
-                            ? value.name
-                            : value}
+                          {typeof value === "object" && value !== null ? (
+                            value.name
+                          ) : key === "image" ? (
+                            <ImageViewer id={value} />
+                          ) : (
+                            value
+                          )}
                         </span>
                       </div>
                     );
@@ -144,6 +152,7 @@ export default function Services({ history }) {
                   service: "all",
                   city: e.target.value,
                   building: "all",
+                  status: "all",
                 });
 
                 setData(
@@ -170,6 +179,7 @@ export default function Services({ history }) {
                   service: "all",
                   city: "all",
                   building: e.target.value,
+                  status: "all",
                 });
 
                 setData(
@@ -191,6 +201,35 @@ export default function Services({ history }) {
                     <option value={building._id}>{building.name}</option>
                   ))}
             </select>
+            <select
+              className="p-2 py-1 border rounded shadow m-2"
+              value={query.status}
+              onChange={(e) => {
+                setQuery({
+                  service: "all",
+                  city: "all",
+                  status: e.target.value,
+                  building: "all",
+                });
+
+                setData(
+                  e.target.value === "all"
+                    ? scheduledWashesReducer.scheduledWashes
+                    : scheduledWashesReducer.scheduledWashes.filter(
+                        (d) => d.status === e.target.value
+                      )
+                );
+              }}
+            >
+              <option value="all">Status</option>
+              <option value={"pending"}>Pending</option>
+              <option value={"rejected"}>Rejected</option>
+              <option value={"accepted"}>Accepted</option>
+              <option value={"progress"}>In-progress</option>
+              <option value={"completed"}>Completed</option>
+              <option value={"notFound"}>Car not found</option>
+            </select>
+
             {/* <select className='p-2 py-1 border rounded shadow'>
               <option value='sort'>Sort</option>
               <option value='filter'>Filter</option>
@@ -226,12 +265,13 @@ export default function Services({ history }) {
             <tbody>
               {[...data]
                 .reverse()
-                .filter(
-                  (item) =>
-                    item.status !== "completed" &&
-                    item.status !== "rejected" &&
-                    item.status !== "notFound" &&
-                    item.status !== "reject"
+                .filter((item) =>
+                  query.status === "all"
+                    ? item.status !== "completed" &&
+                      item.status !== "rejected" &&
+                      item.status !== "notFound" &&
+                      item.status !== "reject"
+                    : query.status === item.status
                 )
                 .map((scheduledWash, index) => (
                   <tr className="flex flex-row flex-wrap mb-10 bg-white lg:hover:bg-gray-100 lg:table-row lg:flex-row lg:flex-no-wrap lg:mb-0">
@@ -267,10 +307,10 @@ export default function Services({ history }) {
                       </span>
 
                       <div
-                        onClick={() => setModel(scheduledWash.car)}
+                        onClick={() => setModel(scheduledWash.car || {})}
                         className="px-3 py-1 text-xs font-bold text-gray-500 rounded cursor-pointer"
                       >
-                        Info
+                        {scheduledWash.car ? "Info" : "No car"}
                       </div>
                     </td>
                     <td className="relative block w-full p-3 text-center text-gray-800 border border-b lg:w-auto lg:table-cell lg:static ">

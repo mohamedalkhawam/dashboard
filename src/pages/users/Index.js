@@ -9,6 +9,7 @@ import { readServices } from "../../redux/actions/services";
 import { readRoles } from "../../redux/actions/roles";
 import { readCars } from "../../redux/actions/cars";
 import _objI from "../../utils/_objI";
+import ImageViewer from "../../components/viewImage";
 import Spinner from "../../components/Spinner";
 export default function Users({ history }) {
   const dispatch = useDispatch();
@@ -63,9 +64,13 @@ export default function Users({ history }) {
                           {key}:
                         </span>
                         <span>
-                          {typeof value === "object" && value !== null
-                            ? value.name
-                            : value}
+                          {typeof value === "object" && value !== null ? (
+                            value.name
+                          ) : key === "image" ? (
+                            <ImageViewer id={value} />
+                          ) : (
+                            value
+                          )}
                         </span>
                       </div>
                     );
@@ -229,7 +234,7 @@ export default function Users({ history }) {
                           className="px-3 py-1 text-xs font-bold text-gray-500 rounded cursor-pointer"
                           onClick={() => setModel(car)}
                         >
-                          {car.model || ""}
+                          {car.model || "No car"}
                         </p>
                       ) : (
                         ""
