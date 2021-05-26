@@ -38,11 +38,13 @@ export const readAllUsers = query =>
     },
   });
 
-export const readUsers = query =>
+export const readUsers = queryString =>
   readItemsAsync({
     url:
       process.env.REACT_APP_BACKEND_URL +
-      `/api/users?page=${query.page}&limit=${query.limit}`,
+      `/api/users?query=${encodeURIComponent(
+        JSON.stringify(queryString.query)
+      )}&page=${queryString.page}&limit=${queryString.limit}`,
     successType: READ_USERS,
     errorType: USER_ERROR,
     startReload: startUsersReload,
