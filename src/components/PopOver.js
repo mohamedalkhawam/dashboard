@@ -1,36 +1,178 @@
-import React, { useState } from "react";
-import { Popover, Transition } from "@headlessui/react";
-import { usePopper } from "react-popper";
-export default function MyPopover({ data }) {
-  let [referenceElement, setReferenceElement] = useState();
-  let [popperElement, setPopperElement] = useState();
-  let { styles, attributes } = usePopper(referenceElement, popperElement);
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { updateScheduledWashStatus } from "../redux/actions/scheduledWashes";
+import {
+  FiCheckCircle,
+  FiCircle,
+  FiDisc,
+  FiSlash,
+  FiMoreHorizontal,
+} from "react-icons/fi";
+import _objI from "../utils/_objI";
+export default function MyPopover({ id, setData, data }) {
+  const dispatch = useDispatch();
+  const scheduledWashesReducer = useSelector(
+    (state) => state.scheduledWashesReducer
+  );
+  const [open, setOpen] = useState(false);
+  const handleClose = () => {
+    if (setOpen) {
+      setOpen(!open);
+    }
+  };
   return (
-    <Popover className="relative">
-      <Popover.Button ref={setReferenceElement}>Solutions</Popover.Button>
-      <Transition
-        enter="transition duration-100 ease-out"
-        enterFrom="transform scale-95 opacity-0"
-        enterTo="transform scale-100 opacity-100"
-        leave="transition duration-75 ease-out"
-        leaveFrom="transform scale-100 opacity-100"
-        leaveTo="transform scale-95 opacity-0"
+    <div className="relative cursor-pointer transition-all duration-500 -right-3">
+      <div
+        onClick={() => {
+          handleClose();
+        }}
+        className="bg-black bg-opacity-80   hover:bg-opacity-95 shadow-md hover:shadow-7xl px-2 py-1 text-lg border rounded-lg flex justify-center items-center"
       >
-        <Popover.Panel
-          ref={setPopperElement}
-          style={styles.popper}
-          {...attributes.popper}
-        >
-          <div className="grid grid-cols-2">
-            <a href="/analytics">Analytics</a>
-            <a href="/engagement">Engagement</a>
-            <a href="/security">Security</a>
-            <a href="/integrations">Integrations</a>
+        <FiMoreHorizontal size="1.5rem" className="text-gray-50" />
+      </div>
+      <div
+        style={{ zIndex: 1000 }}
+        className={`${
+          open === true ? `block` : ` hidden`
+        } absolute bg-gray-50 rounded-lg   select-none  w-32  -top-2 -left-36   transition-all duration-500 shadow-md hover:shadow-lg`}
+      >
+        <div className="rounded-lg ">
+          <div className="py-3 border-b bg-black bg-opacity-80  rounded-t-lg cursor-default  text-md flex justify-center items-center">
+            <div className="cursor-default text-gray-50">Change Status</div>
           </div>
+          <div
+            onClick={() => {
+              handleClose();
+              dispatch(
+                updateScheduledWashStatus({
+                  _id: id,
+                  status: "rejected",
+                })
+              )
+                .then((result) => {
+                  if (setData && data) {
+                    setData(
+                      data.map((d) =>
+                        d._id !== result.data.data._id
+                          ? result.data.data
+                          : { ...d }
+                      )
+                    );
+                  }
+                })
+                .catch((err) => {});
+            }}
+            className="py-3 border-b hover:bg-red-200 rounded-b-lg text-md flex justify-center items-center"
+          >
+            <div className="">Reject</div>
+          </div>
+          <div
+            onClick={() => {
+              handleClose();
+              dispatch(
+                updateScheduledWashStatus({
+                  _id: id,
+                  status: "accepted",
+                })
+              )
+                .then((result) => {
+                  if (setData && data) {
+                    setData(
+                      data.map((d) =>
+                        d._id === result.data.data._id
+                          ? result.data.data
+                          : { ...d }
+                      )
+                    );
+                  }
+                })
+                .catch((err) => {});
+            }}
+            className="py-3 border-b hover:bg-blue-200 rounded-lg text-md flex justify-center items-center "
+          >
+            <div className="">Accepted</div>
+          </div>
+          <div
+            onClick={() => {
+              handleClose();
+              dispatch(
+                updateScheduledWashStatus({
+                  _id: id,
+                  status: "progress",
+                })
+              )
+                .then((result) => {
+                  if (setData && data) {
+                    setData(
+                      data.map((d) =>
+                        d._id === result.data.data._id
+                          ? result.data.data
+                          : { ...d }
+                      )
+                    );
+                  }
+                })
+                .catch((err) => {});
+            }}
+            className="py-3 border-b hover:bg-green-200 rounded-lg text-md flex justify-center items-center "
+          >
+            <div className="">In-Progress</div>
+          </div>
+          <div
+            onClick={() => {
+              handleClose();
+              dispatch(
+                updateScheduledWashStatus({
+                  _id: id,
+                  status: "completed",
+                })
+              )
+                .then((result) => {
+                  if (setData && data) {
+                    setData(
+                      data.map((d) =>
+                        d._id !== result.data.data._id
+                          ? result.data.data
+                          : { ...d }
+                      )
+                    );
+                  }
+                })
+                .catch((err) => {});
+            }}
+            className="py-3 border-b hover:bg-indigo-200 rounded-lg text-md flex justify-center items-center "
+          >
+            <div className="">Completed</div>
+          </div>
+          <div
+            onClick={() => {
+              handleClose();
 
-          <img src="/solutions.jpg" alt="" />
-        </Popover.Panel>
-      </Transition>
-    </Popover>
+              dispatch(
+                updateScheduledWashStatus({
+                  _id: id,
+                  status: "notFound",
+                })
+              )
+                .then((result) => {
+                  if (setData && data) {
+                    setData(
+                      data.map((d) =>
+                        d._id !== result.data.data._id
+                          ? result.data.data
+                          : { ...d }
+                      )
+                    );
+                  }
+                })
+                .catch((err) => {});
+            }}
+            className="py-3 border-b hover:bg-pink-200 rounded-lg  text-  text-md flex justify-center items-center "
+          >
+            <div className="">Car not found</div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }

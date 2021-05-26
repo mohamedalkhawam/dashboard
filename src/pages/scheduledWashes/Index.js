@@ -1,31 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Redirect, Route, useHistory, useLocation } from "react-router-dom";
-import { FaEdit } from "react-icons/fa";
-import { AiOutlineDelete } from "react-icons/ai";
-import { CgDetailsMore } from "react-icons/cg";
-
+import { AiOutlineCloseCircle } from "react-icons/ai";
 import Layout from "../../components/Layout";
-import {
-  readScheduledWashes,
-  deleteScheduledWash,
-  clearScheduledWash,
-  updateScheduledWashStatus,
-} from "../../redux/actions/scheduledWashes";
+import { readScheduledWashes } from "../../redux/actions/scheduledWashes";
 import { readCities } from "../../redux/actions/city";
+import { readCars } from "../../redux/actions/cars";
+import { readAllUsers } from "../../redux/actions/user";
 import { readBuildings } from "../../redux/actions/building";
 import { readServices } from "../../redux/actions/services";
-import { FiCheckCircle, FiCircle, FiDisc, FiSlash } from "react-icons/fi";
 import Spinner from "../../components/Spinner";
-// import { readServices } from "../../redux/actions/services";
+import PopOver from "../../components/PopOver";
+import _objI from "../../utils/_objI";
 export default function Services({ history }) {
   const dispatch = useDispatch();
   const scheduledWashesReducer = useSelector(
     (state) => state.scheduledWashesReducer
   );
+  const [model, setModel] = useState({});
   const servicesReducer = useSelector((state) => state.servicesReducer);
   const citiesReducer = useSelector((state) => state.citiesReducer);
   const buildingsReducer = useSelector((state) => state.buildingsReducer);
+  const userReducer = useSelector((state) => state.userReducer);
   console.log({ scheduledWashesReducer });
   const [data, setData] = useState([]);
   useEffect(() => {
@@ -37,8 +32,8 @@ export default function Services({ history }) {
     dispatch(readServices());
     dispatch(readCities());
     dispatch(readBuildings());
+    dispatch(readAllUsers());
   }, []);
-  const [openAction, setOpenAction] = useState(false);
   const [query, setQuery] = useState({
     service: "all",
     city: "all",
@@ -50,7 +45,8 @@ export default function Services({ history }) {
     servicesReducer.loading ||
     citiesReducer.loading ||
     data.length === 0 ||
-    buildingsReducer.loading
+    buildingsReducer.loading ||
+    userReducer.loading
   ) {
     return (
       <Layout>
@@ -62,6 +58,40 @@ export default function Services({ history }) {
   } else {
     return (
       <Layout>
+        {_objI(model) && (
+          <div className="fixed  h-screen w-screen top-0 bottom-0 left-0 right-0  flex items-center justify-center bg-gray-300 bg-opacity-30">
+            <div className="relative z-50 w-6/12 p-6 bg-white border rounded shadow">
+              <span onClick={() => setModel({})}>
+                <AiOutlineCloseCircle className="absolute text-2xl text-red-600 cursor-pointer top-3 right-3 hover:text-red-700" />
+              </span>
+              <span className="flex flex-wrap w-full">
+                {Object.entries(model).map(([key, value]) => {
+                  if (
+                    key !== "trash" &&
+                    key !== "createdAt" &&
+                    key !== "updatedAt" &&
+                    key !== "_id" &&
+                    key !== "createdBy" &&
+                    key !== "__v"
+                  ) {
+                    return (
+                      <div className="flex w-full py-1">
+                        <span className="mr-3 text-sm font-semibold">
+                          {key}:
+                        </span>
+                        <span>
+                          {typeof value === "object" && value !== null
+                            ? value.name
+                            : value}
+                        </span>
+                      </div>
+                    );
+                  }
+                })}
+              </span>
+            </div>
+          </div>
+        )}
         <div
           style={{ backgroundColor: "#F8F8F8" }}
           className="flex flex-col items-center w-full h-screen p-10 pb-20 transition-all overflow-y-scroll"
@@ -80,9 +110,9 @@ export default function Services({ history }) {
               </div>
             </div>
           </div>
-          <div className="flex items-center justify-between w-full my-3">
+          <div className="flex items-center justify-start w-full my-3 flex-wrap ">
             <select
-              className="p-2 py-1 border rounded shadow"
+              className="p-2 py-1 border rounded shadow m-2"
               value={query.service}
               onChange={(e) => {
                 setQuery({
@@ -107,7 +137,7 @@ export default function Services({ history }) {
               ))}
             </select>
             <select
-              className="p-2 py-1 border rounded shadow"
+              className="p-2 py-1 border rounded shadow m-2"
               value={query.city}
               onChange={(e) => {
                 setQuery({
@@ -133,7 +163,7 @@ export default function Services({ history }) {
             </select>
 
             <select
-              className="p-2 py-1 border rounded shadow"
+              className="p-2 py-1 border rounded shadow m-2"
               value={query.building}
               onChange={(e) => {
                 setQuery({
@@ -175,23 +205,12 @@ export default function Services({ history }) {
                 <th className="hidden p-3 font-bold text-gray-600 uppercase bg-gray-200 border border-gray-300 lg:table-cell">
                   Status
                 </th>
+
                 <th className="hidden p-3 font-bold text-gray-600 uppercase bg-gray-200 border border-gray-300 lg:table-cell">
-                  Color
+                  Car
                 </th>
                 <th className="hidden p-3 font-bold text-gray-600 uppercase bg-gray-200 border border-gray-300 lg:table-cell">
-                  Type
-                </th>
-                <th className="hidden p-3 font-bold text-gray-600 uppercase bg-gray-200 border border-gray-300 lg:table-cell">
-                  Parking Number
-                </th>
-                <th className="hidden p-3 font-bold text-gray-600 uppercase bg-gray-200 border border-gray-300 lg:table-cell">
-                  plate
-                </th>
-                <th className="hidden p-3 font-bold text-gray-600 uppercase bg-gray-200 border border-gray-300 lg:table-cell">
-                  City
-                </th>
-                <th className="hidden p-3 font-bold text-gray-600 uppercase bg-gray-200 border border-gray-300 lg:table-cell">
-                  Building
+                  User
                 </th>
                 <th className="hidden p-3 font-bold text-gray-600 uppercase bg-gray-200 border border-gray-300 lg:table-cell">
                   Date & Time
@@ -244,82 +263,35 @@ export default function Services({ history }) {
 
                     <td className="relative block w-full p-3 text-center text-gray-800 border border-b lg:w-auto lg:table-cell lg:static ">
                       <span className="absolute top-0 left-0 px-2 py-1 text-xs font-bold uppercase bg-blue-200 lg:hidden">
-                        Color
+                        Car
+                      </span>
+
+                      <div
+                        onClick={() => setModel(scheduledWash.car)}
+                        className="px-3 py-1 text-xs font-bold text-gray-500 rounded cursor-pointer"
+                      >
+                        Info
+                      </div>
+                    </td>
+                    <td className="relative block w-full p-3 text-center text-gray-800 border border-b lg:w-auto lg:table-cell lg:static ">
+                      <span className="absolute top-0 left-0 px-2 py-1 text-xs font-bold uppercase bg-blue-200 lg:hidden">
+                        User
                       </span>
 
                       <div>
-                        {scheduledWash.car !== null
-                          ? scheduledWash.car.color
-                          : ""}
+                        {userReducer.users.map((user) =>
+                          scheduledWash.createdBy === user._id ? (
+                            <p
+                              className="px-3 py-1 text-xs font-bold text-gray-500 rounded cursor-pointer"
+                              onClick={() => setModel(user)}
+                            >
+                              Info
+                            </p>
+                          ) : (
+                            ""
+                          )
+                        )}
                       </div>
-                    </td>
-                    <td className="relative block w-full p-3 text-center text-gray-800 border border-b lg:w-auto lg:table-cell lg:static ">
-                      <span className="absolute top-0 left-0 px-2 py-1 text-xs font-bold uppercase bg-blue-200 lg:hidden">
-                        Type
-                      </span>
-
-                      <div>{scheduledWash.type}</div>
-                    </td>
-                    <td className="relative block w-full p-3 text-center text-gray-800 border border-b lg:w-auto lg:table-cell lg:static ">
-                      <span className="absolute top-0 left-0 px-2 py-1 text-xs font-bold uppercase bg-blue-200 lg:hidden">
-                        Parking Number
-                      </span>
-                      <div>
-                        {scheduledWash.car !== null
-                          ? scheduledWash.car.parkingNumber
-                          : ""}
-                      </div>
-                    </td>
-                    <td className="relative block w-full p-3 text-center text-gray-800 border border-b lg:w-auto lg:table-cell lg:static ">
-                      <span className="absolute top-0 left-0 px-2 py-1 text-xs font-bold uppercase bg-blue-200 lg:hidden">
-                        plate
-                      </span>
-                      <div>
-                        {scheduledWash.car !== null
-                          ? scheduledWash.car.plate
-                          : ""}
-                      </div>
-                    </td>
-                    <td className="relative block w-full p-3 text-center text-gray-800 border border-b lg:w-auto lg:table-cell lg:static ">
-                      <span className="absolute top-0 left-0 px-2 py-1 text-xs font-bold uppercase bg-blue-200 lg:hidden">
-                        City
-                      </span>
-                      {scheduledWash.car !== null
-                        ? citiesReducer.cities.find(
-                            (city) => city._id === scheduledWash.car.city
-                          ) &&
-                          citiesReducer.cities.find(
-                            (city) => city._id === scheduledWash.car.city
-                          ).label
-                          ? citiesReducer.cities.find(
-                              (city) => city._id === scheduledWash.car.city
-                            ).label
-                          : ""
-                        : ""}
-                    </td>
-                    <td className="relative block w-full p-3 text-center text-gray-800 border border-b lg:w-auto lg:table-cell lg:static ">
-                      <span className="absolute top-0 left-0 px-2 py-1 text-xs font-bold uppercase bg-blue-200 lg:hidden">
-                        Building
-                      </span>
-                      {scheduledWash.car !== null
-                        ? buildingsReducer.buildings.find(
-                            (building) =>
-                              building._id === scheduledWash.car.building
-                          ) &&
-                          buildingsReducer.buildings.find(
-                            (building) =>
-                              building._id === scheduledWash.car.building
-                          ).label
-                          ? buildingsReducer.buildings.find(
-                              (building) =>
-                                building._id === scheduledWash.car.building
-                            ) &&
-                            buildingsReducer.buildings.find(
-                              (building) =>
-                                building._id === scheduledWash.car.building
-                            ).label
-                          : ""
-                        : ""}
                     </td>
                     <td className="relative block w-full p-3 text-center text-gray-800 border border-b lg:w-auto lg:table-cell lg:static">
                       <span className="absolute top-0 left-0 px-2 py-1 text-xs font-bold uppercase bg-blue-200 lg:hidden">
@@ -374,127 +346,13 @@ export default function Services({ history }) {
                         Action
                       </span>
                       <span
-                        className={`rounded py-1 px-3 text-xs font-semibold text-gray-500 flex justify-between items-center`}
+                        className={`rounded py-1 px-3 text-xs font-semibold text-gray-500 flex justify-end items-center`}
                       >
-                        <div
-                          onClick={() =>
-                            dispatch(
-                              updateScheduledWashStatus({
-                                _id: scheduledWash._id,
-                                status: "rejected",
-                              })
-                            )
-                              .then((result) => {
-                                setData(
-                                  data.map((d) =>
-                                    d._id === result.data.data._id
-                                      ? result.data.data
-                                      : { ...d }
-                                  )
-                                );
-                              })
-                              .catch((err) => {})
-                          }
-                        >
-                          <FiSlash className="mx-1 text-xl text-red-500 cursor-pointer" />
-                        </div>
-                        <div
-                          onClick={() =>
-                            dispatch(
-                              updateScheduledWashStatus({
-                                _id: scheduledWash._id,
-                                status: "progress",
-                              })
-                            )
-                              .then((result) => {
-                                setData(
-                                  data.map((d) =>
-                                    d._id === result.data.data._id
-                                      ? result.data.data
-                                      : { ...d }
-                                  )
-                                );
-                              })
-                              .catch((err) => {})
-                          }
-                        >
-                          <FiDisc className="mx-1 text-xl text-green-500 cursor-pointer" />
-                        </div>
-                        <div
-                          onClick={() =>
-                            dispatch(
-                              updateScheduledWashStatus({
-                                _id: scheduledWash._id,
-                                status: "completed",
-                              })
-                            )
-                              .then((result) => {
-                                setData(
-                                  data.map((d) =>
-                                    d._id === result.data.data._id
-                                      ? result.data.data
-                                      : { ...d }
-                                  )
-                                );
-                              })
-                              .catch((err) => {})
-                          }
-                        >
-                          <FiCheckCircle className="mx-1 text-xl text-blue-500 cursor-pointer" />
-                        </div>
-                        <div className="relative cursor-pointer transition-all duration-500">
-                          <div onClick={() => setOpenAction(!openAction)}>
-                            click
-                          </div>
-                          <div
-                            className={`${
-                              openAction === true ? `block` : ` hidden`
-                            } absolute bg-gray-50   select-none  w-32  -top-2 -left-36 transition-all duration-500 shadow-md hover:shadow-lg`}
-                          >
-                            <div className="">
-                              <div className="py-3 border-b hover:bg-red-200  text-md flex justify-center items-center">
-                                <div
-                                  className=""
-                                  onClick={() => setOpenAction(false)}
-                                >
-                                  reject
-                                </div>
-                              </div>
-                              <div className="py-3 border-b hover:bg-blue-200  text-md flex justify-center items-center ">
-                                <div
-                                  className=""
-                                  onClick={() => setOpenAction(false)}
-                                >
-                                  Accepted
-                                </div>
-                              </div>
-                              <div className="py-3 border-b hover:bg-green-200  text-md flex justify-center items-center ">
-                                <div
-                                  className=""
-                                  onClick={() => setOpenAction(false)}
-                                >
-                                  In-Progress
-                                </div>
-                              </div>
-                              <div className="py-3 border-b hover:bg-indigo-200 text-md flex justify-center items-center ">
-                                <div
-                                  className=""
-                                  onClick={() => setOpenAction(false)}
-                                >
-                                  Completed
-                                </div>
-                              </div>
-                              <div className="py-3 border-b hover:bg-pink-200  text-  text-md flex justify-center items-center ">
-                                <div
-                                  className=""
-                                  onClick={() => setOpenAction(false)}
-                                >
-                                  Car not found
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
+                        <PopOver
+                          id={scheduledWash._id}
+                          setData={setData}
+                          data={data}
+                        />
                       </span>
                     </td>
                   </tr>

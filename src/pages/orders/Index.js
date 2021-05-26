@@ -16,8 +16,6 @@ import {
 } from "../../redux/actions/orders";
 import { readServices } from "../../redux/actions/services";
 import Spinner from "../../components/Spinner";
-import PopOver from "../../components/PopOver";
-// import { readServices } from "../../redux/actions/services";
 import AutoComplete from "../../components/AutoComplete";
 export default function Services({ history }) {
   const [searchValue, setSearchValue] = useState([{}]);
