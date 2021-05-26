@@ -17,21 +17,29 @@ export default function Users({ history }) {
   const carsReducer = useSelector((state) => state.carsReducer);
   const userReducer = useSelector((state) => state.userReducer);
   const rolesReducer = useSelector((state) => state.rolesReducer);
+
   const [limit, setLimit] = useState(50);
   const [page, setPage] = useState(1);
   const [query, setQuery] = useState({
+    email: { $in: "" },
+    status: { $in: "" },
+  });
+
+  const [queryString, setQueryString] = useState({
     page: page,
     limit: limit,
+    query: {},
   });
   useEffect(() => {
     dispatch(readRoles());
     dispatch(readCars());
   }, []);
   useEffect(() => {
-    dispatch(readUsers(query));
-  }, [query]);
-  console.log({ model });
-  if (userReducer.loading || carsReducer.loading || rolesReducer.loading) {
+    dispatch(readUsers(queryString));
+  }, [queryString]);
+
+  console.log({ query, queryString });
+  if (userReducer.loading) {
     return (
       <Layout>
         <div className="flex items-center justify-center h-screen">
@@ -110,6 +118,80 @@ export default function Users({ history }) {
 
           <div className="flex justify-start w-full">
             <div className="flex items-center p-2 px-3 text-xs text-gray-700">
+              <p> Email:</p>
+              <input
+                value={query.email.$in}
+                name="$in"
+                className="w-20 p-2 py-1 ml-2 border border-r-0 rounded rounded-r-none shadow"
+                onChange={(e) => {
+                  setQuery({
+                    ...query,
+                    email: {
+                      $in: e.target.value,
+                    },
+                  });
+                }}
+              />{" "}
+              <div
+                className="p-2 py-1 text-xs border border-l-0 rounded rounded-l-none shadow cursor-pointer hover:bg-gray-100"
+                onClick={() => {
+                  let newQuery = JSON.parse(JSON.stringify(query));
+                  newQuery.email.$in.length === 0 && delete newQuery.email;
+                  newQuery.status.$in.length === 0 && delete newQuery.status;
+                  setQueryString({ ...queryString, query: newQuery });
+                }}
+              >
+                Search
+              </div>
+            </div>
+
+            <div className="flex items-center p-2 px-3 text-xs text-gray-700">
+              <p> Status:</p>
+              {/* <input
+                value={query.status.$in}
+                name='$in'
+                className='w-20 p-2 py-1 ml-2 border border-r-0 rounded rounded-r-none shadow'
+                onChange={e => {
+                  setQuery({
+                    ...query,
+                    status: {
+                      $in: e.target.value,
+                    },
+                  });
+                }}
+              />{' '} */}
+              <select
+                value={query.status.$in}
+                name="$in"
+                className="w-20 p-2 py-1 ml-2 border border-r-0 rounded rounded-r-none shadow"
+                onChange={(e) => {
+                  setQuery({
+                    ...query,
+                    status: {
+                      $in: e.target.value,
+                    },
+                  });
+                }}
+              >
+                <option value="active">Active</option>
+                <option value="pending">Pending</option>
+                <option value="rejected">Rejected</option>
+              </select>
+              <div
+                className="p-2 py-1 text-xs border border-l-0 rounded rounded-l-none shadow cursor-pointer hover:bg-gray-100"
+                onClick={() => {
+                  let newQuery = JSON.parse(JSON.stringify(query));
+                  newQuery.email.$in.length === 0 && delete newQuery.email;
+                  newQuery.status.$in.length === 0 && delete newQuery.status;
+                  setQueryString({ ...queryString, query: newQuery });
+                }}
+              >
+                Search
+              </div>
+            </div>
+          </div>
+          <div className="flex justify-start w-full">
+            <div className="flex items-center p-2 px-3 text-xs text-gray-700">
               Total Count: {userReducer.pagination.totalCount}
             </div>
             <div className="flex items-center p-2 px-3 text-xs text-gray-700">
@@ -133,9 +215,9 @@ export default function Users({ history }) {
               />{" "}
               <div
                 className="p-2 py-1 text-xs border border-l-0 rounded rounded-l-none shadow cursor-pointer hover:bg-gray-100"
-                onClick={() => setQuery({ ...query, limit: limit })}
+                onClick={() => setQueryString({ ...queryString, limit: limit })}
               >
-                submit
+                Submit
               </div>
               <div className="flex items-center p-2 px-3 text-xs text-gray-700">
                 <p> Go To:</p>
@@ -152,139 +234,149 @@ export default function Users({ history }) {
                 />{" "}
                 <div
                   className="p-2 py-1 text-xs border border-l-0 rounded rounded-l-none shadow cursor-pointer hover:bg-gray-100"
-                  onClick={() => setQuery({ ...query, page: page })}
+                  onClick={() => setQueryString({ ...queryString, page: page })}
                 >
-                  submit
+                  Submit
                 </div>
               </div>
             </div>
           </div>
-          <table className="w-full mb-6 border-collapse shadow-lg table-auto hover:shadow-lg">
-            <thead>
-              <tr>
-                <th className="hidden p-3 font-bold text-gray-600 uppercase bg-gray-200 border border-gray-300 lg:table-cell">
-                  #
-                </th>
-                <th className="hidden p-3 font-bold text-gray-600 uppercase bg-gray-200 border border-gray-300 lg:table-cell">
-                  Email
-                </th>
-                <th className="hidden p-3 font-bold text-gray-600 uppercase bg-gray-200 border border-gray-300 lg:table-cell">
-                  Phone
-                </th>
-                <th className="hidden p-3 font-bold text-gray-600 uppercase bg-gray-200 border border-gray-300 lg:table-cell">
-                  Role
-                </th>
-                <th className="hidden p-3 font-bold text-gray-600 uppercase bg-gray-200 border border-gray-300 lg:table-cell">
-                  Cars
-                </th>
-                <th className="hidden p-3 font-bold text-gray-600 uppercase bg-gray-200 border border-gray-300 lg:table-cell">
-                  Status
-                </th>{" "}
-                <th className="hidden p-3 font-bold text-gray-600 uppercase bg-gray-200 border border-gray-300 lg:table-cell">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody>
+
+          {userReducer.users.length > 0 ? (
+            <table className="w-full mb-6 border-collapse shadow-lg table-auto hover:shadow-lg">
+              <thead>
+                <tr>
+                  <th className="hidden p-3 font-bold text-gray-600 uppercase bg-gray-200 border border-gray-300 lg:table-cell">
+                    #
+                  </th>
+                  <th className="hidden p-3 font-bold text-gray-600 uppercase bg-gray-200 border border-gray-300 lg:table-cell">
+                    Email
+                  </th>
+                  <th className="hidden p-3 font-bold text-gray-600 uppercase bg-gray-200 border border-gray-300 lg:table-cell">
+                    Phone
+                  </th>
+                  <th className="hidden p-3 font-bold text-gray-600 uppercase bg-gray-200 border border-gray-300 lg:table-cell">
+                    Role
+                  </th>
+                  <th className="hidden p-3 font-bold text-gray-600 uppercase bg-gray-200 border border-gray-300 lg:table-cell">
+                    Cars
+                  </th>
+                  <th className="hidden p-3 font-bold text-gray-600 uppercase bg-gray-200 border border-gray-300 lg:table-cell">
+                    Status
+                  </th>{" "}
+                  <th className="hidden p-3 font-bold text-gray-600 uppercase bg-gray-200 border border-gray-300 lg:table-cell">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
               {userReducer.users.map((user, index) => (
-                <tr className="flex flex-row flex-wrap mb-10 bg-white lg:hover:bg-gray-100 lg:table-row lg:flex-row lg:flex-no-wrap lg:mb-0">
-                  <td className="relative block w-full p-3 text-center text-gray-800 border border-b lg:w-auto lg:table-cell lg:static">
-                    <span className="absolute top-0 left-0 px-2 py-1 text-xs font-bold uppercase bg-blue-200 lg:hidden">
-                      #
-                    </span>
-                    {index + 1}
-                  </td>
-                  <td className="relative block w-full p-3 text-center text-gray-800 border border-b lg:w-auto lg:table-cell lg:static">
-                    <span className="absolute top-0 left-0 px-2 py-1 text-xs font-bold uppercase bg-blue-200 lg:hidden">
-                      Email
-                    </span>
-                    {user.email || (
-                      <span className="text-xs text-gray-600">Empty</span>
-                    )}
-                  </td>
-                  <td className="relative block w-full p-3 text-center text-gray-800 border border-b lg:w-auto lg:table-cell lg:static">
-                    <span className="absolute top-0 left-0 px-2 py-1 text-xs font-bold uppercase bg-blue-200 lg:hidden">
-                      Phone
-                    </span>
-                    {user.phone || (
-                      <span className="text-xs text-gray-600">Empty</span>
-                    )}
-                  </td>
-                  <td className="relative block w-full p-3 text-center text-gray-800 border border-b lg:w-auto lg:table-cell lg:static">
-                    <span className="absolute top-0 left-0 px-2 py-1 text-xs font-bold uppercase bg-blue-200 lg:hidden">
-                      Role
-                    </span>
-                    <p className="px-3 py-1 text-xs font-bold text-gray-500 rounded">
-                      {rolesReducer.roles.map((role) =>
-                        user.roles.find((userRole) => userRole === role._id) ? (
-                          <span>{role.name}</span>
+                <tbody>
+                  <tr className="flex flex-row flex-wrap mb-10 bg-white lg:hover:bg-gray-100 lg:table-row lg:flex-row lg:flex-no-wrap lg:mb-0">
+                    <td className="relative block w-full p-3 text-center text-gray-800 border border-b lg:w-auto lg:table-cell lg:static">
+                      <span className="absolute top-0 left-0 px-2 py-1 text-xs font-bold uppercase bg-blue-200 lg:hidden">
+                        #
+                      </span>
+                      {index + 1}
+                    </td>
+                    <td className="relative block w-full p-3 text-center text-gray-800 border border-b lg:w-auto lg:table-cell lg:static">
+                      <span className="absolute top-0 left-0 px-2 py-1 text-xs font-bold uppercase bg-blue-200 lg:hidden">
+                        Email
+                      </span>
+                      {user.email || (
+                        <span className="text-xs text-gray-600">Empty</span>
+                      )}
+                    </td>
+                    <td className="relative block w-full p-3 text-center text-gray-800 border border-b lg:w-auto lg:table-cell lg:static">
+                      <span className="absolute top-0 left-0 px-2 py-1 text-xs font-bold uppercase bg-blue-200 lg:hidden">
+                        Phone
+                      </span>
+                      {user.phone || (
+                        <span className="text-xs text-gray-600">Empty</span>
+                      )}
+                    </td>
+                    <td className="relative block w-full p-3 text-center text-gray-800 border border-b lg:w-auto lg:table-cell lg:static">
+                      <span className="absolute top-0 left-0 px-2 py-1 text-xs font-bold uppercase bg-blue-200 lg:hidden">
+                        Role
+                      </span>
+                      <p className="px-3 py-1 text-xs font-bold text-gray-500 rounded">
+                        {rolesReducer.roles.map((role) =>
+                          user.roles.find(
+                            (userRole) => userRole === role._id
+                          ) ? (
+                            <span>{role.name}</span>
+                          ) : (
+                            ""
+                          )
+                        )}
+                      </p>
+                    </td>{" "}
+                    <td className="relative block w-full p-3 text-center text-gray-800 border border-b lg:w-auto lg:table-cell lg:static">
+                      <span className="absolute top-0 left-0 px-2 py-1 text-xs font-bold uppercase bg-blue-200 lg:hidden">
+                        Cars
+                      </span>
+                      {carsReducer.cars.map((car) =>
+                        car.createdBy === user._id ? (
+                          <p
+                            className="px-3 py-1 text-xs font-bold text-gray-500 rounded cursor-pointer"
+                            onClick={() => setModel(car)}
+                          >
+                            {car.model}
+                          </p>
                         ) : (
                           ""
                         )
                       )}
-                    </p>
-                  </td>{" "}
-                  <td className="relative block w-full p-3 text-center text-gray-800 border border-b lg:w-auto lg:table-cell lg:static">
-                    <span className="absolute top-0 left-0 px-2 py-1 text-xs font-bold uppercase bg-blue-200 lg:hidden">
-                      Cars
-                    </span>
-                    {carsReducer.cars.map((car) =>
-                      car.createdBy === user._id ? (
-                        <p
-                          className="px-3 py-1 text-xs font-bold text-gray-500 rounded cursor-pointer"
-                          onClick={() => setModel(car)}
+                    </td>
+                    <td className="relative block w-full p-3 text-center text-gray-800 border border-b lg:w-auto lg:table-cell lg:static">
+                      <span className="absolute top-0 left-0 px-2 py-1 text-xs font-bold uppercase bg-blue-200 lg:hidden">
+                        Status
+                      </span>
+                      <span
+                        className={`rounded ${
+                          user.status === "active"
+                            ? `bg-green-600 hover:bg-green-700`
+                            : `bg-red-600 hover:bg-red-700`
+                        } py-1 px-3 text-xs font-semibold text-white`}
+                      >
+                        {user.status}
+                      </span>
+                    </td>
+                    <td className="relative block w-full p-3 text-center text-gray-800 border border-b lg:w-auto lg:table-cell lg:static">
+                      <span className="absolute top-0 left-0 px-2 py-1 text-xs font-bold uppercase bg-blue-200 lg:hidden">
+                        Actions
+                      </span>
+                      <div className="flex items-center justify-evenly">
+                        <div
+                          onClick={() => {
+                            dispatch(clearUser());
+                            history.push(`/users/${user.id}/edit`);
+                          }}
+                          className="text-blue-400 underline cursor-pointer hover:text-blue-600"
                         >
-                          {car.model || "No car"}
-                        </p>
-                      ) : (
-                        ""
-                      )
-                    )}
-                  </td>
-                  <td className="relative block w-full p-3 text-center text-gray-800 border border-b lg:w-auto lg:table-cell lg:static">
-                    <span className="absolute top-0 left-0 px-2 py-1 text-xs font-bold uppercase bg-blue-200 lg:hidden">
-                      Status
-                    </span>
-                    <span
-                      className={`rounded ${
-                        user.status === "active"
-                          ? `bg-green-600 hover:bg-green-700`
-                          : `bg-red-600 hover:bg-red-700`
-                      } py-1 px-3 text-xs font-semibold text-white`}
-                    >
-                      {user.status}
-                    </span>
-                  </td>
-                  <td className="relative block w-full p-3 text-center text-gray-800 border border-b lg:w-auto lg:table-cell lg:static">
-                    <span className="absolute top-0 left-0 px-2 py-1 text-xs font-bold uppercase bg-blue-200 lg:hidden">
-                      Actions
-                    </span>
-                    <div className="flex items-center justify-evenly">
-                      <div
-                        onClick={() => {
-                          dispatch(clearUser());
-                          history.push(`/users/${user.id}/edit`);
-                        }}
-                        className="text-blue-400 underline cursor-pointer hover:text-blue-600"
-                      >
-                        <FaEdit size="1.8rem" />
+                          <FaEdit size="1.8rem" />
+                        </div>
+                        <div
+                          onClick={() => {
+                            dispatch(clearUser());
+                            dispatch(deleteUser(user.id));
+                            dispatch(readUsers());
+                          }}
+                          className="text-red-500 underline cursor-pointer hover:text-red-500"
+                        >
+                          <AiOutlineDelete size="1.8rem" />
+                        </div>
                       </div>
-                      <div
-                        onClick={() => {
-                          dispatch(clearUser());
-                          dispatch(deleteUser(user.id));
-                          dispatch(readUsers());
-                        }}
-                        className="text-red-500 underline cursor-pointer hover:text-red-500"
-                      >
-                        <AiOutlineDelete size="1.8rem" />
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                    </td>
+                  </tr>
+                </tbody>
+              ))}{" "}
+            </table>
+          ) : (
+            <p className="flex flex-row flex-wrap items-center justify-center p-6 mb-10 text-xl text-red-600">
+              There is no result
+            </p>
+          )}
+
           <div className="flex justify-between w-full py-6">
             <div className="flex items-center justify-start">
               {userReducer.pagination.previous !== 1 &&
@@ -292,8 +384,8 @@ export default function Users({ history }) {
                   <div
                     className="p-2 px-3 mr-6 text-xs text-gray-700 bg-white border rounded shadow cursor-pointer hover:bg-gray-100"
                     onClick={() =>
-                      setQuery({
-                        ...query,
+                      setQueryString({
+                        ...queryString,
                         page: 1,
                       })
                     }
@@ -306,8 +398,8 @@ export default function Users({ history }) {
                 <div
                   className="p-2 px-3 mr-2 text-xs text-gray-700 bg-white border rounded shadow cursor-pointer hover:bg-gray-100"
                   onClick={() =>
-                    setQuery({
-                      ...query,
+                    setQueryString({
+                      ...queryString,
                       page: userReducer.pagination.previous,
                     })
                   }
@@ -318,7 +410,10 @@ export default function Users({ history }) {
               <div
                 className="p-2 px-3 mr-2 text-xs font-bold text-gray-700 bg-white border rounded shadow cursor-pointer hover:bg-gray-100"
                 onClick={() =>
-                  setQuery({ ...query, page: userReducer.pagination.current })
+                  setQueryString({
+                    ...queryString,
+                    page: userReducer.pagination.current,
+                  })
                 }
               >
                 {userReducer.pagination.current}
@@ -327,7 +422,10 @@ export default function Users({ history }) {
                 <div
                   className="p-2 px-3 mr-2 text-xs text-gray-700 bg-white border rounded shadow cursor-pointer hover:bg-gray-100"
                   onClick={() =>
-                    setQuery({ ...query, page: userReducer.pagination.next })
+                    setQueryString({
+                      ...queryString,
+                      page: userReducer.pagination.next,
+                    })
                   }
                 >
                   {userReducer.pagination.next}
@@ -341,8 +439,8 @@ export default function Users({ history }) {
                   <div
                     className="p-2 px-3 mx-6 text-xs text-gray-700 bg-white border rounded shadow cursor-pointer hover:bg-gray-100"
                     onClick={() =>
-                      setQuery({
-                        ...query,
+                      setQueryString({
+                        ...queryString,
                         page: userReducer.pagination.totalPages,
                       })
                     }
