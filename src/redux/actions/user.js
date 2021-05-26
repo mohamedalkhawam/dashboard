@@ -73,7 +73,7 @@ export const readOneUser = id =>
 
 export const createUser = formData =>
   createItemAsync({
-    url: process.env.REACT_APP_BACKEND_URL + '/api/auth/register',
+    url: process.env.REACT_APP_BACKEND_URL + '/api/users',
     successType: CREATE_USER,
     errorType: USER_ERROR,
     startReload: startUsersReload,
