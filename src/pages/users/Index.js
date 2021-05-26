@@ -16,7 +16,6 @@ export default function Users({ history }) {
   const carsReducer = useSelector((state) => state.carsReducer);
   const userReducer = useSelector((state) => state.userReducer);
   const rolesReducer = useSelector((state) => state.rolesReducer);
-
   const [limit, setLimit] = useState(50);
   const [page, setPage] = useState(1);
   const [query, setQuery] = useState({
@@ -30,8 +29,8 @@ export default function Users({ history }) {
   useEffect(() => {
     dispatch(readUsers(query));
   }, [query]);
-
-  if (userReducer.loading) {
+  console.log({ model });
+  if (userReducer.loading || carsReducer.loading || rolesReducer.loading) {
     return (
       <Layout>
         <div className="flex items-center justify-center h-screen">
@@ -43,7 +42,7 @@ export default function Users({ history }) {
     return (
       <Layout>
         {_objI(model) && (
-          <div className="absolute top-0 bottom-0 left-0 right-0 flex items-center justify-center bg-gray-300 bg-opacity-30">
+          <div className="fixed  h-screen w-screen top-0 bottom-0 left-0 right-0  flex items-center justify-center bg-gray-300 bg-opacity-30">
             <div className="relative z-50 w-6/12 p-6 bg-white border rounded shadow">
               <span onClick={() => setModel({})}>
                 <AiOutlineCloseCircle className="absolute text-2xl text-red-600 cursor-pointer top-3 right-3 hover:text-red-700" />
@@ -230,7 +229,7 @@ export default function Users({ history }) {
                           className="px-3 py-1 text-xs font-bold text-gray-500 rounded cursor-pointer"
                           onClick={() => setModel(car)}
                         >
-                          {car.model}
+                          {car.model || ""}
                         </p>
                       ) : (
                         ""

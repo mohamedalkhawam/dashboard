@@ -38,6 +38,7 @@ export default function Services({ history }) {
     dispatch(readCities());
     dispatch(readBuildings());
   }, []);
+  const [openAction, setOpenAction] = useState(false);
   const [query, setQuery] = useState({
     service: "all",
     city: "all",
@@ -63,7 +64,7 @@ export default function Services({ history }) {
       <Layout>
         <div
           style={{ backgroundColor: "#F8F8F8" }}
-          className="flex flex-col items-center w-full h-screen p-10 pb-20 transition-all "
+          className="flex flex-col items-center w-full h-screen p-10 pb-20 transition-all overflow-y-scroll"
         >
           <div className="flex flex-wrap items-center justify-between w-full transition-all select-none">
             <div className="flex-grow my-10 text-4xl font-normal text-left text-gray-500 transition-all ">
@@ -210,7 +211,8 @@ export default function Services({ history }) {
                   (item) =>
                     item.status !== "completed" &&
                     item.status !== "rejected" &&
-                    item.status !== "notFound"
+                    item.status !== "notFound" &&
+                    item.status !== "reject"
                 )
                 .map((scheduledWash, index) => (
                   <tr className="flex flex-row flex-wrap mb-10 bg-white lg:hover:bg-gray-100 lg:table-row lg:flex-row lg:flex-no-wrap lg:mb-0">
@@ -439,6 +441,59 @@ export default function Services({ history }) {
                           }
                         >
                           <FiCheckCircle className="mx-1 text-xl text-blue-500 cursor-pointer" />
+                        </div>
+                        <div className="relative cursor-pointer transition-all duration-500">
+                          <div onClick={() => setOpenAction(!openAction)}>
+                            click
+                          </div>
+                          <div
+                            className={`${
+                              openAction === true ? `block` : ` hidden`
+                            } absolute bg-gray-50   select-none  w-32  -top-2 -left-36 transition-all duration-500 shadow-md hover:shadow-lg`}
+                          >
+                            <div className="">
+                              <div className="py-3 border-b hover:bg-red-200  text-md flex justify-center items-center">
+                                <div
+                                  className=""
+                                  onClick={() => setOpenAction(false)}
+                                >
+                                  reject
+                                </div>
+                              </div>
+                              <div className="py-3 border-b hover:bg-blue-200  text-md flex justify-center items-center ">
+                                <div
+                                  className=""
+                                  onClick={() => setOpenAction(false)}
+                                >
+                                  Accepted
+                                </div>
+                              </div>
+                              <div className="py-3 border-b hover:bg-green-200  text-md flex justify-center items-center ">
+                                <div
+                                  className=""
+                                  onClick={() => setOpenAction(false)}
+                                >
+                                  In-Progress
+                                </div>
+                              </div>
+                              <div className="py-3 border-b hover:bg-indigo-200 text-md flex justify-center items-center ">
+                                <div
+                                  className=""
+                                  onClick={() => setOpenAction(false)}
+                                >
+                                  Completed
+                                </div>
+                              </div>
+                              <div className="py-3 border-b hover:bg-pink-200  text-  text-md flex justify-center items-center ">
+                                <div
+                                  className=""
+                                  onClick={() => setOpenAction(false)}
+                                >
+                                  Car not found
+                                </div>
+                              </div>
+                            </div>
+                          </div>
                         </div>
                       </span>
                     </td>
