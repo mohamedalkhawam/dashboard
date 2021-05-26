@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { updateScheduledWashStatus } from "../redux/actions/scheduledWashes";
+import { createNotifications } from "../redux/actions/notifications";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { FiMoreHorizontal } from "react-icons/fi";
 import _objI from "../utils/_objI";
@@ -13,30 +14,82 @@ export default function MyPopover({ id, setData, data }) {
   const [openModal, setOpenModal] = useState(false);
   const [confirmed, setConfirmed] = useState(false);
   const [choosedStatus, setChoosedStatus] = useState("");
+  const [notification, setNotification] = useState({
+    title: "",
+    subTitle: "",
+    body: "",
+  });
   const handleClose = () => {
     if (setOpen) {
       setOpen(!open);
     }
   };
-  const handleConfirmed = async (status) => {
-    if (confirmed) {
-      return dispatch(
-        updateScheduledWashStatus({
-          _id: id,
-          status: status,
-        })
-      );
+  const onChange = (e) => {
+    e.preventDefault();
+    setNotification({ ...notification, [e.target.name]: e.target.value });
+  };
+  const setDefaultNotification = () => {
+    switch (choosedStatus) {
+      case "rejected":
+        setNotification({
+          title: "dsfdfsdf",
+          subTitle: "sadasd",
+          body: "sdsad",
+        });
+        break;
+      case "accepted":
+        setNotification({
+          title: "dsfdfsdf",
+          subTitle: "sadasd",
+          body: "sdsad",
+        });
+        break;
+      case "progress":
+        setNotification({
+          title: "dsfdfsdf",
+          subTitle: "sadasd",
+          body: "sdsad",
+        });
+        break;
+      case "completed":
+        setNotification({
+          title: "dsfdfsdf",
+          subTitle: "sadasd",
+          body: "sdsad",
+        });
+        break;
+      case "notFound":
+        setNotification({
+          title: "dsfdfsdf",
+          subTitle: "sadasd",
+          body: "sdsad",
+        });
+        break;
+      default:
+        break;
     }
   };
+  useEffect(() => {
+    setDefaultNotification();
+  }, [choosedStatus]);
   useEffect(() => {
     if (confirmed) {
       dispatch(
         updateScheduledWashStatus({
           _id: id,
           status: choosedStatus,
+          notification,
         })
       )
         .then((result) => {
+          dispatch(
+            createNotifications({
+              title: notification.title,
+              subTitle: notification.subTitle,
+              body: notification.body,
+              createdBy: result.data.data.createdBy,
+            })
+          );
           if (setData && data) {
             setData(
               data.map((d) =>
@@ -56,7 +109,7 @@ export default function MyPopover({ id, setData, data }) {
           openModal ? `flex` : `hidden`
         }  h-screen w-screen top-0 bottom-0 left-0 right-0   items-center justify-center bg-black bg-opacity-60`}
       >
-        <div className=" z-50 w-96  bg-gray-50  rounded shadow">
+        <div className=" z-50 w-92  bg-gray-50  rounded shadow">
           <div className="flex justify-between items-center border-b  p-4">
             <div className="text-2xl font-semibold text-gray-500">
               Confirmation
@@ -66,16 +119,61 @@ export default function MyPopover({ id, setData, data }) {
             </div>
           </div>
           <div className="border-b ">
-            <div className="text-lg font-medium text-gray-500 text-left  h-24 px-4 py-4">
-              Are you sure you want to change status!?
+            <div className="text-md font-medium text-gray-500 text-left  h-auto px-4 py-4">
+              Are you sure you want to change the schedule to
+              <span className="font-bold capitalize">"{choosedStatus}"</span> ?
+              <div>
+                <div className="my-5">
+                  Notification Title:
+                  <input
+                    placeholder={"Notification Title"}
+                    value={notification.title}
+                    type="text"
+                    name="title"
+                    onChange={(e) => {
+                      onChange(e);
+                    }}
+                    className="w-full p-3 font-normal text-gray-600 border rounded-md shadow outline-none focus:outline-none my-1"
+                  />
+                  <small className="text-red-600"></small>
+                </div>
+                <div className="my-5">
+                  Notification SubTitle
+                  <input
+                    placeholder={"Notification Subtitle"}
+                    value={notification.subTitle}
+                    type="text"
+                    name="subTitle"
+                    onChange={(e) => {
+                      onChange(e);
+                    }}
+                    className="w-full p-3 font-normal text-gray-600 border rounded-md shadow outline-none focus:outline-none my-1"
+                  />
+                  <small className="text-red-600"></small>
+                </div>
+                <div className="my-5">
+                  Notification Body
+                  <input
+                    placeholder={"Notification Body"}
+                    value={notification.body}
+                    type="text"
+                    name="body"
+                    onChange={(e) => {
+                      onChange(e);
+                    }}
+                    className="w-full p-3 font-normal text-gray-600 border rounded-md shadow outline-none focus:outline-none my-1"
+                  />
+                  <small className="text-red-600"></small>
+                </div>
+              </div>
             </div>
           </div>
-          <div className=" flex justify-between items-center h-14 ">
+          <div className=" flex justify-between items-center h-12 ">
             <div
               onClick={() => setOpenModal(false)}
-              className="text-md border items-center h-full font-semibold 
+              className="text-md border flex items-center justify-center h-full font-bold 
               text-gray-500  cursor-pointer shadow-md hover:shadow-lg
-             bg-gray-100 hover:bg-gray-200 bg-opacity-80 px-5 py-4   w-1/2 "
+             bg-gray-100 hover:bg-gray-200 bg-opacity-80  rounded   w-1/2 "
             >
               Close
             </div>
@@ -84,10 +182,10 @@ export default function MyPopover({ id, setData, data }) {
                 setConfirmed(true);
                 setOpenModal(false);
               }}
-              className="text-md  items-center font-semibold h-full text-gray-50 w-1/2 
+              className="text-md   flex items-center justify-center font-bold h-full text-gray-50 w-1/2 
             cursor-pointer shadow-md hover:shadow-lg bg-black
-              hover:bg-opacity-95 bg-opacity-80
-              px-5 py-4 "
+              hover:bg-opacity-90 bg-opacity-80 rounded
+              "
             >
               Confirm
             </div>

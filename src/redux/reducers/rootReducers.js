@@ -11,6 +11,7 @@ import ordersReducer from "./orders";
 import scheduledWashesReducer from "./scheduledWashes";
 import carsReducer from "./cars";
 import introReducer from "./intro";
+import statisticsReducer from "./statistics";
 export default combineReducers({
   authReducer,
   userReducer,
@@ -24,4 +25,5 @@ export default combineReducers({
   scheduledWashesReducer,
   carsReducer,
   introReducer,
+  statisticsReducer,
 });
